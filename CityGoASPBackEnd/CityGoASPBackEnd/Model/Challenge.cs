@@ -2,32 +2,26 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Security.Policy;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CityGoASPBackEnd.Model
 {
-    public class Item
+    public class Challenge
     {
         [Key]
-        public int ItemId { get; set; }
+        public int ChallengeId { get; set; }
 
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
 
         [MaxLength(50)]
-        public string Location { get; set; }
+        public string Task { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string Rarity { get; set; }
-
-        [Required]
-        public Url Picture { get; set; }
-
         [JsonIgnore]
-        public ICollection<UserItem> UserItems { get; set; }
+        public ICollection<Sight> _Sight { get; set; }
+
     }
 }

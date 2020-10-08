@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace CityGoASPBackEnd.Model
 {
-    public class UserItem
+    public class ChallengeItem
     {
-        public int UserId { get; set; }
-        public User _User { get; set; }
+        public int ChallangeId { get; set; }
+        public Challenge _Challenge { get; set; }
 
         public int ItemId { get; set; }
         public Item _Item { get; set; }
