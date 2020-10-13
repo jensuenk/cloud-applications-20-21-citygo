@@ -32,10 +32,10 @@ namespace CityGoASPBackEnd
             IdentityModelEventSource.ShowPII = true;
 
             services.AddMvc(option => option.EnableEndpointRouting = false);
-
-            //services.AddDbContext<Context>(options =>
-            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-            //);
+        
+            services.AddDbContext<Context>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            );
 
             services.AddMvc();
             services.AddCors(options => {
