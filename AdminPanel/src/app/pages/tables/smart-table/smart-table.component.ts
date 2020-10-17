@@ -5,8 +5,8 @@ import { SmartTableData } from '../../../@core/data/smart-table';
 
 @Component({
   selector: 'ngx-smart-table',
-  templateUrl: './sights.component.html',
-  styleUrls: ['./sights.component.scss'],
+  templateUrl: './smart-table.component.html',
+  styleUrls: ['./smart-table.component.scss'],
 })
 export class SmartTableComponent {
 
