@@ -9,13 +9,17 @@ namespace CityGoASPBackEnd.Model
     public class Sight
     {
         [Key]
-        public int QuoteId { get; set; }
+        public int SightId { get; set; }
 
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
 
         public string Info { get; set; }
+
+        public bool Monument { get; set; }
+
+        public bool Stop { get; set; }
 
         [Required]
         public string Location { get; set; }
