@@ -17,6 +17,15 @@ namespace CityGoASPBackEnd.Model
                 Email = "jhon.doe@gmail.com"
             }
             };
+            List<Sight> sightH = new List<Sight>() {
+            new Sight{
+            Name = "Kathedraal",
+            Info= "Grote kerk",
+            Monument = true,
+            Stop = false,
+            Location = "'t Stad"
+            }
+            };
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
