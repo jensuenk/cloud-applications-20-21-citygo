@@ -25,7 +25,7 @@ namespace CityGoASPBackEnd.Model
         public string Rarity { get; set; }
 
         [Required]
-        public Url Picture { get; set; }
+        public string Picture { get; set; }
 
         [JsonIgnore]
         public ICollection<UserItem> UserItems { get; set; }
