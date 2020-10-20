@@ -36,6 +36,13 @@ namespace CityGoASPBackEnd.Model
                     context.Users.Add(user);
                 }
             }
+            if (!context.Sights.Any())
+            {
+                foreach (var sights in sightH)
+                {
+                    context.Sights.Add(sights);
+                }
+            }
             context.SaveChanges();
         }
     }
