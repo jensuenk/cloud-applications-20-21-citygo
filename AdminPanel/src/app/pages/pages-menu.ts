@@ -4,7 +4,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Home',
     icon: 'home-outline',
-    link: '/pages/home',
+    link: '/pages/dashboard',
     home: true,
   },
   {
@@ -16,8 +16,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/tables/items',
       },
       {
-        title: 'List',
-        link: '/pages/tables/challanges',
+        title: 'Challenges',
+        link: '/pages/tables/challenges',
       },
       {
         title: 'Sights',
