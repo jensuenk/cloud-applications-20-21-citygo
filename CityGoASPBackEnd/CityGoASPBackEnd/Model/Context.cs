@@ -14,6 +14,7 @@ namespace CityGoASPBackEnd.Model
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Sight> Sights { get; set; }
         public DbSet<UserItem> UserItems { get; set; }
 
 

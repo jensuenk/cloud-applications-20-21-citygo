@@ -67,7 +67,7 @@ namespace CityGoASPBackEnd.Controllers
 
         [Route("{id}")]
         [HttpDelete]
-        public IActionResult DeleteUSer(int id)
+        public IActionResult DeleteUser(int id)
         {
             var user = context.Users.Find(id);
             if (user != null)
@@ -83,7 +83,7 @@ namespace CityGoASPBackEnd.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateUSer([FromBody] User updateUser)
+        public IActionResult UpdateUser([FromBody] User updateUser)
         {
             var orgUser = context.Users.Find(updateUser.UserId);
             if (orgUser != null)
