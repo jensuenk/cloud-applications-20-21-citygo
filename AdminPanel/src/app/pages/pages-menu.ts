@@ -32,7 +32,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Admin Accounts',
     icon: 'people-outline',
-    link: '/pages/accounts',
+    link: '/pages/admin-accounts',
   },
   {
     title: 'Settings',
