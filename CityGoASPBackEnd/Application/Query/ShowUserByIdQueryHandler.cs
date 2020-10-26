@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Application.Query
 {
-    class ShowUserByIdQuery
+    class ShowUserByIdQueryHandler
     {
     }
 }

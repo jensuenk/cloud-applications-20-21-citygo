@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Query
+namespace Application.Command
 {
-    class ShowUserByIdQuery
+    class CreateUserCommand
     {
     }
 }
