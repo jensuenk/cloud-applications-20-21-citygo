@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Infrastucture.Persistence
 {
@@ -14,5 +16,10 @@ namespace Infrastucture.Persistence
 
         }
         public DbSet<User> Users { get; set; }
+
+        public Task<int> SaveAsync(CancellationToken cancellationToken)
+        {
+            return base.SaveChangesAsync(cancellationToken);
+        }
     }
 }

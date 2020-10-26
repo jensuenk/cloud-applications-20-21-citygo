@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Command;
 using Application.Query;
+using Application.ViewModel;
 using CityGoASPBackEnd.Model;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CityGoASPBackEnd.Controllers
 {
-    [Route("User")]
+    [Route("Users")]
     [ApiController]
     public class UserController : Controller
     {
@@ -29,8 +31,30 @@ namespace CityGoASPBackEnd.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+        [Route("{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var query = new ShowUserByIdQuery(id);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
 
-       
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody]UserVM newUser) 
+        {
+            var command = new CreateUserCommand(newUser);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser([FromBody] UserVM newUser, int id)
+        {
+            var command = new UpdateUserCommand(newUser, id);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
 
         //[HttpGet]
         //public List<User> GetAllUsers()
