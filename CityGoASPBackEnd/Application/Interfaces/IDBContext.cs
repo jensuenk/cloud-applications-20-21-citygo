@@ -10,6 +10,7 @@ namespace Application.Interfaces
 {
     public interface IDBContext
     {
+        public DbSet<Item> Items { get; set; }
         public DbSet<User> Users { get; set; }
         Task<int> SaveAsync(CancellationToken cancellationToken);
     }
