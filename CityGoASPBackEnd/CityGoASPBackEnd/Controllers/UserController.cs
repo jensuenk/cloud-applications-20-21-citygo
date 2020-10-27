@@ -49,9 +49,9 @@ namespace CityGoASPBackEnd.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser([FromBody] UserVM newUser, int id)
+        public async Task<IActionResult> UpdateUser([FromBody] UserVM newUser)
         {
-            var command = new UpdateUserCommand(newUser, id);
+            var command = new UpdateUserCommand(newUser);
             var result = await _mediator.Send(command);
             return Ok(result);
         }

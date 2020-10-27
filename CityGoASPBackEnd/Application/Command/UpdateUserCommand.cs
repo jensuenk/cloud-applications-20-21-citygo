@@ -9,10 +9,8 @@ namespace Application.Command
     public class UpdateUserCommand : IRequest<int>, IRequest<UserVM>
     {
         public UserVM User { get; set; }
-        public int UserId { get; set; }
-        public UpdateUserCommand(UserVM updateUser, int id)
+        public UpdateUserCommand(UserVM updateUser)
         {
-            this.UserId = id;
             User = updateUser;
         }
     }
