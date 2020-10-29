@@ -26,7 +26,7 @@ namespace Application.Command.Item
             oldItem.Location = newItem.Location;
             oldItem.Picture = newItem.Picture;
             oldItem.Rarity = newItem.Rarity;
-            var query = _context.Items.Update(newItem);
+            var query = _context.Items.Update(oldItem);
             return await _context.SaveAsync(cancellationToken);
         }
     }

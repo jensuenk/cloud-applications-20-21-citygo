@@ -22,9 +22,9 @@ namespace Application.Query
             var allUsers = await _context.Users.ToListAsync();
 
             ListUserVM vm = new ListUserVM();
-            foreach (var item in allUsers)
+            foreach (var user in allUsers)
             {
-                vm.Users.Add(new UserVM() { UserId = item.UserId, Name = item.Name, Username = item.Username, Balls = item.Balls, Email = item.Email });
+                vm.Users.Add(new UserVM() { UserId = user.UserId, Name = user.Name, Username = user.Username, Balls = user.Balls, Email = user.Email });
             }
             return vm;
         }

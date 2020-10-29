@@ -2,55 +2,54 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Application.Command.Sight;
-using Application.Query.Sight;
-using Application.ViewModel.Item;
-using CityGoASPBackEnd.Model;
+using Application.Command.Challenge;
+using Application.Query.Challenge;
+using Application.ViewModel.Challenge;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityGoASPBackEnd.Controllers
 {
-    [Route("Sights")]
+    [Route("Challenges")]
     [ApiController]
-    public class SightController : ControllerBase
+    public class ChallengeController : ControllerBase
     {
         IMediator _mediator;
 
-        public SightController(IMediator mediator)
+        public ChallengeController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllSights()
+        public async Task<IActionResult> GetAllChallenges()
         {
-            var query = new ShowAllSightsQuery();
+            var query = new ShowAllChallengesQuery();
             var result = await _mediator.Send(query);
             return Ok(result);
         }
         [Route("{id}")]
         [HttpGet]
-        public async Task<IActionResult> GetSightById(int id)
+        public async Task<IActionResult> GetChallengeById(int id)
         {
-            var query = new ShowSightByIdQuery(id);
+            var query = new ShowChallengeByIdQuery(id);
             var result = await _mediator.Send(query);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSight([FromBody] SightVM newSight)
+        public async Task<IActionResult> CreateChallenge([FromBody] ChallengeVM newChallenge)
         {
-            var command = new CreateSightCommand(newSight);
+            var command = new CreateChallengeCommand(newChallenge);
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateSight([FromBody] SightVM newSight)
+        public async Task<IActionResult> UpdateChallenge([FromBody] ChallengeVM newChallenge)
         {
-            var command = new UpdateSightCommand(newSight);
+            var command = new UpdateChallengeCommand(newChallenge);
             var result = await _mediator.Send(command);
             return Ok(result);
         }

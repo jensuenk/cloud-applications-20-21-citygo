@@ -17,6 +17,8 @@ namespace Infrastucture.Persistence
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Sight> Sights { get; set; }
+        public DbSet<Challenge> Challenges { get; set; }
 
         public Task<int> SaveAsync(CancellationToken cancellationToken)
         {

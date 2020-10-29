@@ -12,6 +12,8 @@ namespace Application.Interfaces
     {
         public DbSet<Item> Items { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Sight> Sights { get; set; }
+        public DbSet<Challenge> Challenges { get; set; }
         Task<int> SaveAsync(CancellationToken cancellationToken);
     }
 }
