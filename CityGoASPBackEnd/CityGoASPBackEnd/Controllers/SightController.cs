@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CityGoASPBackEnd.Controllers
 {
-    [Route("sight")]
+    [Route("Sights")]
     [ApiController]
     public class SightController : ControllerBase
     {
