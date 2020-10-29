@@ -1,5 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { LocalDataSource } from 'ng2-smart-table';
+import { LocalDataSource, ServerDataSource } from 'ng2-smart-table';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
 
@@ -26,7 +27,7 @@ export class SightsTableComponent {
       confirmDelete: true,
     },
     columns: {
-      id: {
+      sightId: {
         title: 'ID',
         type: 'number',
       },
@@ -50,18 +51,17 @@ export class SightsTableComponent {
         title: 'Location',
         type: 'string',
       },
-      challenge: {
-        title: 'Challenge_ID',
+      _Challenge: {
+        title: 'Challenge ID',
         type: 'number',
       },
     },
   };
 
-  source: LocalDataSource = new LocalDataSource();
+  source: ServerDataSource;
 
-  constructor(private service: SmartTableData) {
-    const data = this.service.getData();
-    this.source.load(data);
+  constructor(http: HttpClient) {
+    this.source = new ServerDataSource(http, { endPoint: 'https://192.168.0.157:45455/Sight' });
   }
 
   onDeleteConfirm(event): void {
