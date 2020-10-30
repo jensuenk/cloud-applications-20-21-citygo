@@ -8,7 +8,7 @@ namespace Infrastucture.Persistence
     {
         public static void Initialize(DBContext context) 
         {
-            context.Database.EnsureDeleted();
+            //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
         }
     }
