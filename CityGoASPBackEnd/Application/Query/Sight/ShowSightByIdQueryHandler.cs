@@ -21,7 +21,7 @@ namespace Application.Query.Sight
         public async Task<SightVM> Handle(ShowSightByIdQuery request, CancellationToken cancellationToken)
         {
             var sight = await _context.Sights.Where(s => s.SightId == request.SightId).SingleAsync();
-            SightVM vm = new SightVM() { SightId = sight.SightId, Info = sight.Info, Location = sight.Location, Monument = sight.Monument, Name = sight.Name, Stop = sight.Stop };
+            SightVM vm = new SightVM() { SightId = sight.SightId, Info = sight.Info, Monument = sight.Monument, Name = sight.Name, Stop = sight.Stop, Polygon1 = sight.Polygon1, Polygon2 = sight.Polygon2, Polygon3 = sight.Polygon3, Polygon4 = sight.Polygon4 };
             return vm;
         }
     }

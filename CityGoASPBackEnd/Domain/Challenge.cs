@@ -18,9 +18,16 @@ namespace Domain
         [MaxLength(50)]
         public string Task { get; set; }
 
+        public bool TaskDone { get; set; }
+
+        [Required]
+        public string QuestionChallenge { get; set; }
+
+        [Required]
+        public string Answer { get; set; }
         //[Required]
         //[JsonIgnore]
         //public ICollection<Sight> _Sight { get; set; }
-    
+
     }
 }

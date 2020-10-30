@@ -25,7 +25,7 @@ namespace Application.Query.Sight
             ListSightVM vm = new ListSightVM();
             foreach (var sight in allSights)
             {
-                vm.Sights.Add(new SightVM() { SightId = sight.SightId, Info = sight.Info, Location = sight.Location, Monument= sight.Monument, Name= sight.Name, Stop = sight.Stop });
+                vm.Sights.Add(new SightVM() { SightId = sight.SightId, Info = sight.Info, Monument= sight.Monument, Name= sight.Name, Stop = sight.Stop , Polygon1 = sight.Polygon1, Polygon2 = sight.Polygon2, Polygon3 = sight.Polygon3, Polygon4 = sight.Polygon4 });
             }
             return vm;
         }

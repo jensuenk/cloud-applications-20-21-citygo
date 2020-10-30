@@ -25,7 +25,7 @@ namespace Application.Query.Challenge
             ListChallengeVM vm = new ListChallengeVM();
             foreach (var challenge in allChallenge)
             {
-                vm.Challenges.Add(new ChallengeVM() { ChallengeId = challenge.ChallengeId,Name = challenge.Name, Task = challenge.Task  });
+                vm.Challenges.Add(new ChallengeVM() { ChallengeId = challenge.ChallengeId,Name = challenge.Name, Task = challenge.Task , Answer = challenge.Answer, TaskDone =  challenge.TaskDone, QuestionChallenge = challenge.QuestionChallenge });
             }
             return vm;
         }

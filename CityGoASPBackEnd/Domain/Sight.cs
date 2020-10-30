@@ -21,7 +21,13 @@ namespace Domain
         public bool Stop { get; set; }
 
         [Required]
-        public string Location { get; set; }
+        public string Polygon1 { get; set; }
+        [Required]
+        public string Polygon2 { get; set; }
+        [Required]
+        public string Polygon3 { get; set; }
+        [Required]
+        public string Polygon4 { get; set; }
 
         //public Challenge _Challenge { get; set; }
     }
