@@ -13,7 +13,7 @@ namespace Infrastucture.Persistence
     {
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
-
+            
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Item> Items { get; set; }
@@ -24,5 +24,6 @@ namespace Infrastucture.Persistence
         {
             return base.SaveChangesAsync(cancellationToken);
         }
+
     }
 }

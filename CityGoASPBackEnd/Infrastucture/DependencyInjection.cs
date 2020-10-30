@@ -16,7 +16,6 @@ namespace Infrastucture
             services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IDBContext>(provider => provider.GetService<DBContext>());
-
             return services;
         }
     }

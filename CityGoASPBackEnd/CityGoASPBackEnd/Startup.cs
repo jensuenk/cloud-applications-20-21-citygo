@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Application;
 using Infrastucture;
+using Infrastucture.Persistence;
 
 namespace CityGoASPBackEnd
 {
@@ -31,7 +32,6 @@ namespace CityGoASPBackEnd
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.RegisterPersistence(Configuration);
             services.RegisterApplication();
             services.AddControllers();
@@ -48,7 +48,7 @@ namespace CityGoASPBackEnd
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DBContext context)
         {
             if (env.IsDevelopment())
             {
@@ -65,7 +65,7 @@ namespace CityGoASPBackEnd
             {
                 endpoints.MapControllers();
             });
-
+            Initializer.Initialize(context);
         }
     }
 }
