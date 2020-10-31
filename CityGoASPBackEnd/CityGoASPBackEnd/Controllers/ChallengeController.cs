@@ -53,5 +53,13 @@ namespace CityGoASPBackEnd.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteChallenge(int id)
+        {
+            var command = new DeleteChallengeCommand(id);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
     }
 }

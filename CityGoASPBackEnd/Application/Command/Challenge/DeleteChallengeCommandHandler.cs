@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.Challenge
 {
-    class DeleteChallengeCommandHandler : IRequestHandler<DeleteChallengeCommand, int>
+    public class DeleteChallengeCommandHandler : IRequestHandler<DeleteChallengeCommand, int>
     {
         IDBContext _context;
         public DeleteChallengeCommandHandler(IDBContext context)
