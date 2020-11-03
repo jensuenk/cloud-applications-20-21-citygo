@@ -18,7 +18,7 @@ namespace Application.Command.Item
         }
         public async Task<int> Handle(CreateItemCommand request, CancellationToken cancellationToken)
         {
-            Domain.Item newItem = new Domain.Item() { ItemId = request.Item.ItemId, Name = request.Item.Name, Location = request.Item.Location, Picture = request.Item.Picture, Rarity = request.Item.Rarity };
+            Domain.Item newItem = new Domain.Item() { ItemId = request.Item.ItemId, Name = request.Item.Name, Location = request.Item.Location, Picture = request.Item.Picture, Rarity = request.Item.Rarity , User = request.Item.User };
             var query = _context.Items.Add(newItem);
             return await _context.SaveAsync(cancellationToken);
         }

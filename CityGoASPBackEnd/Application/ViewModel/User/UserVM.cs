@@ -17,6 +17,6 @@ namespace Application.ViewModel
 
         public int Balls { get; set; }
 
-        //public ICollection<UserItem> UserItems { get; set; }
+        public List<Domain.Item> Items { get; set; }
     }
 }

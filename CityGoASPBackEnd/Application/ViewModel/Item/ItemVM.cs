@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,6 +17,6 @@ namespace Application.ViewModel
 
         public string Picture { get; set; }
 
-        //public ICollection<UserItem> UserItems { get; set; }
+        public User User { get; set; }
     }
 }

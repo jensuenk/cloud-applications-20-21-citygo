@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Domain
@@ -10,21 +12,17 @@ namespace Domain
         [Key]
         public int ItemId { get; set; }
 
-        [Required]
         [MaxLength(50)]
         public string Name { get; set; }
 
         [MaxLength(50)]
         public string Location { get; set; }
 
-        [Required]
         [MaxLength(50)]
         public string Rarity { get; set; }
 
-        [Required]
         public string Picture { get; set; }
 
-        //[JsonIgnore]
-        //public ICollection<UserItem> UserItems { get; set; }
+        public User User { get; set; }
     }
 }

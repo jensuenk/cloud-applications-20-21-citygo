@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Command;
+using Application.Command.User;
 using Application.Query;
+using Application.Query.User;
 using Application.ViewModel;
 using CityGoASPBackEnd.Model;
 using MediatR;
@@ -53,6 +55,23 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new UpdateUserCommand(newUser);
             var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [Route("{uid}/{iid}")]
+        [HttpPut]
+        public async Task<IActionResult> AddItemToUser(int uid, int iid)
+        {
+            var command = new AddItemToUserCommand(uid, iid);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+        [Route("{id}/Items")]
+        [HttpGet]
+        public async Task<IActionResult> GetItemsFromUserWithId(int id)
+        {
+            var query = new ShowUserWithItemByIdQuery(id);
+            var result = await _mediator.Send(query);
             return Ok(result);
         }
     }

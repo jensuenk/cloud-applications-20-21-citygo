@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Domain
@@ -11,21 +12,18 @@ namespace Domain
         [Key]
         public int UserId { get; set; }
 
-        [Required]
         [MaxLength(50)]
         public string Name { get; set; }
 
         [MaxLength(50)]
         public string Username { get; set; }
 
-        [Required]
         [MaxLength(50)]
         public string Email { get; set; }
 
-        [Required]
+
         public int Balls { get; set; }
 
-        //[JsonIgnore]
-        //public ICollection<UserItem> UserItems { get; set; }
+        public List<Item> Items { get; set; }
     }
 }
