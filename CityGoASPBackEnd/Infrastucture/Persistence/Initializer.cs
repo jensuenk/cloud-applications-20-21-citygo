@@ -9,17 +9,7 @@ namespace Infrastucture.Persistence
     {
         public static void Initialize(DBContext context) 
         {
-            List<Domain.User> usersL = new List<Domain.User>() 
-            { 
-                new Domain.User()
-                {
-                    Name = "Jhon Doe",
-                    Username = "Jh0nD03",
-                    Email = "jhon.doe@gmail.com",
-                    Balls = 1,
-                    Items = null
-                }
-            };
+            
             List<Domain.Item> itemsL = new List<Domain.Item>()
             {
                 new Domain.Item()
@@ -27,8 +17,17 @@ namespace Infrastucture.Persistence
                     Name = "test",
                     Location = "somewhere",
                     Rarity = "rare",
-                    Picture = "nice",
-                    User = null
+                    Picture = "nice"
+                }
+            };
+            List<Domain.User> usersL = new List<Domain.User>()
+            {
+                new Domain.User()
+                {
+                    Name = "Jhon Doe",
+                    Username = "Jh0nD03",
+                    Email = "jhon.doe@gmail.com",
+                    Balls = 1
                 }
             };
             context.Database.EnsureDeleted();

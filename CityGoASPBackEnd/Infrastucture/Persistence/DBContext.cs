@@ -26,15 +26,11 @@ namespace Infrastucture.Persistence
         }
         protected override void OnModelCreating(ModelBuilder modelbuilder) 
         {
-            modelbuilder.Entity<Item>()
-                .HasOne(i => i.User)
-                .WithMany(u => u.Items)
-                .OnDelete(DeleteBehavior.SetNull);
 
-            //modelbuilder.Entity<User>()
-            //    .HasMany(u => u.Items)
-            //    .WithOne(i => i.User)
-            //    .OnDelete(DeleteBehavior.SetNull);
+            modelbuilder.Entity<User>()
+                .HasMany(u => u.Items)
+                .WithOne(i => i.User)
+                .OnDelete(DeleteBehavior.SetNull);
 
 
         }

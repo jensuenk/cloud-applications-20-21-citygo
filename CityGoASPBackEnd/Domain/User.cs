@@ -21,7 +21,6 @@ namespace Domain
         [MaxLength(50)]
         public string Email { get; set; }
 
-
         public int Balls { get; set; }
 
         public List<Item> Items { get; set; }
