@@ -35,7 +35,10 @@ namespace CityGoASPBackEnd
             services.RegisterPersistence(Configuration);
             services.RegisterApplication();
             services.AddControllers();
-
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
 
             //services.AddMvc();
             //services.AddCors(options => {
