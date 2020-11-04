@@ -31,10 +31,10 @@ namespace Infrastucture.Persistence
                 .WithMany(u => u.Items)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelbuilder.Entity<User>()
-                .HasMany(u => u.Items)
-                .WithOne(i => i.User)
-                .OnDelete(DeleteBehavior.SetNull);
+            //modelbuilder.Entity<User>()
+            //    .HasMany(u => u.Items)
+            //    .WithOne(i => i.User)
+            //    .OnDelete(DeleteBehavior.SetNull);
 
 
         }
