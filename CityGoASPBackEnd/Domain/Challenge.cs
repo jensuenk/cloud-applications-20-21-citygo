@@ -25,9 +25,11 @@ namespace Domain
 
         [Required]
         public string Answer { get; set; }
-        //[Required]
-        //[JsonIgnore]
-        //public ICollection<Sight> _Sight { get; set; }
+
+        [JsonIgnore]
+        public List<Sight> Sight { get; set; }
+
+        public Item Item { get; set; }
 
     }
 }

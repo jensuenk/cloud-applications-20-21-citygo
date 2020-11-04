@@ -24,5 +24,7 @@ namespace Domain
         public string Picture { get; set; }
 
         public User User { get; set; }
+
+        public Challenge Challenge { get; set; }
     }
 }
