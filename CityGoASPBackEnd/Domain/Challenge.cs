@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Domain
@@ -26,7 +27,6 @@ namespace Domain
         [Required]
         public string Answer { get; set; }
 
-  
         public Sight Sight { get; set; }
 
         [JsonIgnore]

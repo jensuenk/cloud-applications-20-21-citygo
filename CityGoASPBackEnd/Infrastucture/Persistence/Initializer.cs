@@ -30,6 +30,31 @@ namespace Infrastucture.Persistence
                     Balls = 1
                 }
             };
+            List<Domain.Sight> sightsL = new List<Domain.Sight>()
+            {
+                new Domain.Sight()
+                {
+                    Name = "testplek",
+                    Info = "testinfo",
+                    Monument = true,
+                    Stop = false,
+                    Polygon1 = "1",
+                    Polygon2 = "2",
+                    Polygon3 = "3",
+                    Polygon4 = "4"                    
+                }
+            };
+            List<Domain.Challenge> ChallengesL = new List<Domain.Challenge>()
+            {
+                new Domain.Challenge()
+                {
+                    Name = "Chal1",
+                    Answer = "antwoord",
+                    QuestionChallenge = "vraag",
+                    Task = "een vraag",
+                    TaskDone = false
+                }
+            };
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             
@@ -45,6 +70,20 @@ namespace Infrastucture.Persistence
                 foreach (var item in itemsL)
                 {
                     context.Items.Add(item);
+                }
+            }
+            if (!context.Sights.Any())
+            {
+                foreach (var sight in sightsL)
+                {
+                    context.Sights.Add(sight);
+                }
+            }
+            if (!context.Challenges.Any())
+            {
+                foreach (var challenge in ChallengesL)
+                {
+                    context.Challenges.Add(challenge);
                 }
             }
             context.SaveChanges();

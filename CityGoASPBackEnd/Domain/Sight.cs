@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Domain
@@ -26,6 +27,8 @@ namespace Domain
         public string Polygon3 { get; set; }
 
         public string Polygon4 { get; set; }
+
+        public int ChallengeId { get; set; }
 
         public Challenge Challenge { get; set; }
     }

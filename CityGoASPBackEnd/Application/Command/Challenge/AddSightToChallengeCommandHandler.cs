@@ -22,8 +22,9 @@ namespace Application.Command.Challenge
         {
             var challenge = await _context.Challenges.Where(u => u.ChallengeId == request.ChallengeId).SingleAsync();
             var sight = await _context.Sights.Where(i => i.SightId == request.SightId).SingleAsync();
-         
+
             challenge.Sight = sight;
+            sight.ChallengeId = request.ChallengeId;
             sight.Challenge = challenge;
 
             var query1 = _context.Challenges.Update(challenge);
