@@ -29,7 +29,7 @@ namespace Domain
 
         public string Polygon4 { get; set; }
 
-        [JsonIgnore]
+        [ForeignKey("Challenge")]
         public int ForeignChallengeId { get; set; }
 
         [JsonIgnore]

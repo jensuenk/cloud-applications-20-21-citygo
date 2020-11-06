@@ -30,6 +30,17 @@ namespace Infrastucture.Persistence
                     Balls = 1
                 }
             };
+            List<Domain.Challenge> challengesL = new List<Domain.Challenge>()
+            {
+                new Domain.Challenge()
+                {
+                    Name = "Chal1",
+                    Answer = "antwoord",
+                    QuestionChallenge = "vraag",
+                    Task = "een vraag",
+                    TaskDone = false
+                }
+            };
             List<Domain.Sight> sightsL = new List<Domain.Sight>()
             {
                 new Domain.Sight()
@@ -44,17 +55,7 @@ namespace Infrastucture.Persistence
                     Polygon4 = "4"
                 }
             };
-            List<Domain.Challenge> ChallengesL = new List<Domain.Challenge>()
-            {
-                new Domain.Challenge()
-                {
-                    Name = "Chal1",
-                    Answer = "antwoord",
-                    QuestionChallenge = "vraag",
-                    Task = "een vraag",
-                    TaskDone = false
-                }
-            };
+           
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             
@@ -74,7 +75,7 @@ namespace Infrastucture.Persistence
             }
             if (!context.Challenges.Any())
             {
-                foreach (var challenge in ChallengesL)
+                foreach (var challenge in challengesL)
                 {
                     context.Challenges.Add(challenge);
                 }
@@ -86,7 +87,7 @@ namespace Infrastucture.Persistence
                     context.Sights.Add(sight);
                 }
             }
-           
+
             context.SaveChanges();
         }
     }
