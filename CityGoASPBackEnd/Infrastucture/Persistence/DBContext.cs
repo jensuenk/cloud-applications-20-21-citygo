@@ -40,7 +40,7 @@ namespace Infrastucture.Persistence
             modelbuilder.Entity<Challenge>()
                 .HasOne(c => c.Sight)
                 .WithOne(s => s.Challenge)
-                .HasForeignKey<Sight>(c => c.ChallengeId);
+                .HasForeignKey<Sight>(c => c.ForeignChallengeId);
 
         }
     }

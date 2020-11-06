@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,8 +29,10 @@ namespace Domain
 
         public string Polygon4 { get; set; }
 
-        public int ChallengeId { get; set; }
+        [JsonIgnore]
+        public int ForeignChallengeId { get; set; }
 
+        [JsonIgnore]
         public Challenge Challenge { get; set; }
     }
 }

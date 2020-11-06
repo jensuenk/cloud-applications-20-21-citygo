@@ -23,8 +23,10 @@ namespace Domain
 
         public string Picture { get; set; }
 
+        [JsonIgnore]
         public User User { get; set; }
 
+        [JsonIgnore]
         public Challenge Challenge { get; set; }
     }
 }

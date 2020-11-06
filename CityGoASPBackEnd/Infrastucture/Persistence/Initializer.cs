@@ -41,7 +41,7 @@ namespace Infrastucture.Persistence
                     Polygon1 = "1",
                     Polygon2 = "2",
                     Polygon3 = "3",
-                    Polygon4 = "4"                    
+                    Polygon4 = "4"
                 }
             };
             List<Domain.Challenge> ChallengesL = new List<Domain.Challenge>()
@@ -72,13 +72,6 @@ namespace Infrastucture.Persistence
                     context.Items.Add(item);
                 }
             }
-            if (!context.Sights.Any())
-            {
-                foreach (var sight in sightsL)
-                {
-                    context.Sights.Add(sight);
-                }
-            }
             if (!context.Challenges.Any())
             {
                 foreach (var challenge in ChallengesL)
@@ -86,6 +79,14 @@ namespace Infrastucture.Persistence
                     context.Challenges.Add(challenge);
                 }
             }
+            if (!context.Sights.Any())
+            {
+                foreach (var sight in sightsL)
+                {
+                    context.Sights.Add(sight);
+                }
+            }
+           
             context.SaveChanges();
         }
     }

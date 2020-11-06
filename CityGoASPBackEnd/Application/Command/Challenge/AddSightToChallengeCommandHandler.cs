@@ -24,7 +24,7 @@ namespace Application.Command.Challenge
             var sight = await _context.Sights.Where(i => i.SightId == request.SightId).SingleAsync();
 
             challenge.Sight = sight;
-            sight.ChallengeId = request.ChallengeId;
+            sight.ForeignChallengeId = request.ChallengeId;
             sight.Challenge = challenge;
 
             var query1 = _context.Challenges.Update(challenge);

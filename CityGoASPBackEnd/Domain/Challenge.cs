@@ -27,6 +27,7 @@ namespace Domain
         [Required]
         public string Answer { get; set; }
 
+        [JsonIgnore]
         public Sight Sight { get; set; }
 
         [JsonIgnore]
