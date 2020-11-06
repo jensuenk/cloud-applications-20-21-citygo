@@ -58,7 +58,7 @@ namespace CityGoASPBackEnd.Controllers
             return Ok(result);
         }
 
-        [Route("{uid}/{iid}")]
+        [Route("{uid}/{iid}/Items")]
         [HttpPut]
         public async Task<IActionResult> AddItemToUser(int uid, int iid)
         {
@@ -72,6 +72,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowUserWithItemByIdQuery(id);
             var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var command = new DeleteUserCommand(id);
+            var result = await _mediator.Send(command);
             return Ok(result);
         }
     }

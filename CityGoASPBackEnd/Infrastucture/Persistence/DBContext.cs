@@ -33,8 +33,13 @@ namespace Infrastucture.Persistence
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelbuilder.Entity<Challenge>()
-                .HasOne(c=>c.Item)
+                .HasMany(c=>c.Item)
                 .WithOne(i=>i.Challenge)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelbuilder.Entity<Challenge>()
+                .HasOne(c=>c.Sight)
+                .WithOne(s=>s.Challenge)
                 .OnDelete(DeleteBehavior.SetNull);
 
         }

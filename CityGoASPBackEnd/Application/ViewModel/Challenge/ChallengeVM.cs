@@ -17,8 +17,8 @@ namespace Application.ViewModel.Challenge
 
         public string Answer { get; set; }
 
-        public List<Domain.Sight> Sight { get; set; }
+        public Domain.Sight Sight { get; set; }
 
-        public Domain.Item Item { get; set; }
+        public List<Domain.Item> Items { get; set; }
     }
 }

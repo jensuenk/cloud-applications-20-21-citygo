@@ -24,6 +24,6 @@ namespace Application.ViewModel.Item
 
         public string Polygon4 { get; set; }
 
-        //public Challenge _Challenge { get; set; }
+        public Domain.Challenge Challenge { get; set; }
     }
 }

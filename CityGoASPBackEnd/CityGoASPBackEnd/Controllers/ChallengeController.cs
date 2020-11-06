@@ -61,5 +61,37 @@ namespace CityGoASPBackEnd.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+        [Route("{cid}/{iid}/Items")]
+        [HttpPut]
+        public async Task<IActionResult> AddItemToChallenge(int cid, int iid)
+        {
+            var command = new AddItemToChallengeCommand(cid, iid);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+        [Route("{cid}/{sid}/Sights")]
+        [HttpPut]
+        public async Task<IActionResult> AddSightToChallenge(int cid, int sid)
+        {
+            var command = new AddSightToChallengeCommand(cid, sid);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+        [Route("{id}/Items")]
+        [HttpGet]
+        public async Task<IActionResult> GetItemsFromChallengeWithId(int id)
+        {
+            var query = new ShowChallengeWithItemByIdQuery(id);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+        [Route("{id}/Sights")]
+        [HttpGet]
+        public async Task<IActionResult> GetSightsFromChallengeWithId(int id)
+        {
+            var query = new ShowChallengeWithSightByIdQuery(id);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
     }
 }

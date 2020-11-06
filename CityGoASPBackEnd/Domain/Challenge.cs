@@ -26,10 +26,11 @@ namespace Domain
         [Required]
         public string Answer { get; set; }
 
-        [JsonIgnore]
-        public List<Sight> Sight { get; set; }
+  
+        public Sight Sight { get; set; }
 
-        public Item Item { get; set; }
+        [JsonIgnore]
+        public List<Item> Items { get; set; }
 
     }
 }
