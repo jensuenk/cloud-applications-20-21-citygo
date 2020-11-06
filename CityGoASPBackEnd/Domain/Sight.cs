@@ -29,7 +29,6 @@ namespace Domain
 
         public string Polygon4 { get; set; }
         
-        [NotMapped]
         public int ForeignChallengeId { get; set; }
 
         [JsonIgnore]
