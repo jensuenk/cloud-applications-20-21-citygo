@@ -2,63 +2,63 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Application.Command.Sight;
-using Application.Query.Sight;
-using Application.ViewModel.Item;
-using CityGoASPBackEnd.Model;
+using Application.Command.Item;
+using Application.Query.Item;
+using Application.ViewModel;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityGoASPBackEnd.Controllers
 {
-    [Route("Sights")]
+    [Route("Items")]
     [ApiController]
-    public class SightController : ControllerBase
+    public class ItemController : ControllerBase
     {
+
         IMediator _mediator;
 
-        public SightController(IMediator mediator)
+        public ItemController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllSights()
+        public async Task<IActionResult> GetAllItems()
         {
-            var query = new ShowAllSightsQuery();
+            var query = new ShowAllItemsQuery();
             var result = await _mediator.Send(query);
             return Ok(result);
         }
         [Route("{id}")]
         [HttpGet]
-        public async Task<IActionResult> GetSightById(int id)
+        public async Task<IActionResult> GetItemById(int id)
         {
-            var query = new ShowSightByIdQuery(id);
+            var query = new ShowItemByIdQuery(id);
             var result = await _mediator.Send(query);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSight([FromBody] SightVM newSight)
+        public async Task<IActionResult> CreateItem([FromBody] ItemVM newItem)
         {
-            var command = new CreateSightCommand(newSight);
+            var command = new CreateItemCommand(newItem);
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateSight([FromBody] SightVM newSight)
+        public async Task<IActionResult> UpdateItem([FromBody] ItemVM newItem)
         {
-            var command = new UpdateSightCommand(newSight);
+            var command = new UpdateItemCommand(newItem);
             var result = await _mediator.Send(command);
             return Ok(result);
         }
         [Route("{id}")]
         [HttpDelete]
-        public async Task<IActionResult> DeleteSight(int id)
+        public async Task<IActionResult> DeleteItem(int id)
         {
-            var command = new DeleteSightCommand(id);
+            var command = new DeleteItemCommand(id);
             var result = await _mediator.Send(command);
             return Ok(result);
         }
