@@ -19,6 +19,7 @@ import {
   NbSidebarModule,
   NbToastrModule,
   NbWindowModule,
+    NbButtonModule,
 } from '@nebular/theme';
 
 @NgModule({
