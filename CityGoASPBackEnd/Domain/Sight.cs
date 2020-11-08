@@ -28,10 +28,8 @@ namespace Domain
         public string Polygon3 { get; set; }
 
         public string Polygon4 { get; set; }
-        
-        public int ForeignChallengeId { get; set; }
 
         [JsonIgnore]
-        public Challenge Challenge { get; set; }
+        public List<Challenge> Challenge { get; set; }
     }
 }

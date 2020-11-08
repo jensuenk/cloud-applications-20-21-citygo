@@ -24,8 +24,6 @@ namespace Application.ViewModel.Item
 
         public string Polygon4 { get; set; }
 
-        public int ForeignChallengeId { get; set; }
-
-        public Domain.Challenge Challenge { get; set; }
+        public List<Domain.Challenge> Challenge { get; set; }
     }
 }
