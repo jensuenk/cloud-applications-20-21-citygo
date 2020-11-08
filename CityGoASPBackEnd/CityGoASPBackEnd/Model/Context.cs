@@ -13,27 +13,27 @@ namespace CityGoASPBackEnd.Model
 
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Sight> Sights { get; set; }
-        public DbSet<UserItem> UserItems { get; set; }
+        //public DbSet<User> Users { get; set; }
+        //public DbSet<Sight> Sights { get; set; }
+        //public DbSet<UserItem> UserItems { get; set; }
 
 
-        protected override void OnModelCreating(ModelBuilder modelbuilder)
-        {
-            modelbuilder.Entity<UserItem>()
-             .HasKey(gc => new { gc.UserId, gc.ItemId });
+        //protected override void OnModelCreating(ModelBuilder modelbuilder)
+        //{
+        //    modelbuilder.Entity<UserItem>()
+        //     .HasKey(gc => new { gc.UserId, gc.ItemId });
 
-            modelbuilder.Entity<UserItem>(b =>
-            {
-                b.HasOne(c => c._User)
-                .WithMany(g => g.UserItems)
-                .HasForeignKey(c => c.UserId);
-                b.HasOne(c => c._Item)
-                .WithMany(g => g.UserItems)
-                .HasForeignKey(c => c.ItemId);
-            });
+        //    modelbuilder.Entity<UserItem>(b =>
+        //    {
+        //        b.HasOne(c => c._User)
+        //        .WithMany(g => g.UserItems)
+        //        .HasForeignKey(c => c.UserId);
+        //        b.HasOne(c => c._Item)
+        //        .WithMany(g => g.UserItems)
+        //        .HasForeignKey(c => c.ItemId);
+        //    });
 
            
-        }
+        //}
     }
 }
