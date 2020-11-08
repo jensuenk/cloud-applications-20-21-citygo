@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.ViewModel;
+using Application.ViewModel.UsersItems;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,10 +21,17 @@ namespace Application.Query.User
         }
         public async Task<UserVM> Handle(ShowUserWithItemByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Include(u => u.Items)
-                                      .Where(u => u.UserId == request.UserId)
-                                      .SingleAsync();
-            UserVM vm = new UserVM() { UserId = user.UserId, Name = user.Name, Username = user.Username, Email = user.Email, Balls = user.Balls, Items = user.Items };
+            var usersItems = await _context.UsersItems
+                .Include(i => i.Item)
+                .Where(u => u.UserId == request.UserId)
+                .ToListAsync();
+
+            var user = await _context.Users
+                .Include(i => i.UsersItems)
+                .Where(u => u.UserId == request.UserId)
+                .SingleAsync();
+
+            UserVM vm = new UserVM() { UserId = user.UserId, Name = user.Name, Username = user.Username, Email = user.Email, Balls = user.Balls , UsersItems = usersItems };
 
             return vm;
 

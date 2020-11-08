@@ -19,6 +19,8 @@ namespace Infrastucture.Persistence
         public DbSet<Item> Items { get; set; }
         public DbSet<Sight> Sights { get; set; }
         public DbSet<Challenge> Challenges { get; set; }
+        public DbSet<UsersItems> UsersItems { get; set; }
+
 
         public Task<int> SaveAsync(CancellationToken cancellationToken)
         {
@@ -26,21 +28,34 @@ namespace Infrastucture.Persistence
         }
         protected override void OnModelCreating(ModelBuilder modelbuilder) 
         {
+            modelbuilder.Entity<UsersItems>()
+                .HasKey(ui => new { ui.UserId, ui.ItemId });
 
-            modelbuilder.Entity<User>()
-                .HasMany(u => u.Items)
-                .WithOne(i => i.User)
-                .OnDelete(DeleteBehavior.SetNull);
+
+            modelbuilder.Entity<UsersItems>(b =>
+            {
+                b.HasOne(i => i.User)
+                .WithMany(u => u.UsersItems)
+                .HasForeignKey(i => i.UserId);
+                b.HasOne(u => u.Item)
+                .WithMany(i => i.UsersItems)
+                .HasForeignKey(u => u.ItemId);
+            });
+
+            //modelbuilder.Entity<User>()
+            //    .HasMany(u => u.Items)
+            //    .WithOne(i => i.User)
+            //    .OnDelete(DeleteBehavior.SetNull);
 
             modelbuilder.Entity<Challenge>()
                 .HasMany(c=>c.Items)
                 .WithOne(i=>i.Challenge)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelbuilder.Entity<Challenge>()
-                .HasOne(c => c.Sight)
-                .WithOne(s => s.Challenge)
-                .HasForeignKey<Sight>(c => c.ForeignChallengeId); 
+            modelbuilder.Entity<Sight>()
+                .HasMany(s => s.Challenge)
+                .WithOne(c => c.Sight)
+                .OnDelete(DeleteBehavior.SetNull);
 
         }
     }

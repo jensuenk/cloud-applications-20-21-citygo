@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,19 +23,29 @@ namespace Application.Command.User
         {
             var user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
             var item = await _context.Items.Where(i => i.ItemId == request.ItemId).SingleAsync();
-            if (user.Items == null)
+            UsersItems usersItems = new UsersItems() { User = user, UserId = user.UserId, Item = item, ItemId = item.ItemId};
+            if (user.UsersItems == null)
             {
-                List<Domain.Item> tussen = new List<Domain.Item>();
-                tussen.Add(item);
-                user.Items = tussen;
+                List<Domain.UsersItems> tussen = new List<Domain.UsersItems>();
+                tussen.Add(usersItems);
+                user.UsersItems = tussen;
             }
             else {
-                user.Items.Add(item);
+                user.UsersItems.Add(usersItems);
             }
-            item.User = user;
-
+            if (item.UsersItems == null)
+            {
+                List<Domain.UsersItems> tussen = new List<Domain.UsersItems>();
+                tussen.Add(usersItems);
+                item.UsersItems = tussen;
+            }
+            else
+            {
+                item.UsersItems.Add(usersItems);
+            }
             var query1 = _context.Users.Update(user);
             var query2 = _context.Items.Update(item);
+            var query3 = _context.UsersItems.Add(usersItems);
             return await _context.SaveAsync(cancellationToken);
         }
     }

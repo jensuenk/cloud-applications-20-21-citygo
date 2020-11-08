@@ -56,7 +56,7 @@ namespace Infrastucture.Persistence
                 }
             };
            
-            context.Database.EnsureDeleted();
+            //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             
             if (!context.Users.Any())

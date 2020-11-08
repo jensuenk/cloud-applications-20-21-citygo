@@ -1,4 +1,5 @@
 ﻿using Application.ViewModel;
+using Application.ViewModel.UsersItems;
 using Domain;
 using MediatR;
 using System;
