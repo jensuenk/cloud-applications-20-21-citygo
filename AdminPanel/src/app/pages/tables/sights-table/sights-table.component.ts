@@ -11,7 +11,7 @@ import { ISight, SightService } from './sight.service';
 })
 
 export class SightsTableComponent implements OnInit {
-  sights : ISight;
+  sights: ISight;
   errorMessage: string
   successfulSave: boolean;
   successMessage: string;
@@ -27,7 +27,7 @@ export class SightsTableComponent implements OnInit {
   filterLength: string = "";
   filterDir: string = "";
 
-  constructor(private svc : SightService) { }
+  constructor(private svc: SightService) { }
 
   ngOnInit() {
     this.getSights();
@@ -38,30 +38,30 @@ export class SightsTableComponent implements OnInit {
 
   getSights(urlArgs: string = "") {
     this.svc.getSights(urlArgs).subscribe(
-        result => {
-          this.errors = [];
-          this.sights = result;
-          console.log(this.sights)
-          return true;
-        },
-        error => {
-          console.error("Error while retreiving sights!");
-          this.showError(error.message)
-        }
+      result => {
+        this.errors = [];
+        this.sights = result;
+        console.log(this.sights)
+        return true;
+      },
+      error => {
+        console.error("Error while retreiving sights!");
+        this.showError(error.message)
+      }
     );
   }
 
   getSight(id: number) {
     this.svc.getSightById(id).subscribe(
-        result => {
-          this.errors = [];
-          this.sight = result
-          return true;
-        },
-        error => {
-          console.error("Error while retreiving sight!");
-          this.showError(error.message)
-        }
+      result => {
+        this.errors = [];
+        this.sight = result
+        return true;
+      },
+      error => {
+        console.error("Error while retreiving sight!");
+        this.showError(error.message)
+      }
     );
   }
 
@@ -79,39 +79,42 @@ export class SightsTableComponent implements OnInit {
       challenge: challenge
     }
     this.svc.createSight(newSight).subscribe(
-        data => {
-          this.errors = [];
-          // refresh the list
-          this.getSights();
-          this.showSuccess("Successfully created a new sight!")
-          this.successfulSave = true
-          return true;
-        },error => {
-          this.errors = [];
-          console.error("Error creating sight!");
-          this.successfulSave = false
-          if (error.status === 400) {
-            const validationErrors = error.error;
-            Object.keys(validationErrors).forEach(prop => {
-              console.log(validationErrors[prop])
-              this.errors.push(validationErrors[prop])
-            });
-          }
+      data => {
+        this.errors = [];
+        console.log(newSight)
+        // refresh the list
+        this.getSights();
+        this.showSuccess("Successfully created a new sight!")
+        this.successfulSave = true
+        return true;
+      }, error => {
+        this.errors = [];
+        console.error("Error creating sight!");
+        this.successfulSave = false
+        if (error.status === 400) {
+          console.log(error)
+          const validationErrors = error.error;
+          Object.keys(validationErrors).forEach(prop => {
+            console.log(validationErrors[prop])
+            this.errors.push(validationErrors[prop])
+          });
         }
+      }
     );
   }
-    
+
   updateSight(updatedSight) {
     this.svc.updateSight(updatedSight).subscribe(
-        data => {
-          this.errors = [];
-          // refresh the list
-          this.getSights();
-          this.showSuccess("Successfully updated the sight!")
-          this.successfulSave = true
-          return true;
-        },
-       error => {
+      data => {
+        this.errors = [];
+        console.log(updatedSight)
+        // refresh the list
+        this.getSights();
+        this.showSuccess("Successfully updated the sight!")
+        this.successfulSave = true
+        return true;
+      },
+      error => {
         this.errors = [];
         console.error("Error saving sight!");
         this.successfulSave = false
@@ -125,20 +128,20 @@ export class SightsTableComponent implements OnInit {
       }
     );
   }
-    
+
   deleteSight(sight) {
     this.svc.deleteSight(sight).subscribe(
-        data => {
-          this.errors = [];
-          // refresh the list
-          this.getSights();
-          this.showSuccess("Successfully deleted the sight!")
-          return true;
-        },
-        error => {
-          console.error("Error deleting sight!");
-          this.showError(error.message)
-        }
+      data => {
+        this.errors = [];
+        // refresh the list
+        this.getSights();
+        this.showSuccess("Successfully deleted the sight!")
+        return true;
+      },
+      error => {
+        console.error("Error deleting sight!");
+        this.showError(error.message)
+      }
     );
   }
 
@@ -174,9 +177,9 @@ export class SightsTableComponent implements OnInit {
     if (this.filterDir != "") {
       urlArgs += "dir=" + this.filterDir + "&"
     }
-  
+
     urlArgs = urlArgs.substring(0, urlArgs.length - 1);
     this.getSights(urlArgs);
-    
+
   }
 }
