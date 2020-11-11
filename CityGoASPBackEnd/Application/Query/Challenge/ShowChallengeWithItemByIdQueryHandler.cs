@@ -24,7 +24,17 @@ namespace Application.Query.Challenge
             var challenge = await _context.Challenges.Include(c => c.Items)
                                       .Where(c => c.ChallengeId == request.ChallengeId)
                                       .SingleAsync();
-            ChallengeVM vm = new ChallengeVM() { ChallengeId = challenge.ChallengeId, Name = challenge.Name, Answer = challenge.Answer, QuestionChallenge = challenge.QuestionChallenge, Task = challenge.Task, TaskDone = challenge.TaskDone, Items = challenge.Items, Sight = challenge.Sight };
+            ChallengeVM vm = new ChallengeVM() 
+            { 
+                ChallengeId = challenge.ChallengeId, 
+                Name = challenge.Name, 
+                Answer = challenge.Answer, 
+                QuestionChallenge = challenge.QuestionChallenge, 
+                Task = challenge.Task, 
+                TaskDone = challenge.TaskDone, 
+                Items = challenge.Items, 
+                Sight = challenge.Sight 
+            };
 
             return vm;
         }
