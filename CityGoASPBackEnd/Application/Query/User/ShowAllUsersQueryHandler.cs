@@ -24,7 +24,14 @@ namespace Application.Query
             ListUserVM vm = new ListUserVM();
             foreach (var user in allUsers)
             {
-                vm.Users.Add(new UserVM() { UserId = user.UserId, Name = user.Name, Username = user.Username, Balls = user.Balls, Email = user.Email });
+                vm.Users.Add(new UserVM() 
+                { 
+                    UserId = user.UserId, 
+                    Name = user.Name, 
+                    Username = user.Username,
+                    Balls = user.Balls, 
+                    Email = user.Email 
+                });
             }
             return vm;
         }

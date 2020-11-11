@@ -34,7 +34,15 @@ namespace Application.Query.Sight
                 tussen[1, 1] = sight.Longitude2;
                 tussen[2, 1] = sight.Longitude3;
                 tussen[3, 1] = sight.Longitude4;
-                vm.Sights.Add(new SightVM() { SightId = sight.SightId, Info = sight.Info, Monument= sight.Monument, Name= sight.Name, Stop = sight.Stop , Polygon = tussen });
+                vm.Sights.Add(new SightVM() 
+                { 
+                    SightId = sight.SightId, 
+                    Info = sight.Info, 
+                    Monument= sight.Monument, 
+                    Name= sight.Name, 
+                    Stop = sight.Stop, 
+                    Polygon = tussen 
+                });
                
             }
             return vm;

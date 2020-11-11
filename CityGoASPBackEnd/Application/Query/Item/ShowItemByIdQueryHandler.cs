@@ -21,7 +21,14 @@ namespace Application.Query.Item
         public async Task<ItemVM> Handle(ShowItemByIdQuery request, CancellationToken cancellationToken)
         {
             var item = await _context.Items.Where(i => i.ItemId == request.ItemId).SingleAsync();
-            ItemVM vm = new ItemVM() { ItemId = item.ItemId, Name = item.Name, Location = item.Location, Picture = item.Picture , Rarity = item.Rarity };
+            ItemVM vm = new ItemVM() 
+            { 
+                ItemId = item.ItemId, 
+                Name = item.Name, 
+                Location = item.Location, 
+                Picture = item.Picture, 
+                Rarity = item.Rarity 
+            };
             return vm;
         }
     }

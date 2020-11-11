@@ -30,7 +30,15 @@ namespace Application.Query.Sight
             tussen[2, 1] = sight.Longitude3;
             tussen[3, 0] = sight.Latitude4;
             tussen[3, 1] = sight.Longitude4;
-            SightVM vm = new SightVM() { SightId = sight.SightId, Info = sight.Info, Monument = sight.Monument, Name = sight.Name, Stop = sight.Stop , Polygon = tussen};
+            SightVM vm = new SightVM() 
+            { 
+                SightId = sight.SightId,
+                Info = sight.Info, 
+                Monument = sight.Monument, 
+                Name = sight.Name,
+                Stop = sight.Stop , 
+                Polygon = tussen
+            };
             return vm;
         }
     }

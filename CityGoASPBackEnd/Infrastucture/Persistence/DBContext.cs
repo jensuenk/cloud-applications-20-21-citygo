@@ -42,11 +42,6 @@ namespace Infrastucture.Persistence
                 .HasForeignKey(u => u.ItemId);
             });
 
-            //modelbuilder.Entity<User>()
-            //    .HasMany(u => u.Items)
-            //    .WithOne(i => i.User)
-            //    .OnDelete(DeleteBehavior.SetNull);
-
             modelbuilder.Entity<Challenge>()
                 .HasMany(c=>c.Items)
                 .WithOne(i=>i.Challenge)

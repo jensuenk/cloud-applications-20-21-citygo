@@ -21,7 +21,15 @@ namespace Application.Command
         }
         public async Task<int> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            Domain.User newUser = new Domain.User() { UserId = request.User.UserId, Name = request.User.Name, Username = request.User.Username, Email = request.User.Email, Balls = request.User.Balls, UsersItems = request.User.UsersItems };
+            Domain.User newUser = new Domain.User() 
+            {
+                UserId = request.User.UserId,
+                Name = request.User.Name, 
+                Username = request.User.Username, 
+                Email = request.User.Email, 
+                Balls = request.User.Balls, 
+                UsersItems = request.User.UsersItems 
+            };
             var olduser = await _context.Users.Where(u => u.UserId == newUser.UserId).SingleAsync();
             olduser.Name = newUser.Name;
             olduser.Username = newUser.Username;

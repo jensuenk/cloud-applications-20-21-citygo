@@ -19,7 +19,15 @@ namespace Application.Command
         }
         public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            Domain.User newUser = new Domain.User() { UserId = request.User.UserId, Name = request.User.Name, Username = request.User.Username, Email = request.User.Email, Balls = request.User.Balls, UsersItems = request.User.UsersItems};
+            Domain.User newUser = new Domain.User()
+            {
+                UserId = request.User.UserId, 
+                Name = request.User.Name, 
+                Username = request.User.Username, 
+                Email = request.User.Email, 
+                Balls = request.User.Balls, 
+                UsersItems = request.User.UsersItems
+            };
             var query = _context.Users.Add(newUser);
             return await _context.SaveAsync(cancellationToken);
         }

@@ -24,7 +24,14 @@ namespace Application.Command.Item
             ListItemVM vm = new ListItemVM();
             foreach (var item in allItems)
             {
-                vm.Items.Add(new ItemVM() { ItemId = item.ItemId , Name = item.Name, Location = item.Location, Picture = item.Picture, Rarity = item.Rarity});
+                vm.Items.Add(new ItemVM() 
+                { 
+                    ItemId = item.ItemId,
+                    Name = item.Name, 
+                    Location = item.Location, 
+                    Picture = item.Picture, 
+                    Rarity = item.Rarity
+                });
             }
             return vm;
         }
