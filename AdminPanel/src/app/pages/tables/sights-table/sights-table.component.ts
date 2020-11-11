@@ -66,7 +66,7 @@ export class SightsTableComponent implements OnInit {
   }
 
   createSight(name, info, monument, stop, polygon1, polygon2, polygon3, polygon4, challenge) {
-    let challengeId = challenge.challengeId
+    //let challengeId = challenge.challengeId
     challenge = null
     let tempPolygon: number[][] = [];
     tempPolygon.push(polygon1.split`,`.map(x=>+x));
@@ -94,7 +94,7 @@ export class SightsTableComponent implements OnInit {
         return true;
       }, error => {
         this.errors = [];
-        console.error("Error creating sight!");
+        this.showError("Error accured trying to create a sight!")
         this.successfulSave = false
         if (error.status === 400) {
           console.log(error)
@@ -109,7 +109,7 @@ export class SightsTableComponent implements OnInit {
   }
 
   updateSight(updatedSight: Sight) {
-    let challengeId = updatedSight.challenge.challengeId
+    //let challengeId = updatedSight.challenge.challengeId
     updatedSight.challenge = null
     
     this.svc.updateSight(updatedSight).subscribe(
@@ -124,7 +124,7 @@ export class SightsTableComponent implements OnInit {
       },
       error => {
         this.errors = [];
-        console.error("Error saving sight!");
+        this.showError("Error accured trying to update this sight!")
         this.successfulSave = false
         if (error.status === 400) {
           const validationErrors = error.error;
