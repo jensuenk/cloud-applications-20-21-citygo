@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +11,18 @@ export class SightService {
 
   constructor(private http: HttpClient) { }
 
-  getSights(args: string): Observable<ISight> {
+  getSights(args: string): Observable<RootObject> {
     console.log(this.url + args);
-    return this.http.get(this.url + args).pipe(map(res => res.sights))
+    return this.http.get<RootObject>(this.url + args);
     
   }
 
-  getSightById(id: number): Observable<ISight> {
+  getSightById(id: number): Observable<Sight> {
     console.log(this.url + "/" + id);
-    return this.http.get<ISight>(this.url + "/" + id)
+    return this.http.get<Sight>(this.url + "/" + id)
   }
 
-  createSight(sight: ISight) {
+  createSight(sight: Sight) {
     let body = JSON.stringify(sight);
     delete body['id'];
     return this.http.post(this.url, body, {
@@ -33,7 +32,7 @@ export class SightService {
     });
   }
 
-  updateSight(sight: ISight) {
+  updateSight(sight: Sight) {
     let body = JSON.stringify(sight);
     delete body['id'];
     return this.http.put(this.url, body, {
@@ -43,22 +42,21 @@ export class SightService {
     });
   }
 
-  deleteSight(sight: ISight) {
+  deleteSight(sight: Sight) {
     return this.http.delete(this.url + "/" + sight.sightId)
   }
-
-  sight: ISight;
 }
 
-export interface ISight {
-  sightId: number,
-  name: string,
-  info: string,
-  monument: boolean,
-  stop: boolean,
-  polygon1: string,
-  polygon2: string,
-  polygon3: string,
-  polygon4: string,
-  challenge: string
+export interface Sight {
+  sightId: number;
+  name: string;
+  info: string;
+  monument: boolean;
+  stop: boolean;
+  polygon: number[][];
+  challenge?: any;
+}
+
+export interface RootObject {
+  sights: Sight[];
 }

@@ -2,8 +2,8 @@
     <nb-card-body>
         <h2>Sight Editor</h2>
         <p>On this page you can manage the sights available in the app.</p>
-        </nb-card-body>
-    </nb-card>
+    </nb-card-body>
+</nb-card>
 <nb-card>
     <nb-card-header>
         Edit Sights
@@ -37,14 +37,11 @@
                             [(ngModel)]="sight.monument"></td>
                     <td><input nbInput fullWidth type="text" name="stop" value={{sight.stop}} [(ngModel)]="sight.stop">
                     </td>
-                    <td><input nbInput fullWidth type="text" name="polygon1" value={{sight.polygon1}}
-                            [(ngModel)]="sight.polygon1"></td>
-                    <td><input nbInput fullWidth type="text" name="polygon2" value={{sight.polygon2}}
-                            [(ngModel)]="sight.polygon2"></td>
-                    <td><input nbInput fullWidth type="text" name="polygon3" value={{sight.polygon3}}
-                            [(ngModel)]="sight.polygon3"></td>
-                    <td><input nbInput fullWidth type="text" name="polygon4" value={{sight.polygon4}}
-                            [(ngModel)]="sight.polygon4"></td>
+
+                    <td *ngFor="let polygon of sight.polygon">
+                        <input nbInput fullWidth type="text" name="polygon"
+                            value={{polygon}} >
+                    </td>
                     <td><input nbInput fullWidth type="text" name="challenge" value={{sight.challenge}}
                             [(ngModel)]="sight.challenge"></td>
                     <td><button nbButton fullWidth outline status="success" (click)="updateSight(sight)">Save</button>

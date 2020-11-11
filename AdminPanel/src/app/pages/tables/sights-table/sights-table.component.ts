@@ -1,8 +1,5 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { NbButtonModule } from '@nebular/theme';
-import { ISight, SightService } from './sight.service';
+import { Component, OnInit } from '@angular/core';
+import { Sight, SightService } from './sight.service';
 
 @Component({
   selector: 'ngx-sights-table',
@@ -11,13 +8,13 @@ import { ISight, SightService } from './sight.service';
 })
 
 export class SightsTableComponent implements OnInit {
-  sights: ISight;
   errorMessage: string
   successfulSave: boolean;
   successMessage: string;
   errors: string[];
 
-  sight: ISight
+  sights: Sight[] = [];
+  sight: Sight
 
   filterSightId: string = "";
   filterName: string = "";
@@ -40,8 +37,11 @@ export class SightsTableComponent implements OnInit {
     this.svc.getSights(urlArgs).subscribe(
       result => {
         this.errors = [];
-        this.sights = result;
-        console.log(this.sights)
+        console.log(result.sights)
+        this.sights = result.sights
+        result.sights.forEach(element => {
+          console.log(element.polygon + "")
+        });
         return true;
       },
       error => {
@@ -66,16 +66,21 @@ export class SightsTableComponent implements OnInit {
   }
 
   createSight(name, info, monument, stop, polygon1, polygon2, polygon3, polygon4, challenge) {
-    let newSight: ISight = {
+    let challengeId = challenge.challengeId
+    challenge = null
+    let tempPolygon: number[][] = [];
+    tempPolygon.push(polygon1.split`,`.map(x=>+x));
+    tempPolygon.push(polygon2.split`,`.map(x=>+x));
+    tempPolygon.push(polygon3.split`,`.map(x=>+x));
+    tempPolygon.push(polygon4.split`,`.map(x=>+x));
+    console.log(tempPolygon)
+    let newSight: Sight = {
       sightId: 0,
       name: name,
       info: info,
       monument: monument,
       stop: stop,
-      polygon1: polygon1,
-      polygon2: polygon2,
-      polygon3: polygon3,
-      polygon4: polygon4,
+      polygon: tempPolygon,
       challenge: challenge
     }
     this.svc.createSight(newSight).subscribe(
@@ -103,7 +108,10 @@ export class SightsTableComponent implements OnInit {
     );
   }
 
-  updateSight(updatedSight) {
+  updateSight(updatedSight: Sight) {
+    let challengeId = updatedSight.challenge.challengeId
+    updatedSight.challenge = null
+    
     this.svc.updateSight(updatedSight).subscribe(
       data => {
         this.errors = [];
@@ -152,34 +160,5 @@ export class SightsTableComponent implements OnInit {
   showSuccess(message: string) {
     this.errorMessage = "";
     this.successMessage = message;
-  }
-
-  filter() {
-    var urlArgs: string = "?";
-    if (this.filterSightId != "" && this.filterSightId != null) {
-      urlArgs += "id=" + this.filterSightId + "&"
-    }
-    if (this.filterName != "") {
-      urlArgs += "name=" + this.filterName + "&"
-    }
-    if (this.filterLocation != "") {
-      urlArgs += "location=" + this.filterLocation + "&"
-    }
-    if (this.filterSort != "") {
-      urlArgs += "sort=" + this.filterSort + "&"
-    }
-    if (this.filterPage != "") {
-      urlArgs += "page=" + this.filterPage + "&"
-    }
-    if (this.filterLength != "") {
-      urlArgs += "length=" + this.filterLength + "&"
-    }
-    if (this.filterDir != "") {
-      urlArgs += "dir=" + this.filterDir + "&"
-    }
-
-    urlArgs = urlArgs.substring(0, urlArgs.length - 1);
-    this.getSights(urlArgs);
-
   }
 }
