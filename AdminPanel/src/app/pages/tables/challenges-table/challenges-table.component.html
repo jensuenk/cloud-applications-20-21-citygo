@@ -1,1 +1,85 @@
-<p>challenges-table works!</p>
+<nb-card>
+    <nb-card-body>
+        <h2>Challenge Editor</h2>
+        <p>On this page you can manage the challenges available in the app.</p>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header>
+        Edit Challenges
+    </nb-card-header>
+    <nb-card-body *ngIf="challenges">
+        <table>
+            <thead>
+                <tr>
+                    <td><label class="label">ID</label></td>
+                    <td><label class="label">Name</label></td>
+                    <td><label class="label">Task</label></td>
+                    <td><label class="label">Question</label></td>
+                    <td><label class="label">Answer</label></td>
+                    <td><label class="label">Reward Item ID</label></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let challenge of challenges">
+                    <td><input nbInput fullWidth type="text" disabled name="challengeId" value={{challenge.challengeId}}
+                            [(ngModel)]="challenge.challengeId"></td>
+                    <td><input nbInput fullWidth type="text" name="name" value={{challenge.name}} [(ngModel)]="challenge.name">
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="task" value={{challenge.task}} [(ngModel)]="challenge.task">
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="questionChallenge" value={{challenge.questionChallenge}} [(ngModel)]="challenge.questionChallenge">
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="answer" value={{challenge.answer}} [(ngModel)]="challenge.answer">
+                    </td>
+                    <td><input nbInput fullWidth type="number" name="items" value={{challenge.items}}
+                            [(ngModel)]="challenge.items"></td>
+                    <td><button nbButton fullWidth outline status="success" (click)="updateChallenge(challenge)">Save</button>
+                    <td>
+                    <td><button nbButton fullWidth outline status="danger" (click)="deleteChallenge(challenge)">Delete</button>
+                    <td>
+                </tr>
+            </tbody>
+        </table>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header>
+        Add Challenges
+    </nb-card-header>
+    <nb-card-body *ngIf="challenges">
+        <table>
+            <thead>
+                <tr>
+                    <td><label class="label">ID</label></td>
+                    <td><label class="label">Name</label></td>
+                    <td><label class="label">Task</label></td>
+                    <td><label class="label">Question</label></td>
+                    <td><label class="label">Answer</label></td>
+                    <td><label class="label">Reward Item ID</label></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <td><input nbInput fullWidth type="text" disabled name="challengeId" [(ngModel)]="challengeId"></td>
+                <td><input nbInput fullWidth type="text" name="name" [(ngModel)]="name"></td>
+                <td><input nbInput fullWidth type="text" name="task" [(ngModel)]="task"></td>
+                <td><input nbInput fullWidth type="text" name="questionChallenge" [(ngModel)]="questionChallenge"></td>
+                <td><input nbInput fullWidth type="text" name="answer" [(ngModel)]="answer"></td>
+                <td><input nbInput fullWidth type="number" name="itemId" [(ngModel)]="itemId"></td>
+                <td><button nbButton outline status="success"
+                        (click)="createChallenge(name, task, questionChallenge, answer, itemId)">Create</button>
+                <td>
+            </tbody>
+        </table>
+
+    </nb-card-body>
+</nb-card>
+<nb-alert *ngIf="errorMessage" status="danger">{{errorMessage}}</nb-alert>
+<nb-alert *ngIf="successMessage" status="success">{{successMessage}}</nb-alert>
+<nb-alert status="danger" *ngIf="errors.length > 0">
+    <div *ngFor="let error of errors">
+        <p-message severity="error" text="{{ error }}"></p-message>
+    </div>
+</nb-alert>
