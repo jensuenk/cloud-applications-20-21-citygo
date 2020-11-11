@@ -1,0 +1,62 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class SightService {
+  private url = "https://citygo.azurewebsites.net/Sights";
+
+  constructor(private http: HttpClient) { }
+
+  getSights(args: string): Observable<RootObject> {
+    console.log(this.url + args);
+    return this.http.get<RootObject>(this.url + args);
+    
+  }
+
+  getSightById(id: number): Observable<Sight> {
+    console.log(this.url + "/" + id);
+    return this.http.get<Sight>(this.url + "/" + id)
+  }
+
+  createSight(sight: Sight) {
+    let body = JSON.stringify(sight);
+    delete body['id'];
+    return this.http.post(this.url, body, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+  }
+
+  updateSight(sight: Sight) {
+    let body = JSON.stringify(sight);
+    delete body['id'];
+    return this.http.put(this.url, body, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+  }
+
+  deleteSight(sight: Sight) {
+    return this.http.delete(this.url + "/" + sight.sightId)
+  }
+}
+
+export interface Sight {
+  sightId: number;
+  name: string;
+  info: string;
+  monument: boolean;
+  stop: boolean;
+  polygon: number[][];
+  challenge?: any;
+}
+
+export interface RootObject {
+  sights: Sight[];
+}
