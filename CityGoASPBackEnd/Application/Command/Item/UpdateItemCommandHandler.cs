@@ -20,7 +20,15 @@ namespace Application.Command.Item
         }
         public async Task<int> Handle(UpdateItemCommand request, CancellationToken cancellationToken)
         {
-            Domain.Item newItem = new Domain.Item() { ItemId = request.Item.ItemId, Name = request.Item.Name, Location = request.Item.Location, Picture = request.Item.Picture, Rarity = request.Item.Rarity, UsersItems = request.Item.UsersItems };
+            Domain.Item newItem = new Domain.Item() 
+            { 
+                ItemId = request.Item.ItemId, 
+                Name = request.Item.Name, 
+                Location = request.Item.Location, 
+                Picture = request.Item.Picture, 
+                Rarity = request.Item.Rarity, 
+                UsersItems = request.Item.UsersItems 
+            };
             var oldItem = await _context.Items.Where(u => u.ItemId == newItem.ItemId).SingleAsync();
             oldItem.Name = newItem.Name;
             oldItem.Location = newItem.Location;

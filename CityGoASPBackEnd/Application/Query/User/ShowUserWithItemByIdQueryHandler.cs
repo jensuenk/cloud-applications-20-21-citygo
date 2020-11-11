@@ -31,7 +31,15 @@ namespace Application.Query.User
                 .Where(u => u.UserId == request.UserId)
                 .SingleAsync();
 
-            UserVM vm = new UserVM() { UserId = user.UserId, Name = user.Name, Username = user.Username, Email = user.Email, Balls = user.Balls , UsersItems = usersItems };
+            UserVM vm = new UserVM() 
+            { 
+                UserId = user.UserId, 
+                Name = user.Name,
+                Username = user.Username, 
+                Email = user.Email, 
+                Balls = user.Balls,
+                UsersItems = usersItems 
+            };
 
             return vm;
 

@@ -7,7 +7,6 @@ using Application.Command.User;
 using Application.Query;
 using Application.Query.User;
 using Application.ViewModel;
-using CityGoASPBackEnd.Model;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

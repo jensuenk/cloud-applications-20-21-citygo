@@ -21,13 +21,18 @@ namespace Domain
 
         public bool Stop { get; set; }
 
-        public string Polygon1 { get; set; }
+        public double Latitude1 { get; set; }
+        public double Longitude1 { get; set; }
 
-        public string Polygon2 { get; set; }
+        public double Latitude2 { get; set; }
+        public double Longitude2 { get; set; }
 
-        public string Polygon3 { get; set; }
+        public double Latitude3 { get; set; }
+        public double Longitude3 { get; set; }
 
-        public string Polygon4 { get; set; }
+        public double Latitude4 { get; set; }
+        public double Longitude4 { get; set; }
+
 
         [JsonIgnore]
         public List<Challenge> Challenge { get; set; }

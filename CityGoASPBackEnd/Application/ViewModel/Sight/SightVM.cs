@@ -16,13 +16,7 @@ namespace Application.ViewModel.Item
 
         public bool Stop { get; set; }
 
-        public string Polygon1 { get; set; }
-
-        public string Polygon2 { get; set; }
-
-        public string Polygon3 { get; set; }
-
-        public string Polygon4 { get; set; }
+        public double[,] Polygon { get; set; }
 
         public List<Domain.Challenge> Challenge { get; set; }
     }
