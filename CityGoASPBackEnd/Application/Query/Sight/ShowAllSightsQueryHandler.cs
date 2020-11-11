@@ -21,10 +21,11 @@ namespace Application.Query.Sight
         public async Task<ListSightVM> Handle(ShowAllSightsQuery request, CancellationToken cancellationToken)
         {
             var allSights = await _context.Sights.ToListAsync();
-            double[,] tussen= new double[4,2];
+            
             ListSightVM vm = new ListSightVM();
             foreach (var sight in allSights)
             {
+                double[,] tussen = new double[4, 2];
                 tussen[0, 0] = sight.Latitude1;
                 tussen[1, 0] = sight.Latitude2;
                 tussen[2, 0] = sight.Latitude3;
