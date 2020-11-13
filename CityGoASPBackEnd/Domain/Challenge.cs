@@ -19,8 +19,6 @@ namespace Domain
         [MaxLength(50)]
         public string Task { get; set; }
 
-        public bool TaskDone { get; set; }
-
         [Required]
         public string QuestionChallenge { get; set; }
 
@@ -32,6 +30,9 @@ namespace Domain
 
         [JsonIgnore]
         public List<Item> Items { get; set; }
+
+        [JsonIgnore]
+        public User User { get; set; }
 
     }
 }

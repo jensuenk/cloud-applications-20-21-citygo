@@ -19,5 +19,7 @@ namespace Application.ViewModel
         public int Balls { get; set; }
 
         public List<Domain.UsersItems> UsersItems { get; set; }
+
+        public List<Domain.Challenge> Challenges { get; set; }
     }
 }

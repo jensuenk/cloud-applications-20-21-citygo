@@ -61,7 +61,7 @@ namespace CityGoASPBackEnd.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-        [Route("{cid}/{iid}/Items")]
+        [Route("{cid}/Items/{iid}")]
         [HttpPut]
         public async Task<IActionResult> AddItemToChallenge(int cid, int iid)
         {
@@ -69,7 +69,7 @@ namespace CityGoASPBackEnd.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-        [Route("{cid}/{sid}/Sights")]
+        [Route("{cid}/Sights/{sid}")]
         [HttpPut]
         public async Task<IActionResult> AddSightToChallenge(int cid, int sid)
         {

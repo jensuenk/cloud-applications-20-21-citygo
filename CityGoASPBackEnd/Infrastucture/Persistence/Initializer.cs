@@ -36,8 +36,7 @@ namespace Infrastucture.Persistence
                     Name = "Chal1",
                     Answer = "antwoord",
                     QuestionChallenge = "vraag",
-                    Task = "een vraag",
-                    TaskDone = false
+                    Task = "een vraag"
                 }
             };
             double[,] tussen = new double[,] { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } };
