@@ -22,16 +22,7 @@ namespace Application.Command.Challenge
         {
             var challenge = await _context.Challenges.Where(u => u.ChallengeId == request.ChallengeId).SingleAsync();
             var item = await _context.Items.Where(i => i.ItemId == request.ItemId).SingleAsync();
-            if (challenge.Items == null)
-            {
-                List<Domain.Item> tussen = new List<Domain.Item>();
-                tussen.Add(item);
-                challenge.Items = tussen;
-            }
-            else
-            {
-                challenge.Items.Add(item);
-            }
+
             item.Challenge = challenge;
 
             var query1 = _context.Challenges.Update(challenge);

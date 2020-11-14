@@ -24,8 +24,7 @@ namespace Application.Command.Challenge
                 Name = request.Challenge.Name, 
                 Task = request.Challenge.Task , 
                 Answer = request.Challenge.Answer, 
-                QuestionChallenge =request.Challenge.QuestionChallenge, 
-                TaskDone = request.Challenge.TaskDone 
+                QuestionChallenge =request.Challenge.QuestionChallenge
             };
             var query = _context.Challenges.Add(newChallenge);
             return await _context.SaveAsync(cancellationToken);

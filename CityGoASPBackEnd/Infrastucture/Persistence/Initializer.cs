@@ -36,11 +36,9 @@ namespace Infrastucture.Persistence
                     Name = "Chal1",
                     Answer = "antwoord",
                     QuestionChallenge = "vraag",
-                    Task = "een vraag",
-                    TaskDone = false
+                    Task = "een vraag"
                 }
             };
-            double[,] tussen = new double[,] { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } };
 
             List<Domain.Sight> sightsL = new List<Domain.Sight>()
             {
@@ -50,18 +48,12 @@ namespace Infrastucture.Persistence
                     Info = "testinfo",
                     Monument = true,
                     Stop = false,
-                    Latitude1 = tussen[0,0],
-                    Latitude2 = tussen[1,0],
-                    Latitude3 = tussen[2,0],
-                    Latitude4 = tussen[3,0],
-                    Longitude1 = tussen[0,1],
-                    Longitude2 = tussen[1,1],
-                    Longitude3 = tussen[2,1],
-                    Longitude4 = tussen[3,1]
+
                 }
             };
-           
-            //context.Database.EnsureDeleted();
+
+
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             
             if (!context.Users.Any())

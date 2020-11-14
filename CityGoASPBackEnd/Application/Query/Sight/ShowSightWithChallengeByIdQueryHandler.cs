@@ -21,18 +21,9 @@ namespace Application.Query.Sight
 
         public async Task<SightVM> Handle(ShowSightWithChallengeByIdQuery request, CancellationToken cancellationToken)
         {
-            var sight = await _context.Sights.Include(s => s.Challenge)
+            var sight = await _context.Sights.Include(s => s.Challenges)
                                     .Where(s => s.SightId == request.SightId)
                                     .SingleAsync();
-            double[,] tussen = new double[4, 2];
-            tussen[0, 0] = sight.Latitude1;
-            tussen[0, 1] = sight.Longitude1;
-            tussen[1, 0] = sight.Latitude2;
-            tussen[1, 1] = sight.Longitude2;
-            tussen[2, 0] = sight.Latitude3;
-            tussen[2, 1] = sight.Longitude3;
-            tussen[3, 0] = sight.Latitude4;
-            tussen[3, 1] = sight.Longitude4;
             SightVM vm = new SightVM()
             {
                 SightId = sight.SightId,
@@ -40,8 +31,8 @@ namespace Application.Query.Sight
                 Monument = sight.Monument,
                 Name = sight.Name,
                 Stop = sight.Stop,
-                Polygon = tussen,
-                Challenge = sight.Challenge
+                Coordinates = sight.Coordinates,
+                Challenges = sight.Challenges
             };
 
             return vm;
