@@ -16,8 +16,8 @@ namespace Application.ViewModel.Item
 
         public bool Stop { get; set; }
 
-        public double[,] Polygon { get; set; }
+        public List<Domain.Coordinate> Coordinates { get; set; }
 
-        public List<Domain.Challenge> Challenge { get; set; }
+        public List<Domain.Challenge> Challenges { get; set; }
     }
 }
