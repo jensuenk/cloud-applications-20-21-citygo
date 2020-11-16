@@ -23,7 +23,12 @@ namespace Application.Command.User
         {
             var user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
             var item = await _context.Items.Where(i => i.ItemId == request.ItemId).SingleAsync();
-            UsersItems usersItems = new UsersItems() { User = user, UserId = user.UserId, Item = item, ItemId = item.ItemId};
+            UsersItems usersItems = new UsersItems() 
+            { 
+                User = user, 
+                UserId = user.UserId, 
+                Item = item, ItemId = item.ItemId
+            };
             if (user.UsersItems == null)
             {
                 List<Domain.UsersItems> tussen = new List<Domain.UsersItems>();

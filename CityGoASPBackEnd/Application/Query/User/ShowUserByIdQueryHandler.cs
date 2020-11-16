@@ -21,7 +21,14 @@ namespace Application.Query
         public async Task<UserVM> Handle(ShowUserByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
-            UserVM vm = new UserVM() { UserId = user.UserId, Name = user.Name, Username = user.Username, Email = user.Email, Balls = user.Balls };
+            UserVM vm = new UserVM() 
+            { 
+                UserId = user.UserId, 
+                Name = user.Name, 
+                Username = user.Username, 
+                Email = user.Email, 
+                Balls = user.Balls
+            };
             return vm;
         }
     }

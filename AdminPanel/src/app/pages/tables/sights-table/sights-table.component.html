@@ -1,1 +1,102 @@
-<p>sights-table works!</p>
+<nb-card>
+    <nb-card-body>
+        <h2>Sight Editor</h2>
+        <p>On this page you can manage the sights available in the app.</p>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header>
+        Edit Sights
+    </nb-card-header>
+    <nb-card-body *ngIf="sights">
+        <table>
+            <thead>
+                <tr>
+                    <td><label class="label">ID</label></td>
+                    <td><label class="label">Name</label></td>
+                    <td><label class="label">Info</label></td>
+                    <td><label class="label">Monument</label></td>
+                    <td><label class="label">Stop</label></td>
+                    <td><label class="label">Polygon-1</label></td>
+                    <td><label class="label">Polygon-2</label></td>
+                    <td><label class="label">Polygon-3</label></td>
+                    <td><label class="label">Polygon-4</label></td>
+                    <td><label class="label">Challenge</label></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let sight of sights">
+                    <td><input nbInput fullWidth type="text" disabled name="sightId" value={{sight.sightId}}
+                            [(ngModel)]="sight.sightId"></td>
+                    <td><input nbInput fullWidth type="text" name="name" value={{sight.name}} [(ngModel)]="sight.name">
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="info" value={{sight.info}} [(ngModel)]="sight.info">
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="monument" value={{sight.monument}}
+                            [(ngModel)]="sight.monument"></td>
+                    <td><input nbInput fullWidth type="text" name="stop" value={{sight.stop}} [(ngModel)]="sight.stop">
+                    </td>
+
+                    <td *ngFor="let polygon of sight.polygon">
+                        <input nbInput fullWidth type="text" name="polygon"
+                            value={{polygon}} >
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="challenge" value={{sight.challenge}}
+                            [(ngModel)]="sight.challenge"></td>
+                    <td><button nbButton fullWidth outline status="success" (click)="updateSight(sight)">Save</button>
+                    <td>
+                    <td><button nbButton fullWidth outline status="danger" (click)="deleteSight(sight)">Delete</button>
+                    <td>
+                </tr>
+            </tbody>
+        </table>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header>
+        Add Sights
+    </nb-card-header>
+    <nb-card-body *ngIf="sights">
+        <table>
+            <thead>
+                <tr>
+                    <td><label class="label">ID</label></td>
+                    <td><label class="label">Name</label></td>
+                    <td><label class="label">Info</label></td>
+                    <td><label class="label">Monument</label></td>
+                    <td><label class="label">Stop</label></td>
+                    <td><label class="label">Polygon-1</label></td>
+                    <td><label class="label">Polygon-2</label></td>
+                    <td><label class="label">Polygon-3</label></td>
+                    <td><label class="label">Polygon-4</label></td>
+                    <td><label class="label">Challenge</label></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <td><input nbInput fullWidth type="text" disabled name="sightId" [(ngModel)]="sightId"></td>
+                <td><input nbInput fullWidth type="text" name="name" [(ngModel)]="name"></td>
+                <td><input nbInput fullWidth type="text" name="info" [(ngModel)]="info"></td>
+                <td><input nbInput fullWidth type="text" name="monument" [(ngModel)]="monument"></td>
+                <td><input nbInput fullWidth type="text" name="stop" [(ngModel)]="stop"></td>
+                <td><input nbInput fullWidth type="text" name="polygon1" [(ngModel)]="polygon1"></td>
+                <td><input nbInput fullWidth type="text" name="polygon2" [(ngModel)]="polygon2"></td>
+                <td><input nbInput fullWidth type="text" name="polygon3" [(ngModel)]="polygon3"></td>
+                <td><input nbInput fullWidth type="text" name="polygon4" [(ngModel)]="polygon4"></td>
+                <td><input nbInput fullWidth type="number" name="challenge" [(ngModel)]="challenge"></td>
+                <td><button nbButton outline status="success"
+                        (click)="createSight(name, info, monument, stop, polygon1, polygon2, polygon3, polygon4, challenge)">Create</button>
+                <td>
+            </tbody>
+        </table>
+
+    </nb-card-body>
+</nb-card>
+<nb-alert *ngIf="errorMessage" status="danger">{{errorMessage}}</nb-alert>
+<nb-alert *ngIf="successMessage" status="success">{{successMessage}}</nb-alert>
+<nb-alert status="danger" *ngIf="errors.length > 0">
+    <div *ngFor="let error of errors">
+        <p-message severity="error" text="{{ error }}"></p-message>
+    </div>
+</nb-alert>

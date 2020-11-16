@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Item, ItemService } from './item.service';
+
 
 @Component({
   selector: 'ngx-item-table',
@@ -7,9 +9,143 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ItemsTableComponent implements OnInit {
 
-  constructor() { }
+  errorMessage: string
+  successfulSave: boolean;
+  successMessage: string;
+  errors: string[];
 
-  ngOnInit(): void {
+  items: Item[] = [];
+  item: Item
+
+  filterItemId: string = "";
+  filterName: string = "";
+  filterLocation: string = "";
+  filterSort: string = "";
+  filterPage: string = "";
+  filterLength: string = "";
+  filterDir: string = "";
+
+  constructor(private svc: ItemService) { }
+
+  ngOnInit() {
+    this.getItems();
+    this.errorMessage = "";
+    this.successMessage = "";
+    this.errors = [];
   }
 
+  getItems(urlArgs: string = "") {
+    this.svc.getItems(urlArgs).subscribe(
+      result => {
+        this.errors = [];
+        console.log(result.items)
+        this.items = result.items
+        return true;
+      },
+      error => {
+        console.error("Error while retreiving items!");
+        this.showError(error.message)
+      }
+    );
+  }
+
+  getItem(id: number) {
+    this.svc.getItemById(id).subscribe(
+      result => {
+        this.errors = [];
+        this.item = result
+        return true;
+      },
+      error => {
+        console.error("Error while retreiving item!");
+        this.showError(error.message)
+      }
+    );
+  }
+
+  createItem(name, location, rarity, picture) {
+    let newItem: Item = {
+      itemId: 0,
+      name: name,
+      location: location,
+      rarity: rarity,
+      picture: picture,
+      usersItems: null,
+      challenge: null
+    }
+    this.svc.createItem(newItem).subscribe(
+      data => {
+        this.errors = [];
+        console.log(newItem)
+        // refresh the list
+        this.getItems();
+        this.showSuccess("Successfully created a new item!")
+        this.successfulSave = true
+        return true;
+      }, error => {
+        this.errors = [];
+        this.showError("Error accured trying to create a item!")
+        this.successfulSave = false
+        if (error.status === 400) {
+          console.log(error)
+          const validationErrors = error.error;
+          Object.keys(validationErrors).forEach(prop => {
+            console.log(validationErrors[prop])
+            this.errors.push(validationErrors[prop])
+          });
+        }
+      }
+    );
+  }
+
+  updateItem(updatedItem: Item) {
+    this.svc.updateItem(updatedItem).subscribe(
+      data => {
+        this.errors = [];
+        console.log(updatedItem)
+        // refresh the list
+        this.getItems();
+        this.showSuccess("Successfully updated the item!")
+        this.successfulSave = true
+        return true;
+      },
+      error => {
+        this.errors = [];
+        this.showError("Error accured trying to update this item!")
+        this.successfulSave = false
+        if (error.status === 400) {
+          const validationErrors = error.error;
+          Object.keys(validationErrors).forEach(prop => {
+            console.log(validationErrors[prop])
+            this.errors.push(validationErrors[prop])
+          });
+        }
+      }
+    );
+  }
+
+  deleteItem(item) {
+    this.svc.deleteItem(item).subscribe(
+      data => {
+        this.errors = [];
+        // refresh the list
+        this.getItems();
+        this.showSuccess("Successfully deleted the item!")
+        return true;
+      },
+      error => {
+        console.error("Error deleting item!");
+        this.showError(error.message)
+      }
+    );
+  }
+
+  showError(message: string) {
+    this.errorMessage = message;
+    this.successMessage = "";
+  }
+  showSuccess(message: string) {
+    this.errorMessage = "";
+    this.successMessage = message;
+  }
 }

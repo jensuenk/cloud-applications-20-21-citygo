@@ -20,12 +20,23 @@ namespace Application.Query.Sight
         }
         public async Task<ListSightVM> Handle(ShowAllSightsQuery request, CancellationToken cancellationToken)
         {
-            var allSights = await _context.Sights.ToListAsync();
-
+            var allSights = await _context.Sights
+                .Include(c=>c.Coordinates)
+                .ToListAsync();
+            
             ListSightVM vm = new ListSightVM();
             foreach (var sight in allSights)
             {
-                vm.Sights.Add(new SightVM() { SightId = sight.SightId, Info = sight.Info, Monument= sight.Monument, Name= sight.Name, Stop = sight.Stop , Polygon1 = sight.Polygon1, Polygon2 = sight.Polygon2, Polygon3 = sight.Polygon3, Polygon4 = sight.Polygon4 });
+                vm.Sights.Add(new SightVM() 
+                { 
+                    SightId = sight.SightId, 
+                    Info = sight.Info, 
+                    Monument= sight.Monument, 
+                    Name= sight.Name, 
+                    Stop = sight.Stop, 
+                    Coordinates = sight.Coordinates
+                });
+               
             }
             return vm;
         }

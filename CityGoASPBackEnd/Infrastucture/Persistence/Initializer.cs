@@ -9,7 +9,6 @@ namespace Infrastucture.Persistence
     {
         public static void Initialize(DBContext context) 
         {
-            
             List<Domain.Item> itemsL = new List<Domain.Item>()
             {
                 new Domain.Item()
@@ -37,10 +36,10 @@ namespace Infrastucture.Persistence
                     Name = "Chal1",
                     Answer = "antwoord",
                     QuestionChallenge = "vraag",
-                    Task = "een vraag",
-                    TaskDone = false
+                    Task = "een vraag"
                 }
             };
+
             List<Domain.Sight> sightsL = new List<Domain.Sight>()
             {
                 new Domain.Sight()
@@ -49,13 +48,11 @@ namespace Infrastucture.Persistence
                     Info = "testinfo",
                     Monument = true,
                     Stop = false,
-                    Polygon1 = "1",
-                    Polygon2 = "2",
-                    Polygon3 = "3",
-                    Polygon4 = "4"
+
                 }
             };
-           
+
+
             //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             

@@ -20,7 +20,7 @@ namespace Infrastucture.Persistence
         public DbSet<Sight> Sights { get; set; }
         public DbSet<Challenge> Challenges { get; set; }
         public DbSet<UsersItems> UsersItems { get; set; }
-
+        public DbSet<Coordinate> Coordinates { get; set; }
 
         public Task<int> SaveAsync(CancellationToken cancellationToken)
         {
@@ -42,18 +42,18 @@ namespace Infrastucture.Persistence
                 .HasForeignKey(u => u.ItemId);
             });
 
-            //modelbuilder.Entity<User>()
-            //    .HasMany(u => u.Items)
-            //    .WithOne(i => i.User)
-            //    .OnDelete(DeleteBehavior.SetNull);
-
             modelbuilder.Entity<Challenge>()
                 .HasMany(c=>c.Items)
                 .WithOne(i=>i.Challenge)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelbuilder.Entity<Sight>()
-                .HasMany(s => s.Challenge)
+                .HasMany(s => s.Challenges)
+                .WithOne(c => c.Sight)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelbuilder.Entity<Sight>()
+                .HasMany(s => s.Coordinates)
                 .WithOne(c => c.Sight)
                 .OnDelete(DeleteBehavior.SetNull);
 

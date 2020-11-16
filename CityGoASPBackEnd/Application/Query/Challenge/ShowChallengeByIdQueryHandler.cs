@@ -22,7 +22,14 @@ namespace Application.Query.Challenge
         public async Task<ChallengeVM> Handle(ShowChallengeByIdQuery request, CancellationToken cancellationToken)
         {
             var challenge = await _context.Challenges.Where(c => c.ChallengeId == request.ChallengeId).SingleAsync();
-            ChallengeVM vm = new ChallengeVM() { ChallengeId = challenge.ChallengeId, Name = challenge.Name, Task = challenge.Task, Answer = challenge.Answer, TaskDone = challenge.TaskDone, QuestionChallenge = challenge.QuestionChallenge };
+            ChallengeVM vm = new ChallengeVM() 
+            { 
+                ChallengeId = challenge.ChallengeId, 
+                Name = challenge.Name, 
+                Task = challenge.Task, 
+                Answer = challenge.Answer, 
+                QuestionChallenge = challenge.QuestionChallenge 
+            };
             return vm;
         }
     }

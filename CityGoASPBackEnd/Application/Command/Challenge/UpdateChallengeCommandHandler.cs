@@ -20,12 +20,18 @@ namespace Application.Command.Challenge
 
         public async Task<int> Handle(UpdateChallengeCommand request, CancellationToken cancellationToken)
         {
-            Domain.Challenge newChallenge = new Domain.Challenge() { ChallengeId = request.Challenge.ChallengeId, Name = request.Challenge.Name, Task = request.Challenge.Task, Answer = request.Challenge.Answer, QuestionChallenge = request.Challenge.QuestionChallenge, TaskDone = request.Challenge.TaskDone };
+            Domain.Challenge newChallenge = new Domain.Challenge() 
+            { 
+                ChallengeId = request.Challenge.ChallengeId,
+                Name = request.Challenge.Name, 
+                Task = request.Challenge.Task, 
+                Answer = request.Challenge.Answer, 
+                QuestionChallenge = request.Challenge.QuestionChallenge
+            };
             var oldChallenge = await _context.Challenges.Where(c => c.ChallengeId == newChallenge.ChallengeId).SingleAsync();
             oldChallenge.Name = newChallenge.Name;
             oldChallenge.Task = newChallenge.Task;
             oldChallenge.Answer = newChallenge.Answer;
-            oldChallenge.TaskDone = newChallenge.TaskDone;
             oldChallenge.QuestionChallenge = newChallenge.QuestionChallenge;
             var query = _context.Challenges.Update(oldChallenge);
             return await _context.SaveAsync(cancellationToken);

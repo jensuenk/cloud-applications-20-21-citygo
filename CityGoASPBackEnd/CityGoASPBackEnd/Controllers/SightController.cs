@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Application.Command.Sight;
 using Application.Query.Sight;
 using Application.ViewModel.Item;
-using CityGoASPBackEnd.Model;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -60,6 +59,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new DeleteSightCommand(id);
             var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+        [Route("{id}/Challenges")]
+        [HttpGet]
+        public async Task<IActionResult> GetChallengesFromSightWithId(int id)
+        {
+            var query = new ShowSightWithChallengeByIdQuery(id);
+            var result = await _mediator.Send(query);
             return Ok(result);
         }
     }
