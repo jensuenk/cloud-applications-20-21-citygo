@@ -18,6 +18,12 @@ namespace Application.ViewModel
 
         public int Balls { get; set; }
 
+        [JsonIgnore]
+        public int ItemsId { get; set; }
+
+        [JsonIgnore]
+        public int ChallengeId { get; set; }
+
         public List<Domain.UsersItems> UsersItems { get; set; }
 
         public List<Domain.Challenge> Challenges { get; set; }

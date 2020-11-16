@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Query.User
 {
-    public class ShowAllUsersWithAllItemsQuery : IRequest<ListUserVM>
+    public class ShowAllUsersWithAllRelationsQuery : IRequest<ListUserVM>
     {
     }
 }

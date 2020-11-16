@@ -81,11 +81,11 @@ namespace CityGoASPBackEnd.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-        [Route("Items")]
+        [Route("All")]
         [HttpGet]
         public async Task<IActionResult> GetAllUsersWithItems()
         {
-            var query = new ShowAllUsersWithAllItemsQuery();
+            var query = new ShowAllUsersWithAllRelationsQuery();
             var result = await _mediator.Send(query);
             return Ok(result);
         }

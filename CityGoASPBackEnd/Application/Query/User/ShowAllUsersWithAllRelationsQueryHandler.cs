@@ -11,20 +11,21 @@ using System.Threading.Tasks;
 
 namespace Application.Query.User
 {
-    public class ShowAllUsersWithAllItemsQueryHandler : IRequestHandler<ShowAllUsersWithAllItemsQuery, ListUserVM>
+    public class ShowAllUsersWithAllRelationsQueryHandler : IRequestHandler<ShowAllUsersWithAllRelationsQuery, ListUserVM>
     {
         IDBContext _context;
-        public ShowAllUsersWithAllItemsQueryHandler(IDBContext context)
+        public ShowAllUsersWithAllRelationsQueryHandler(IDBContext context)
         {
             _context = context;
         }
 
-        public async Task<ListUserVM> Handle(ShowAllUsersWithAllItemsQuery request, CancellationToken cancellationToken)
+        public async Task<ListUserVM> Handle(ShowAllUsersWithAllRelationsQuery request, CancellationToken cancellationToken)
         {
            
 
             var allUsers = await _context.Users
                 .Include(i => i.UsersItems)
+                .Include(c=> c.Challenges)
                 .ToListAsync();
 
            
@@ -43,8 +44,8 @@ namespace Application.Query.User
                     Username = user.Username,
                     Balls = user.Balls,
                     Email = user.Email,
-                    UsersItems = usersItems
-                    
+                    UsersItems = usersItems,
+                    Challenges = user.Challenges
                 });
             }
             return vm;
