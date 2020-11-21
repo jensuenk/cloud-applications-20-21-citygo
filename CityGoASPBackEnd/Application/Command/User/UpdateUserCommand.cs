@@ -8,10 +8,10 @@ namespace Application.Command
 {
     public class UpdateUserCommand : IRequest<int>, IRequest<UserVM>
     {
-        public UserVM User { get; set; }
+        public UserVM UserVM { get; set; }
         public UpdateUserCommand(UserVM updateUser)
         {
-            User = updateUser;
+            UserVM = updateUser;
         }
     }
 }

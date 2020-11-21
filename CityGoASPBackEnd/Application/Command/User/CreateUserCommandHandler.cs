@@ -23,16 +23,16 @@ namespace Application.Command
         {
             Domain.User newUser = new Domain.User()
             {
-                UserId = request.User.UserId, 
-                Name = request.User.Name, 
-                Username = request.User.Username, 
-                Email = request.User.Email, 
-                Balls = request.User.Balls
+                UserId = request.UserVM.UserId, 
+                Name = request.UserVM.Name, 
+                Username = request.UserVM.Username, 
+                Email = request.UserVM.Email, 
+                Balls = request.UserVM.Balls
             };
           
-            if (request.User.ItemsId != 0 )
+            if (request.UserVM.ItemsId != 0 )
             {
-                var item = await _context.Items.Where(c => c.ItemId == request.User.ItemsId).SingleAsync();
+                var item = await _context.Items.Where(c => c.ItemId == request.UserVM.ItemsId).SingleAsync();
                 UsersItems usersItems = new UsersItems()
                 {
                     User = newUser,
@@ -40,7 +40,7 @@ namespace Application.Command
                     Item = item,
                     ItemId = item.ItemId
                 };
-                if (request.User.UsersItems == null)
+                if (request.UserVM.UsersItems == null)
                 {
                     List<Domain.UsersItems> tussen = new List<Domain.UsersItems>();
                     tussen.Add(usersItems);
@@ -61,9 +61,9 @@ namespace Application.Command
                     item.UsersItems.Add(usersItems);
                 }
             }
-            if (request.User.ChallengeId != 0)
+            if (request.UserVM.ChallengeId != 0)
             {
-                var challenge = await _context.Challenges.Where(c => c.ChallengeId == request.User.ChallengeId).SingleAsync();
+                var challenge = await _context.Challenges.Where(c => c.ChallengeId == request.UserVM.ChallengeId).SingleAsync();
                 List<Domain.Challenge> challenges = new List<Domain.Challenge>();
                 challenges.Add(challenge);
                 newUser.Challenges = challenges;

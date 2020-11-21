@@ -16,6 +16,12 @@ namespace Application.ViewModel.Challenge
 
         public string Answer { get; set; }
 
+        public int SightId { get; set; }
+
+        public int UserId { get; set; }
+
+        public int[] ItemIds { get; set; }
+
         public Domain.Sight Sight { get; set; }
 
         public Domain.User User { get; set; }

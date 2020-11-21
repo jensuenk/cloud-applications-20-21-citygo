@@ -22,15 +22,15 @@ namespace Application.Command.Item
         {
             Domain.Item newItem = new Domain.Item() 
             { 
-                ItemId = request.Item.ItemId,
-                Name = request.Item.Name, 
-                Location = request.Item.Location, 
-                Picture = request.Item.Picture, 
-                Rarity = request.Item.Rarity
+                ItemId = request.ItemVM.ItemId,
+                Name = request.ItemVM.Name, 
+                Location = request.ItemVM.Location, 
+                Picture = request.ItemVM.Picture, 
+                Rarity = request.ItemVM.Rarity
             };
-            if (request.Item.UserId != 0)
+            if (request.ItemVM.UserId != 0)
             {
-                var user = await _context.Users.Where(c => c.UserId == request.Item.UserId).SingleAsync();
+                var user = await _context.Users.Where(c => c.UserId == request.ItemVM.UserId).SingleAsync();
                 UsersItems usersItems = new UsersItems()
                 {
                     User = user,
@@ -38,7 +38,7 @@ namespace Application.Command.Item
                     Item = newItem,
                     ItemId = newItem.ItemId
                 };
-                if (request.Item.UsersItems == null)
+                if (request.ItemVM.UsersItems == null)
                 {
                     List<Domain.UsersItems> tussen = new List<Domain.UsersItems>();
                     tussen.Add(usersItems);

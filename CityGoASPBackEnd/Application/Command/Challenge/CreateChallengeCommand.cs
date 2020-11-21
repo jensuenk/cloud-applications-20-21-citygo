@@ -8,10 +8,10 @@ namespace Application.Command.Challenge
 {
     public class CreateChallengeCommand : IRequest<int>
     {
-        public ChallengeVM Challenge { get; set; }
+        public ChallengeVM ChallengeVM { get; set; }
         public CreateChallengeCommand(ChallengeVM newChallenge)
         {
-            Challenge = newChallenge;
+            ChallengeVM = newChallenge;
         }
     }
 }

@@ -8,10 +8,10 @@ namespace Application.Command.Sight
 {
     public class CreateSightCommand : IRequest<int>
     {
-        public SightVM Sight { get; set; }
+        public SightVM SightVM { get; set; }
         public CreateSightCommand(SightVM newSight)
         {
-            Sight = newSight;
+            SightVM = newSight;
         }
     }
 }
