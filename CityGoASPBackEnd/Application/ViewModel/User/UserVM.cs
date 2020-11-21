@@ -20,16 +20,14 @@ namespace Application.ViewModel
 
         public int ItemsId { get; set; }
 
-        //[JsonIgnore]
-        //public int FriendId { get; set; }
-
-        [JsonIgnore]
         public int ChallengeId { get; set; }
+
+        public int[] FriendId { get; set; }
 
         public List<Domain.UsersItems> UsersItems { get; set; }
 
         public List<Domain.Challenge> Challenges { get; set; }
 
-        //public List<Domain.User> Friends { get; set; }
+        public List<Domain.User> Friends { get; set; }
     }
 }

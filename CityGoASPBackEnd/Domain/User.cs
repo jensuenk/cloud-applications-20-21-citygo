@@ -23,14 +23,14 @@ namespace Domain
 
         public int Balls { get; set; }
 
-        //[JsonIgnore]
-        //public List<User> Friends { get; set; }
-
         [JsonIgnore]
         public List<UsersItems> UsersItems { get; set; }
 
         [JsonIgnore]
         public List<Challenge> Challenges { get; set; }
+
+        [JsonIgnore]
+        public List<int> Friends { get; set; }
 
     }
 }
