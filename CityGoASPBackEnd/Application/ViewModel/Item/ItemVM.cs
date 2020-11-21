@@ -17,6 +17,8 @@ namespace Application.ViewModel
 
         public string Picture { get; set; }
 
+        public int UserId { get; set; }
+
         public List<Domain.UsersItems> UsersItems { get; set; }
 
         public Domain.Challenge Challenge { get; set; }

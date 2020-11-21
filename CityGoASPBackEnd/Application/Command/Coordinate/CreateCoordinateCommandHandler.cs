@@ -26,7 +26,7 @@ namespace Application.Command.Coordinate
                 Latitude = request.Coordinate.Latitude,
                 Longitude = request.Coordinate.Longitude
             };
-            if (request.Coordinate.SightId != null)
+            if (request.Coordinate.SightId != 0)
             {
                 var sight = await _context.Sights.Where(s => s.SightId == request.Coordinate.SightId).SingleAsync();
                 newCoordinate.Sight = sight;

@@ -57,6 +57,12 @@ namespace Infrastucture.Persistence
                 .WithOne(c => c.Sight)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelbuilder.Entity<User>()
+                .HasMany(u => u.Challenges)
+                .WithOne(c => c.User)
+                .OnDelete(DeleteBehavior.SetNull);
+
+
         }
     }
 }
