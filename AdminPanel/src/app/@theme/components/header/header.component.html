@@ -17,9 +17,9 @@
       <nb-search type="rotate-layout"></nb-search>
     </nb-action>
     <nb-action class="user-action" *nbIsGranted="['view', 'user']" >
-      <nb-user [nbContextMenu]="userMenu"
+      <nb-user *ngIf="auth.user$ | async as user" [nbContextMenu]="userMenu"
                [onlyPicture]="userPictureOnly"
-               [name]="user?.name">
+               [name]="user.name">
       </nb-user>
     </nb-action>
   </nb-actions>
