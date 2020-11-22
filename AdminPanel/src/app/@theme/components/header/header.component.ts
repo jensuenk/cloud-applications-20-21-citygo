@@ -85,6 +85,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onContecxtItemSelection(title) {
-    this.auth.logout({ returnTo: document.location.origin })
+    if (title == 'Log out') {
+      this.auth.logout({ returnTo: document.location.origin })
+    }
   }
 }
