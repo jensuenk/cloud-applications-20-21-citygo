@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 
 export class SightService {
-  private url = "https://citygo.azurewebsites.net/Sights";
+  private url = "https://citygoaspbackend20201120025600.azurewebsites.net/Sights";
 
   constructor(private http: HttpClient) { }
 
