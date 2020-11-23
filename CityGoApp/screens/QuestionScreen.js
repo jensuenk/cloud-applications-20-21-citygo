@@ -55,20 +55,31 @@ export default class QuestionScreen extends React.Component {
                 longitude: location.coords.longitude,
               }
             })
+
             for (let element of this.state.sights) {
-              console.warn(element.polygon)
+              if(this._isInPolygon(this.state.coordinaten,element.coordinates))
+              {
+                this.setState({ huidigeSightNaam: element.name })
+                this.setState({ huidigeSightId: element.sightId })
+              }
+
+              
+              /*console.warn(element.coordinates)
               console.warn(this.state.coordinaten)
               // Dit is code om te zien of je in een bepaald polygon bent
-              GeoFencing.containsLocation(this.state.coordinaten, element.polygon)
+              GeoFencing.containsLocation(this.state.coordinaten, element.coordinates)
                 // nu nog programmeren dat de bijgepaste challenge wordt geladen
                 .then(() => {
+                  console.warn("yeeeeeeeeeeet")
                   this.setState({ huidigeSight: element.name })
                   this.setState({ huidigeSightId: element.sightId })
-                  console.warn("yeeeeeeeeeeet")
                 })
                 .catch(
                   console.warn("niks in de buurt")
-                )
+                )*/
+
+
+
             }
 
             this.apiCallChallenge(this.state.huidigeSightId);
@@ -84,8 +95,26 @@ export default class QuestionScreen extends React.Component {
 
   }
 
+  _isInPolygon = (point, polygonArray) => {
+
+    let x = point.latitude
+    let y = point.longitude
+
+    let inside = false
+    for (let i = 0, j = polygonArray.length - 1; i < polygonArray.length; j = i++) {
+      let xLat = polygonArray[i].latitude
+      let yLat = polygonArray[i].longitude
+      let xLon = polygonArray[j].latitude
+      let yLon = polygonArray[j].longitude
+
+      let intersect = ((yLat > y) !== (yLon > y)) && (x < (xLon - xLat) * (y - yLat) / (yLon - yLat) + xLat)
+      if (intersect) inside = !inside
+    }
+    return inside
+  } 
+
   async apiCallSights() {
-    let resp2 = await fetch('https://citygo.azurewebsites.net/sights')
+    let resp2 = await fetch('https://citygoaspbackend20201120025600.azurewebsites.net/sights')
     let respJson2 = await resp2.json();
     this.setState({ sights: respJson2.sights })
 
@@ -93,10 +122,11 @@ export default class QuestionScreen extends React.Component {
   }
 
   async apiCallChallenge(id) { 
-    let resp = await fetch('https://citygo.azurewebsites.net/sights/${encodeURIComponent(id)}/challenges')
+    let url='https://citygoaspbackend20201120025600.azurewebsites.net/sights/'+id+'/challenges';
+    let resp = await fetch(url)
     let respJson = await resp.json();
-    this.setState({ vraag: respJson.challenge.task })
-    this.setState({ antwoord: respJson.challenge.answer })
+    this.setState({ vraag: respJson.challenges[0].task })
+    this.setState({ antwoord: respJson.challenges[0].answer })
   }
 
 
@@ -104,7 +134,7 @@ export default class QuestionScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>You are close to {this.state.huidigeSight}.</Text>
+        <Text style={styles.header}>You are close to {this.state.huidigeSightNaam}.</Text>
         <Text style={styles.question}>{this.state.vraag}</Text>
         <TextInput
           style={styles.textinput}
@@ -121,7 +151,7 @@ export default class QuestionScreen extends React.Component {
       </View>
     )
 
-  }
+  } 
 }
 
 const styles = StyleSheet.create({
