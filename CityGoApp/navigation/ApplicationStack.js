@@ -6,7 +6,7 @@ const Stack = createStackNavigator();
 const ApplicationStack=()=>{
     return(
         <Stack.Navigator>
-            <Stack.Screen name='Login2' component={MainScreen}/>
+            <Stack.Screen name='Map' component={MainScreen}/>
         </Stack.Navigator>
     );
 }

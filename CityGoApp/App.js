@@ -1,4 +1,4 @@
-import * as React from 'react';
+/*import * as React from 'react';
 import {
   StyleSheet,
   View,
@@ -76,4 +76,20 @@ const TabNavigator = createMaterialBottomTabNavigator(
   }
 );
 
-export default createAppContainer(TabNavigator);
+export default createAppContainer(TabNavigator);*/
+
+
+import React from 'react';
+import Providers from './navigation';
+// must be listed before other Firebase SDKs
+import firebase from "firebase/app";
+import FirebaseConfig from "./config/Firebase.js";
+
+// Add the Firebase services that you want to use
+import "firebase/auth";
+
+const App = () => {
+  return <Providers />
+}
+
+export default App;
