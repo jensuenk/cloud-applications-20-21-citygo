@@ -15,7 +15,7 @@ export default class Mapke extends React.Component {
   AlertChallenge() {
     Alert.alert(
       "ALERT",
-      "You are nearby {this.state.huidigeSightNaam}, do you want to do a challenge?",
+      "You are nearby " + this.state.huidigeSightNaam +", do you want to do a challenge?",
       [
         {
           text: "Cancel",
