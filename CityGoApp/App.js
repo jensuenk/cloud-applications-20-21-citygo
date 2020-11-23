@@ -11,6 +11,7 @@ import MapScreen from './screens/MapScreen';
 import CameraScreen from './screens/CameraScreen';
 import InventoryScreen from './screens/InventoryScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import ProfileScreenZelf from './screens/ProfileScreenZelf';
 
 
 
@@ -54,7 +55,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
       }
     },
     Profile: {
-      screen: ProfileScreen,
+      screen: ProfileScreenZelf,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
           <View>
