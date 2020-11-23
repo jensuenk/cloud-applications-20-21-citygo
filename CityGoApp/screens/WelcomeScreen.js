@@ -35,7 +35,7 @@ const WelcomeScreen = ({ navigation }) => {
                 {
                     backgroundColor: '#ffff',
                     image: <Image style={styles.imagestyle3} source={require('../assets/LogoPagina3.png')} />,
-                    title: "Ontdek 't Stad!'",
+                    title: "Ontdek 't Stad!",
                     subtitle: 'Leer Antwerpen kennen op een speelse manier, zoals nooit tevoren!',
                 },
             ]}
