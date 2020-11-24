@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Sight, SightService } from './sight.service';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { NbDialogModule, NbDialogService } from '@nebular/theme';
+import { PolygonDialogComponentComponent } from './polygon-dialog-component/polygon-dialog-component.component';
+import { Coordinate, Sight, SightService } from './sight.service';
 
 @Component({
   selector: 'ngx-sights-table',
@@ -24,7 +26,7 @@ export class SightsTableComponent implements OnInit {
   filterLength: string = "";
   filterDir: string = "";
 
-  constructor(private svc: SightService) { }
+  constructor(private dialogService: NbDialogService, private svc: SightService) { }
 
   ngOnInit() {
     this.getSights();
@@ -33,15 +35,23 @@ export class SightsTableComponent implements OnInit {
     this.errors = [];
   }
 
+  coordinates: Coordinate[] = [];
+
+  openPolygonDialog(sight: Sight) {
+    console.log(sight.coordinates)
+    this.dialogService.open(PolygonDialogComponentComponent, {
+      context: {
+        coordinates: sight.coordinates,
+      },
+    }).onClose.subscribe(coordinates => sight.coordinates = coordinates);
+  }
+
   getSights(urlArgs: string = "") {
     this.svc.getSights(urlArgs).subscribe(
       result => {
         this.errors = [];
         console.log(result.sights)
         this.sights = result.sights
-        result.sights.forEach(element => {
-          console.log(element.polygon + "")
-        });
         return true;
       },
       error => {

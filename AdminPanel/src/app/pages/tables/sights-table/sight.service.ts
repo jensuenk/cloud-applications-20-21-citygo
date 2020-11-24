@@ -47,14 +47,19 @@ export class SightService {
   }
 }
 
+export interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
+
 export interface Sight {
   sightId: number;
   name: string;
   info: string;
   monument: boolean;
   stop: boolean;
-  polygon: number[][];
-  challenge?: any;
+  coordinates: Coordinate[];
+  challenges?: any;
 }
 
 export interface RootObject {

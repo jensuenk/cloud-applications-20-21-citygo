@@ -1,0 +1,28 @@
+<nb-card>
+    <nb-card-header>Enter your name</nb-card-header>
+    <nb-card-body>
+        <table>
+            <thead>
+                <tr>
+                    <td><label class="label"></label></td>
+                    <td><label class="label">Latitude</label></td>
+                    <td><label class="label">Longitude</label></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let coordinate of coordinates; let i">
+                    <td><label class="Coordinate 1"></label></td>
+                    <td><input nbInput fullWidth type="text" name="latitude" value={{coordinate.latitude}}
+                            [(ngModel)]="coordinate.latitude"></td>
+                    <td><input nbInput fullWidth type="text" name="longitude" value={{coordinate.longitude}}
+                            [(ngModel)]="coordinate.longitude"></td>
+                </tr>
+            </tbody>
+        </table>
+    </nb-card-body>
+    <nb-card-footer>
+        <button class="cancel" nbButton status="danger" (click)="cancel()">Cancel</button>
+        <button nbButton status="success" (click)="submit(name.value)">Submit</button>
+    </nb-card-footer>
+</nb-card>
