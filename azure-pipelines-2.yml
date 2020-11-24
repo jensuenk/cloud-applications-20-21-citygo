@@ -17,6 +17,7 @@ steps:
 
 - script: |
     cd CityGoApp
+    npm install -g expo-cli
     npm install
     expo start
   displayName: 'npm install and build'
