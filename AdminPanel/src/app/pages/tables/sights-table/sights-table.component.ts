@@ -43,7 +43,12 @@ export class SightsTableComponent implements OnInit {
       context: {
         coordinates: sight.coordinates,
       },
-    }).onClose.subscribe(coordinates => sight.coordinates = coordinates);
+    }).onClose.subscribe(res => {
+      if (res != null) {
+        sight.coordinates = res;
+        console.log(sight.coordinates)
+      }
+    })
   }
 
   getSights(urlArgs: string = "") {
@@ -75,23 +80,17 @@ export class SightsTableComponent implements OnInit {
     );
   }
 
-  createSight(name, info, monument, stop, polygon1, polygon2, polygon3, polygon4, challenge) {
+  createSight(name, info, monument, stop, polygon, challenge) {
     let challengeId = challenge.challengeId
     challenge = null
-    let tempPolygon: number[][] = [];
-    tempPolygon.push(polygon1.split`,`.map(x=>+x));
-    tempPolygon.push(polygon2.split`,`.map(x=>+x));
-    tempPolygon.push(polygon3.split`,`.map(x=>+x));
-    tempPolygon.push(polygon4.split`,`.map(x=>+x));
-    console.log(tempPolygon)
     let newSight: Sight = {
       sightId: 0,
       name: name,
       info: info,
       monument: monument,
       stop: stop,
-      polygon: tempPolygon,
-      challenge: challenge
+      coordinates: polygon,
+      challenges: challenge
     }
     this.svc.createSight(newSight).subscribe(
       data => {
@@ -119,8 +118,8 @@ export class SightsTableComponent implements OnInit {
   }
 
   updateSight(updatedSight: Sight) {
-    let challengeId = updatedSight.challenge.challengeId
-    updatedSight.challenge = null
+    updatedSight.challenges = null
+    console.log(updatedSight)
     
     this.svc.updateSight(updatedSight).subscribe(
       data => {

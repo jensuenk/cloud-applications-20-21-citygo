@@ -34,7 +34,7 @@
                             [(ngModel)]="sight.monument"></td>
                     <td><input nbInput fullWidth type="text" name="stop" value={{sight.stop}} [(ngModel)]="sight.stop">
                     </td>
-                    <td><button nbButton fullWidth outline (click)="openPolygonDialog(sight)">Show</button>
+                    <td><button nbButton fullWidth (click)="openPolygonDialog(sight)">Edit</button>
                     </td>
                     <td><input nbInput fullWidth type="text" name="challenge" value={{sight.challenge}}
                             [(ngModel)]="sight.challenge"></td>

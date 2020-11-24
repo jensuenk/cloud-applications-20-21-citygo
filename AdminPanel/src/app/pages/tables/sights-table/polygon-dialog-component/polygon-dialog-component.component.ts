@@ -17,7 +17,7 @@ export class PolygonDialogComponentComponent {
     this.ref.close();
   }
 
-  submit(coordinates) {
-    this.ref.close(coordinates);
+  submit() {
+    this.ref.close(this.coordinates);
   }
 }
