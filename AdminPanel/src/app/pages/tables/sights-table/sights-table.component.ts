@@ -37,8 +37,7 @@ export class SightsTableComponent implements OnInit {
 
   coordinates: Coordinate[] = [];
 
-  openPolygonDialog(sight: Sight) {
-    console.log(sight.coordinates)
+  openEditPolygonDialog(sight: Sight) {
     this.dialogService.open(PolygonDialogComponentComponent, {
       context: {
         coordinates: sight.coordinates,
@@ -47,6 +46,29 @@ export class SightsTableComponent implements OnInit {
       if (res != null) {
         sight.coordinates = res;
         console.log(sight.coordinates)
+      }
+    })
+  }
+
+  openNewPolygonDialog() {
+    if (this.coordinates.length < 4) {
+      for (let i = 0; i < 4; i++) {
+        let cord: Coordinate = {
+          latitude: 0,
+          longitude: 0
+        }
+        this.coordinates.push(cord)
+      }
+      console.log(this.coordinates)
+    }
+    this.dialogService.open(PolygonDialogComponentComponent, {
+      context: {
+        coordinates: this.coordinates,
+      },
+    }).onClose.subscribe(res => {
+      if (res != null) {
+        this.coordinates = res;
+        console.log(this.coordinates)
       }
     })
   }
@@ -80,17 +102,17 @@ export class SightsTableComponent implements OnInit {
     );
   }
 
-  createSight(name, info, monument, stop, polygon, challenge) {
-    let challengeId = challenge.challengeId
-    challenge = null
+  createSight(name, info, monument, stop, challenges) {
+    let challengeId = challenges.challengeId
+    challenges = null
     let newSight: Sight = {
       sightId: 0,
       name: name,
       info: info,
       monument: monument,
       stop: stop,
-      coordinates: polygon,
-      challenges: challenge
+      coordinates: this.coordinates,
+      challenges: challenges
     }
     this.svc.createSight(newSight).subscribe(
       data => {
