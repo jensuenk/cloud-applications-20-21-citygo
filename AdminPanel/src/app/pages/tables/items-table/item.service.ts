@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Coordinate } from '../sights-table/sight.service';
 
 
 @Injectable({
@@ -51,7 +52,7 @@ export class ItemService {
 export interface Item {
   itemId: number;
   name: string;
-  location: string;
+  location: Coordinate;
   rarity: string;
   picture: string;
   usersItems?: any;

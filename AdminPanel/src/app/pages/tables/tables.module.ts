@@ -11,6 +11,7 @@ import { UsersTableComponent } from './users-table/users-table.component';
 import { FormsModule } from '@angular/forms';
 import { PolygonDialogComponentComponent } from './sights-table/polygon-dialog-component/polygon-dialog-component.component';
 import { AgmCoreModule } from '@agm/core';
+import { LocationDialogComponentComponent } from './items-table/location-dialog-component/location-dialog-component.component';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { AgmCoreModule } from '@agm/core';
     SightsTableComponent,
     UsersTableComponent,
     PolygonDialogComponentComponent,
+    LocationDialogComponentComponent,
   ],
 })
 export class TablesModule { }
