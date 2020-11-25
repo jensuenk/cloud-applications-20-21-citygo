@@ -6,12 +6,14 @@ using System.Text;
 
 namespace Application.Command.User
 {
-    public class AddFriendCommand : IRequest<int>, IRequest<UserVM>
+    public class AddFriendCommand : IRequest<int>
     {
-        public UserVM UserVM { get; set; }
-        public AddFriendCommand(UserVM updateUser)
+        public int UserId { get; set; }
+        public int FriendId { get; set; }
+        public AddFriendCommand(int uid, int fid)
         {
-            UserVM = updateUser;
+            this.UserId = uid;
+            this.FriendId = fid;
         }
     }
 }

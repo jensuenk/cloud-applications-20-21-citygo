@@ -28,6 +28,6 @@ namespace Application.ViewModel
 
         public List<Domain.Challenge> Challenges { get; set; }
 
-        public List<Domain.User> Friends { get; set; }
+        public List<Domain.UsersFriends> Friends { get; set; }
     }
 }
