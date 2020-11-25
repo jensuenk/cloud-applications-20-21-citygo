@@ -54,8 +54,8 @@ export class SightsTableComponent implements OnInit {
     if (this.coordinates.length < 4) {
       for (let i = 0; i < 4; i++) {
         let cord: Coordinate = {
-          latitude: 0,
-          longitude: 0
+          latitude: 51.2194475,
+          longitude: 4.4024643
         }
         this.coordinates.push(cord)
       }

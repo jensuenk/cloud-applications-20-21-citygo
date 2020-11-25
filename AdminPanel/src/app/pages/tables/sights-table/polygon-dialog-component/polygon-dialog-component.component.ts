@@ -20,7 +20,7 @@ export class PolygonDialogComponentComponent implements OnInit {
       this.markers.push({
         lat: coordinate.latitude,
         lng: coordinate.longitude,
-        label: (this.coordinates.indexOf(coordinate)).toString(),
+        label: (this.coordinates.indexOf(coordinate) + 1).toString(),
         draggable: true
       });
     });
