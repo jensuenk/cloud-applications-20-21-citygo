@@ -22,12 +22,12 @@ namespace Application.Command.Sight
         {
             Domain.Sight newSight = new Domain.Sight() 
             { 
-                SightId = request.Sight.SightId,
-                Info = request.Sight.Info,
-                Monument = request.Sight.Monument, 
-                Name = request.Sight.Name, 
-                Stop = request.Sight.Stop,
-                Coordinates = request.Sight.Coordinates
+                SightId = request.SightVM.SightId,
+                Info = request.SightVM.Info,
+                Monument = request.SightVM.Monument, 
+                Name = request.SightVM.Name, 
+                Stop = request.SightVM.Stop,
+                Coordinates = request.SightVM.Coordinates
             };
 
             List<Domain.Coordinate> tussen1 = new List<Domain.Coordinate>();
