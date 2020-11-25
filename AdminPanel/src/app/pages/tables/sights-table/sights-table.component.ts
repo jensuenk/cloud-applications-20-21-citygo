@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NbDialogModule, NbDialogService } from '@nebular/theme';
+import { Challenge, ChallengeService } from '../challenges-table/challenge.service';
 import { PolygonDialogComponentComponent } from './polygon-dialog-component/polygon-dialog-component.component';
 import { Coordinate, Sight, SightService } from './sight.service';
 
@@ -11,22 +12,13 @@ import { Coordinate, Sight, SightService } from './sight.service';
 
 export class SightsTableComponent implements OnInit {
   errorMessage: string
-  successfulSave: boolean;
   successMessage: string;
   errors: string[];
 
   sights: Sight[] = [];
   sight: Sight
 
-  filterSightId: string = "";
-  filterName: string = "";
-  filterLocation: string = "";
-  filterSort: string = "";
-  filterPage: string = "";
-  filterLength: string = "";
-  filterDir: string = "";
-
-  constructor(private dialogService: NbDialogService, private svc: SightService) { }
+  constructor(private dialogService: NbDialogService, private sightService: SightService, private challengeService: ChallengeService) { }
 
   ngOnInit() {
     this.getSights();
@@ -45,7 +37,6 @@ export class SightsTableComponent implements OnInit {
     }).onClose.subscribe(res => {
       if (res != null) {
         sight.coordinates = res;
-        console.log(sight.coordinates)
       }
     })
   }
@@ -59,7 +50,6 @@ export class SightsTableComponent implements OnInit {
         }
         this.coordinates.push(cord)
       }
-      console.log(this.coordinates)
     }
     this.dialogService.open(PolygonDialogComponentComponent, {
       context: {
@@ -68,95 +58,75 @@ export class SightsTableComponent implements OnInit {
     }).onClose.subscribe(res => {
       if (res != null) {
         this.coordinates = res;
-        console.log(this.coordinates)
       }
     })
   }
 
   getSights(urlArgs: string = "") {
-    this.svc.getSights(urlArgs).subscribe(
+    this.sightService.getSights(urlArgs).subscribe(
       result => {
         this.errors = [];
-        console.log(result.sights)
         this.sights = result.sights
-        return true;
       },
       error => {
-        console.error("Error while retreiving sights!");
-        this.showError(error.message)
-      }
-    );
-  }
-
-  getSight(id: number) {
-    this.svc.getSightById(id).subscribe(
-      result => {
-        this.errors = [];
-        this.sight = result
-        return true;
-      },
-      error => {
-        console.error("Error while retreiving sight!");
         this.showError(error.message)
       }
     );
   }
 
   createSight(name, info, monument, stop, challenges) {
-    let challengeId = challenges.challengeId
-    challenges = null
-    let newSight: Sight = {
-      sightId: 0,
-      name: name,
-      info: info,
-      monument: monument,
-      stop: stop,
-      coordinates: this.coordinates,
-      challenges: challenges
-    }
-    this.svc.createSight(newSight).subscribe(
-      data => {
-        this.errors = [];
-        console.log(newSight)
-        // refresh the list
-        this.getSights();
-        this.showSuccess("Successfully created a new sight!")
-        this.successfulSave = true
-        return true;
-      }, error => {
-        this.errors = [];
-        console.error("Error creating sight!");
-        this.successfulSave = false
-        if (error.status === 400) {
-          console.log(error)
-          const validationErrors = error.error;
-          Object.keys(validationErrors).forEach(prop => {
-            console.log(validationErrors[prop])
-            this.errors.push(validationErrors[prop])
-          });
-        }
+    this.challengeService.getChallengeById(challenges).toPromise().then((res) => {
+      let challenges: Challenge[] = [];
+      challenges.push(res)
+      
+      let newSight: Sight = {
+        sightId: 0,
+        name: name,
+        info: info,
+        monument: monument,
+        stop: stop,
+        coordinates: this.coordinates,
+        challenges: challenges
       }
-    );
+
+      this.sightService.createSight(newSight).subscribe(
+        data => {
+          this.errors = [];
+          console.log(newSight)
+          // refresh the list
+          this.getSights();
+        }, error => {
+          this.errors = [];
+          console.error("Error creating sight!");
+          if (error.status === 400) {
+            console.log(error)
+            const validationErrors = error.error;
+            Object.keys(validationErrors).forEach(prop => {
+              console.log(validationErrors[prop])
+              this.errors.push(validationErrors[prop])
+            });
+          }
+        }
+      );
+   }).catch(err => {
+     console.log(err)
+   });
+    
+    
   }
 
   updateSight(updatedSight: Sight) {
-    updatedSight.challenges = null
     console.log(updatedSight)
     
-    this.svc.updateSight(updatedSight).subscribe(
+    this.sightService.updateSight(updatedSight).subscribe(
       data => {
         this.errors = [];
         console.log(updatedSight)
         // refresh the list
         this.getSights();
         this.showSuccess("Successfully updated the sight!")
-        this.successfulSave = true
-        return true;
       },
       error => {
-        this.errors = [];
-        console.error("Error saving sight!");
-        this.successfulSave = false
         if (error.status === 400) {
           const validationErrors = error.error;
           Object.keys(validationErrors).forEach(prop => {
@@ -168,27 +138,27 @@ export class SightsTableComponent implements OnInit {
     );
   }
 
-  deleteSight(sight) {
-    this.svc.deleteSight(sight).subscribe(
+  deleteSight(sight: Sight) {
+    this.sightService.deleteSight(sight).subscribe(
       data => {
-        this.errors = [];
-        // refresh the list
+        // Refresh list
         this.getSights();
         this.showSuccess("Successfully deleted the sight!")
-        return true;
       },
       error => {
-        console.error("Error deleting sight!");
         this.showError(error.message)
       }
     );
   }
 
-  showError(message: string) {
+  showError(message: string, errors?: string[]) {
     this.errorMessage = message;
+    this.errors = errors;
     this.successMessage = "";
   }
+
   showSuccess(message: string) {
+    this.errors = [];
     this.errorMessage = "";
     this.successMessage = message;
   }

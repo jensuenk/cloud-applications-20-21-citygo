@@ -18,7 +18,7 @@
                     <td><label class="label">Monument</label></td>
                     <td><label class="label">Stop</label></td>
                     <td><label class="label">Polygon</label></td>
-                    <td><label class="label">Challenge</label></td>
+                    <td><label class="label">Challenges</label></td>
                     <td></td>
                 </tr>
             </thead>
@@ -36,8 +36,10 @@
                     </td>
                     <td><button nbButton fullWidth (click)="openEditPolygonDialog(sight)">Edit</button>
                     </td>
-                    <td><input nbInput fullWidth type="text" name="challenge" value={{sight.challenge}}
-                            [(ngModel)]="sight.challenge"></td>
+
+                    <td *ngFor="let challenge of sight.challenges">
+                        <input nbInput fullWidth type="number" name="challenge" value={{challenge.challengeId}}>
+                    </td>
                     <td><button nbButton fullWidth outline status="success" (click)="updateSight(sight)">Save</button>
                     <td>
                     <td><button nbButton fullWidth outline status="danger" (click)="deleteSight(sight)">Delete</button>
@@ -61,7 +63,7 @@
                     <td><label class="label">Monument</label></td>
                     <td><label class="label">Stop</label></td>
                     <td><label class="label">Polygon</label></td>
-                    <td><label class="label">Challenge</label></td>
+                    <td><label class="label">Challenges</label></td>
                     <td></td>
                 </tr>
             </thead>

@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { PolygonDialogComponentComponent } from './sights-table/polygon-dialog-component/polygon-dialog-component.component';
 import { AgmCoreModule } from '@agm/core';
 import { LocationDialogComponentComponent } from './items-table/location-dialog-component/location-dialog-component.component';
+import { ChallengesDialogComponentComponent } from './sights-table/challenges-dialog-component/challenges-dialog-component.component';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { LocationDialogComponentComponent } from './items-table/location-dialog-
     UsersTableComponent,
     PolygonDialogComponentComponent,
     LocationDialogComponentComponent,
+    ChallengesDialogComponentComponent,
   ],
 })
 export class TablesModule { }
