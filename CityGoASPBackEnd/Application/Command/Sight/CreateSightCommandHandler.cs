@@ -24,7 +24,8 @@ namespace Application.Command.Sight
                 Info = request.Sight.Info,
                 Monument = request.Sight.Monument, 
                 Name = request.Sight.Name, 
-                Stop = request.Sight.Stop 
+                Stop = request.Sight.Stop,
+                Coordinates = request.Sight.Coordinates
             };
            
             var query = _context.Sights.Add(newSight);

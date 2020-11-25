@@ -26,15 +26,17 @@ namespace Application.Command.Sight
                 Info = request.Sight.Info, 
                 Monument = request.Sight.Monument, 
                 Name = request.Sight.Name, 
-                Stop = request.Sight.Stop
+                Stop = request.Sight.Stop,
+                Coordinates = request.Sight.Coordinates
             };
-            var oldSight = await _context.Sights.Where(s => s.SightId == newSight.SightId).SingleAsync();
+            var oldSight = await _context.Sights.Where(s => s.SightId == newSight.SightId)
+                .Include(c => c.Coordinates)
+                .SingleAsync();
             oldSight.Name = newSight.Name;
             oldSight.Info = newSight.Info;
             oldSight.Monument = newSight.Monument;
             oldSight.Stop = newSight.Stop;
-
-
+            oldSight.Coordinates = newSight.Coordinates;
             var query = _context.Sights.Update(oldSight);
             return await _context.SaveAsync(cancellationToken);
         }
