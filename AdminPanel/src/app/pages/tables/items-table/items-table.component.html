@@ -14,9 +14,9 @@
                 <tr>
                     <td><label class="label">ID</label></td>
                     <td><label class="label">Name</label></td>
-                    <td><label class="label">Location</label></td>
                     <td><label class="label">Rarity</label></td>
                     <td><label class="label">Picture</label></td>
+                    <td><label class="label">Location</label></td>
                     <td></td>
                 </tr>
             </thead>
@@ -26,9 +26,11 @@
                             [(ngModel)]="item.itemId"></td>
                     <td><input nbInput fullWidth type="text" name="name" value={{item.name}} [(ngModel)]="item.name">
                     </td>
-                    <td><input nbInput fullWidth type="text" name="location" value={{item.location}} [(ngModel)]="item.location">
-                    </td>
                     <td><input nbInput fullWidth type="text" name="rarity" value={{item.rarity}} [(ngModel)]="item.rarity">
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="picture" value={{item.picture}} [(ngModel)]="item.picture">
+                    </td>
+                    <td><button nbButton fullWidth (click)="openEditLocationDialog(item)">Edit</button>
                     </td>
                     <td><button nbButton fullWidth outline status="success" (click)="updateItem(item)">Save</button>
                     <td>
@@ -49,20 +51,20 @@
                 <tr>
                     <td><label class="label">ID</label></td>
                     <td><label class="label">Name</label></td>
-                    <td><label class="label">Location</label></td>
                     <td><label class="label">Rarity</label></td>
                     <td><label class="label">Picture</label></td>
+                    <td><label class="label">Location</label></td>
                     <td></td>
                 </tr>
             </thead>
             <tbody>
                 <td><input nbInput fullWidth type="text" disabled name="itemId" [(ngModel)]="itemId"></td>
                 <td><input nbInput fullWidth type="text" name="name" [(ngModel)]="name"></td>
-                <td><input nbInput fullWidth type="text" name="location" [(ngModel)]="location"></td>
                 <td><input nbInput fullWidth type="text" name="rarity" [(ngModel)]="rarity"></td>
                 <td><input nbInput fullWidth type="text" name="picture" [(ngModel)]="picture"></td>
+                <td><button nbButton fullWidth (click)="openNewLocationDialog()">Edit</button></td>
                 <td><button nbButton outline status="success"
-                        (click)="createItem(name, location, rarity, picture)">Create</button>
+                        (click)="createItem(name, rarity, picture)">Create</button>
                 <td>
             </tbody>
         </table>

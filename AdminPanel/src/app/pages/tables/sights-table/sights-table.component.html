@@ -17,10 +17,7 @@
                     <td><label class="label">Info</label></td>
                     <td><label class="label">Monument</label></td>
                     <td><label class="label">Stop</label></td>
-                    <td><label class="label">Polygon-1</label></td>
-                    <td><label class="label">Polygon-2</label></td>
-                    <td><label class="label">Polygon-3</label></td>
-                    <td><label class="label">Polygon-4</label></td>
+                    <td><label class="label">Polygon</label></td>
                     <td><label class="label">Challenge</label></td>
                     <td></td>
                 </tr>
@@ -37,10 +34,7 @@
                             [(ngModel)]="sight.monument"></td>
                     <td><input nbInput fullWidth type="text" name="stop" value={{sight.stop}} [(ngModel)]="sight.stop">
                     </td>
-
-                    <td *ngFor="let polygon of sight.polygon">
-                        <input nbInput fullWidth type="text" name="polygon"
-                            value={{polygon}} >
+                    <td><button nbButton fullWidth (click)="openEditPolygonDialog(sight)">Edit</button>
                     </td>
                     <td><input nbInput fullWidth type="text" name="challenge" value={{sight.challenge}}
                             [(ngModel)]="sight.challenge"></td>
@@ -66,10 +60,7 @@
                     <td><label class="label">Info</label></td>
                     <td><label class="label">Monument</label></td>
                     <td><label class="label">Stop</label></td>
-                    <td><label class="label">Polygon-1</label></td>
-                    <td><label class="label">Polygon-2</label></td>
-                    <td><label class="label">Polygon-3</label></td>
-                    <td><label class="label">Polygon-4</label></td>
+                    <td><label class="label">Polygon</label></td>
                     <td><label class="label">Challenge</label></td>
                     <td></td>
                 </tr>
@@ -80,13 +71,10 @@
                 <td><input nbInput fullWidth type="text" name="info" [(ngModel)]="info"></td>
                 <td><input nbInput fullWidth type="text" name="monument" [(ngModel)]="monument"></td>
                 <td><input nbInput fullWidth type="text" name="stop" [(ngModel)]="stop"></td>
-                <td><input nbInput fullWidth type="text" name="polygon1" [(ngModel)]="polygon1"></td>
-                <td><input nbInput fullWidth type="text" name="polygon2" [(ngModel)]="polygon2"></td>
-                <td><input nbInput fullWidth type="text" name="polygon3" [(ngModel)]="polygon3"></td>
-                <td><input nbInput fullWidth type="text" name="polygon4" [(ngModel)]="polygon4"></td>
-                <td><input nbInput fullWidth type="number" name="challenge" [(ngModel)]="challenge"></td>
+                <td><button nbButton fullWidth (click)="openNewPolygonDialog()">Add</button></td>
+                <td><input nbInput fullWidth type="number" name="challenges" [(ngModel)]="challenges"></td>
                 <td><button nbButton outline status="success"
-                        (click)="createSight(name, info, monument, stop, polygon1, polygon2, polygon3, polygon4, challenge)">Create</button>
+                        (click)="createSight(name, info, monument, stop, challenges)">Create</button>
                 <td>
             </tbody>
         </table>

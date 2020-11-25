@@ -15,8 +15,8 @@ namespace Domain
         [MaxLength(50)]
         public string Name { get; set; }
 
-        [MaxLength(50)]
-        public string Location { get; set; }
+        [JsonIgnore]
+        public Coordinate Location { get; set; }
 
         [MaxLength(50)]
         public string Rarity { get; set; }

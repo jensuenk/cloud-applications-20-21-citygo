@@ -1,0 +1,43 @@
+<nb-card>
+    <nb-card-header>Location editor</nb-card-header>
+    <nb-card-body>
+        <table>
+            <thead>
+                <tr>
+                    <td><label class="label"></label></td>
+                    <td><label class="label">Latitude</label></td>
+                    <td><label class="label">Longitude</label></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><label class="label">Coordinate</label></td>
+                    <td><input nbInput fullWidth type="number" name="latitude" value={{coordinate.latitude}}
+                            [(ngModel)]="coordinate.latitude"></td>
+                    <td><input nbInput fullWidth type="number" name="longitude" value={{coordinate.longitude}}
+                            [(ngModel)]="coordinate.longitude"></td>
+                </tr>
+            </tbody>
+        </table>
+        <p></p>
+        <agm-map [latitude]="lat" [longitude]="lng" [disableDefaultUI]="true" [zoom]="zoom"
+            (mapClick)="mapClicked($event)">
+
+            <agm-marker
+                [latitude]="marker.lat" [longitude]="marker.lng" [label]="marker.label" [markerDraggable]="marker.draggable"
+                (dragEnd)="markerDragEnd(marker, $event)">
+
+                <agm-info-window>
+                    <strong>{{ marker.lat }}, {{ marker.lng }}</strong>
+                </agm-info-window>
+
+            </agm-marker>
+
+        </agm-map>
+    </nb-card-body>
+    <nb-card-footer>
+        <td><button class="cancel" nbButton status="danger" (click)="cancel()">Cancel</button></td>
+        <td><button nbButton status="success" (click)="submit()">Submit</button></td>
+    </nb-card-footer>
+</nb-card>

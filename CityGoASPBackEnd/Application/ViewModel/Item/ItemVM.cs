@@ -11,7 +11,7 @@ namespace Application.ViewModel
 
         public string Name { get; set; }
 
-        public string Location { get; set; }
+        public Domain.Coordinate Location { get; set; }
 
         public string Rarity { get; set; }
 

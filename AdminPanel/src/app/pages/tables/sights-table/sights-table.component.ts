@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Sight, SightService } from './sight.service';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { NbDialogModule, NbDialogService } from '@nebular/theme';
+import { PolygonDialogComponentComponent } from './polygon-dialog-component/polygon-dialog-component.component';
+import { Coordinate, Sight, SightService } from './sight.service';
 
 @Component({
   selector: 'ngx-sights-table',
@@ -24,7 +26,7 @@ export class SightsTableComponent implements OnInit {
   filterLength: string = "";
   filterDir: string = "";
 
-  constructor(private svc: SightService) { }
+  constructor(private dialogService: NbDialogService, private svc: SightService) { }
 
   ngOnInit() {
     this.getSights();
@@ -33,15 +35,50 @@ export class SightsTableComponent implements OnInit {
     this.errors = [];
   }
 
+  coordinates: Coordinate[] = [];
+
+  openEditPolygonDialog(sight: Sight) {
+    this.dialogService.open(PolygonDialogComponentComponent, {
+      context: {
+        coordinates: sight.coordinates,
+      },
+    }).onClose.subscribe(res => {
+      if (res != null) {
+        sight.coordinates = res;
+        console.log(sight.coordinates)
+      }
+    })
+  }
+
+  openNewPolygonDialog() {
+    if (this.coordinates.length < 4) {
+      for (let i = 0; i < 4; i++) {
+        let cord: Coordinate = {
+          latitude: 51.2194475,
+          longitude: 4.4024643
+        }
+        this.coordinates.push(cord)
+      }
+      console.log(this.coordinates)
+    }
+    this.dialogService.open(PolygonDialogComponentComponent, {
+      context: {
+        coordinates: this.coordinates,
+      },
+    }).onClose.subscribe(res => {
+      if (res != null) {
+        this.coordinates = res;
+        console.log(this.coordinates)
+      }
+    })
+  }
+
   getSights(urlArgs: string = "") {
     this.svc.getSights(urlArgs).subscribe(
       result => {
         this.errors = [];
         console.log(result.sights)
         this.sights = result.sights
-        result.sights.forEach(element => {
-          console.log(element.polygon + "")
-        });
         return true;
       },
       error => {
@@ -65,23 +102,17 @@ export class SightsTableComponent implements OnInit {
     );
   }
 
-  createSight(name, info, monument, stop, polygon1, polygon2, polygon3, polygon4, challenge) {
-    let challengeId = challenge.challengeId
-    challenge = null
-    let tempPolygon: number[][] = [];
-    tempPolygon.push(polygon1.split`,`.map(x=>+x));
-    tempPolygon.push(polygon2.split`,`.map(x=>+x));
-    tempPolygon.push(polygon3.split`,`.map(x=>+x));
-    tempPolygon.push(polygon4.split`,`.map(x=>+x));
-    console.log(tempPolygon)
+  createSight(name, info, monument, stop, challenges) {
+    let challengeId = challenges.challengeId
+    challenges = null
     let newSight: Sight = {
       sightId: 0,
       name: name,
       info: info,
       monument: monument,
       stop: stop,
-      polygon: tempPolygon,
-      challenge: challenge
+      coordinates: this.coordinates,
+      challenges: challenges
     }
     this.svc.createSight(newSight).subscribe(
       data => {
@@ -109,8 +140,8 @@ export class SightsTableComponent implements OnInit {
   }
 
   updateSight(updatedSight: Sight) {
-    let challengeId = updatedSight.challenge.challengeId
-    updatedSight.challenge = null
+    updatedSight.challenges = null
+    console.log(updatedSight)
     
     this.svc.updateSight(updatedSight).subscribe(
       data => {

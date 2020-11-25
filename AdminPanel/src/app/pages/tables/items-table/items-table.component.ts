@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NbDialogService } from '@nebular/theme';
+import { Coordinate } from '../sights-table/sight.service';
 import { Item, ItemService } from './item.service';
+import { LocationDialogComponentComponent } from './location-dialog-component/location-dialog-component.component';
 
 
 @Component({
@@ -25,13 +28,47 @@ export class ItemsTableComponent implements OnInit {
   filterLength: string = "";
   filterDir: string = "";
 
-  constructor(private svc: ItemService) { }
+  constructor(private dialogService: NbDialogService, private svc: ItemService) { }
 
   ngOnInit() {
     this.getItems();
     this.errorMessage = "";
     this.successMessage = "";
     this.errors = [];
+  }
+
+  coordinate: Coordinate;
+
+  openEditLocationDialog(item: Item) {
+    this.dialogService.open(LocationDialogComponentComponent, {
+      context: {
+        coordinate: item.location,
+      },
+    }).onClose.subscribe(res => {
+      if (res != null) {
+        item.location = res;
+        console.log(item.location)
+      }
+    })
+  }
+
+  openNewLocationDialog() {
+    if (this.coordinate == null) {
+      this.coordinate = {
+        latitude: 51.2194475,
+        longitude: 4.4024643
+      }
+    }
+    this.dialogService.open(LocationDialogComponentComponent, {
+      context: {
+        coordinate: this.coordinate,
+      },
+    }).onClose.subscribe(res => {
+      if (res != null) {
+        this.coordinate = res;
+        console.log(this.coordinate)
+      }
+    })
   }
 
   getItems(urlArgs: string = "") {
@@ -63,11 +100,11 @@ export class ItemsTableComponent implements OnInit {
     );
   }
 
-  createItem(name, location, rarity, picture) {
+  createItem(name, rarity, picture) {
     let newItem: Item = {
       itemId: 0,
       name: name,
-      location: location,
+      location: this.coordinate,
       rarity: rarity,
       picture: picture,
       usersItems: null,
