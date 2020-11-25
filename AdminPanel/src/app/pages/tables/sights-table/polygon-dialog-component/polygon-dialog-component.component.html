@@ -20,6 +20,20 @@
                 </tr>
             </tbody>
         </table>
+        <p></p>
+        <agm-map [latitude]="lat" [longitude]="lng" [disableDefaultUI]="true" [zoom]="zoom" (mapClick)="mapClicked($event)">
+
+            <agm-marker *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.label, i)"
+                [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"
+                (dragEnd)="markerDragEnd(m, $event)">
+
+                <agm-info-window>
+                    <strong>{{ m.lat }}, {{ m.lng }}</strong>
+                </agm-info-window>
+
+            </agm-marker>
+
+        </agm-map>
     </nb-card-body>
     <nb-card-footer>
         <td><button class="cancel" nbButton status="danger" (click)="cancel()">Cancel</button></td>

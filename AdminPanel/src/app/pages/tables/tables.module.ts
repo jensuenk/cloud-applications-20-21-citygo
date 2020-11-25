@@ -10,6 +10,7 @@ import { SightsTableComponent } from './sights-table/sights-table.component';
 import { UsersTableComponent } from './users-table/users-table.component';
 import { FormsModule } from '@angular/forms';
 import { PolygonDialogComponentComponent } from './sights-table/polygon-dialog-component/polygon-dialog-component.component';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   imports: [
@@ -23,7 +24,10 @@ import { PolygonDialogComponentComponent } from './sights-table/polygon-dialog-c
     ThemeModule,
     TablesRoutingModule,
     Ng2SmartTableModule,
-    NbDialogModule.forRoot()
+    NbDialogModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDk16Jhr5ke2tbVzaud9WrawEKmJycjB0A'
+    })
   ],
   declarations: [
     ...routedComponents,
