@@ -16,10 +16,6 @@ namespace Application.ViewModel.Item
 
         public bool Stop { get; set; }
 
-        public int [] CoordinateIds { get; set; }
-
-        public int[] ChallengeIds { get; set; }
-
         public List<Domain.Coordinate> Coordinates { get; set; }
 
         public List<Domain.Challenge> Challenges { get; set; }

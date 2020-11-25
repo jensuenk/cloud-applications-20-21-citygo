@@ -22,6 +22,7 @@ namespace Application.Query.Sight
         {
             var allSights = await _context.Sights
                 .Include(c=>c.Coordinates)
+                .Include(ch => ch.Challenges)
                 .ToListAsync();
             
             ListSightVM vm = new ListSightVM();
@@ -34,7 +35,8 @@ namespace Application.Query.Sight
                     Monument= sight.Monument, 
                     Name= sight.Name, 
                     Stop = sight.Stop, 
-                    Coordinates = sight.Coordinates
+                    Coordinates = sight.Coordinates,
+                    Challenges = sight.Challenges
                 });
                
             }
