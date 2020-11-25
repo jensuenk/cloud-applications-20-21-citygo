@@ -24,36 +24,36 @@ namespace Application.Command.User
             var friend = await _context.Users.Where(u => u.UserId == request.FriendId).SingleAsync();
 
 
-            Domain.UsersFriends usersFriends = new Domain.UsersFriends()
-            {
-                User = user,
-                UserId = user.UserId,
-                Friend = friend,
-                FriendId = friend.UserId
-            };
-            if (user.UsersItems == null)
-            {
-                List<Domain.UsersFriends> tussen = new List<Domain.UsersFriends>();
-                tussen.Add(usersFriends);
-                user.UsersFriends = tussen;
-            }
-            else
-            { 
-                user.UsersFriends.Add(usersFriends);
-            }
-            if (friend.UsersFriends == null)
-            {
-                List<Domain.UsersFriends> tussen = new List<Domain.UsersFriends>();
-                tussen.Add(usersFriends);
-                friend.UsersFriends = tussen;
-            }
-            else
-            {
-                friend.UsersFriends.Add(usersFriends);
-            }
+            //Domain.UsersFriends usersFriends = new Domain.UsersFriends()
+            //{
+            //    User = user,
+            //    UserId = user.UserId,
+            //    Friend = friend,
+            //    FriendId = friend.UserId
+            //};
+            //if (user.UsersItems == null)
+            //{
+            //    List<Domain.UsersFriends> tussen = new List<Domain.UsersFriends>();
+            //    tussen.Add(usersFriends);
+            //    user.UsersFriends = tussen;
+            //}
+            //else
+            //{ 
+            //    user.UsersFriends.Add(usersFriends);
+            //}
+            //if (friend.UsersFriends == null)
+            //{
+            //    List<Domain.UsersFriends> tussen = new List<Domain.UsersFriends>();
+            //    tussen.Add(usersFriends);
+            //    friend.UsersFriends = tussen;
+            //}
+            //else
+            //{
+            //    friend.UsersFriends.Add(usersFriends);
+            //}
             var query1 = _context.Users.Update(user);
             var query2 = _context.Users.Update(friend);
-            var query3 = _context.UsersFriends.Add(usersFriends);
+            //var query3 = _context.UsersFriends.Add(usersFriends);
             return await _context.SaveAsync(cancellationToken);
         }
     }
