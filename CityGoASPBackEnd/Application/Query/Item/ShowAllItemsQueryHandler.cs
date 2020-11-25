@@ -19,7 +19,9 @@ namespace Application.Command.Item
         }
         public async Task<ListItemVM> Handle(ShowAllItemsQuery request, CancellationToken cancellationToken)
         {
-            var allItems = await _context.Items.ToListAsync();
+            var allItems = await _context.Items
+                .Include(c => c.Location)
+                .ToListAsync();
 
             ListItemVM vm = new ListItemVM();
             foreach (var item in allItems)

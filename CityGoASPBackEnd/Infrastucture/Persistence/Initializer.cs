@@ -14,7 +14,10 @@ namespace Infrastucture.Persistence
                 new Domain.Item()
                 {
                     Name = "test",
-                    Location = "somewhere",
+                    Location = new Domain.Coordinate() {
+                        Latitude = 0,
+                        Longitude = 0
+                    },
                     Rarity = "rare",
                     Picture = "nice"
                 }
@@ -53,7 +56,7 @@ namespace Infrastucture.Persistence
             };
 
 
-            //context.Database.EnsureDeleted();
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             
             if (!context.Users.Any())
