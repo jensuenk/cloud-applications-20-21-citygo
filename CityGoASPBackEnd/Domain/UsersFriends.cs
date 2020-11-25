@@ -5,16 +5,17 @@ using System.Text;
 
 namespace Domain
 {
-    public class UsersItems
+    public class UsersFriends
     {
         [JsonIgnore]
         public int UserId { get; set; }
-        
+
         [JsonIgnore]
         public User User { get; set; }
         [JsonIgnore]
-        public int ItemId { get; set; }
+        public int FriendId { get; set; }
 
-        public Item Item { get; set; }
+        public User Friend { get; set; }
+
     }
 }

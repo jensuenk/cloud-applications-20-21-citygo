@@ -29,5 +29,8 @@ namespace Domain
         [JsonIgnore]
         public List<Challenge> Challenges { get; set; }
 
+        //[JsonIgnore]
+        //public List<UsersFriends> UsersFriends { get; set; }
+
     }
 }

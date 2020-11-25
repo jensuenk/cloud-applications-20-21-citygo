@@ -8,10 +8,10 @@ namespace Application.Command.Item
 {
     public class CreateItemCommand : IRequest<int>
     {
-        public ItemVM Item { get; set; }
+        public ItemVM ItemVM { get; set; }
         public CreateItemCommand(ItemVM newItem)
         {
-            Item = newItem;
+            ItemVM = newItem;
         }
     }
 }

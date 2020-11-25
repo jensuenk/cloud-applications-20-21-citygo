@@ -22,12 +22,12 @@ namespace Application.Command.Coordinate
         {
             Domain.Coordinate newCoordinate = new Domain.Coordinate()
             {
-              Latitude = request.Coordinate.Latitude,
-              Longitude = request.Coordinate.Longitude
+              Latitude = request.CoordinateVM.Latitude,
+              Longitude = request.CoordinateVM.Longitude
             };
-            if (request.Coordinate.SightId != null)
+            if (request.CoordinateVM.SightId != 0)
             {
-                var sight = await _context.Sights.Where(s => s.SightId == request.Coordinate.SightId).SingleAsync();
+                var sight = await _context.Sights.Where(s => s.SightId == request.CoordinateVM.SightId).SingleAsync();
                 newCoordinate.Sight = sight;
             }
             var oldCoordinate = await _context.Coordinates.Where(c => c.CoordinateId == newCoordinate.CoordinateId).SingleAsync();
