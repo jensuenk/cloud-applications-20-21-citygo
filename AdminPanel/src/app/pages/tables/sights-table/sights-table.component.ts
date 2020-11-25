@@ -1,6 +1,7 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { NbDialogModule, NbDialogService } from '@nebular/theme';
+import { Component, OnInit } from '@angular/core';
+import { NbDialogService } from '@nebular/theme';
 import { Challenge, ChallengeService } from '../challenges-table/challenge.service';
+import { ChallengesDialogComponentComponent } from './challenges-dialog-component/challenges-dialog-component.component';
 import { PolygonDialogComponentComponent } from './polygon-dialog-component/polygon-dialog-component.component';
 import { Coordinate, Sight, SightService } from './sight.service';
 
@@ -11,24 +12,22 @@ import { Coordinate, Sight, SightService } from './sight.service';
 })
 
 export class SightsTableComponent implements OnInit {
-  errorMessage: string
-  successMessage: string;
-  errors: string[];
+  errorMessage: string = "";
+  successMessage: string = "";
+  errors: string[] = [];
 
   sights: Sight[] = [];
-  sight: Sight
+  sight: Sight;
+  coordinates: Coordinate[] = [];
+  challenges: Challenge[];
 
   constructor(private dialogService: NbDialogService, private sightService: SightService, private challengeService: ChallengeService) { }
 
   ngOnInit() {
     this.getSights();
-    this.errorMessage = "";
-    this.successMessage = "";
-    this.errors = [];
   }
 
-  coordinates: Coordinate[] = [];
-
+  // Open dialog popup with a ui to edit the polygon coordinates
   openEditPolygonDialog(sight: Sight) {
     this.dialogService.open(PolygonDialogComponentComponent, {
       context: {
@@ -41,7 +40,9 @@ export class SightsTableComponent implements OnInit {
     })
   }
 
+  // Open dialog popup with a ui to create a new polygon with coordinates
   openNewPolygonDialog() {
+    // Create default 4 coordinates
     if (this.coordinates.length < 4) {
       for (let i = 0; i < 4; i++) {
         let cord: Coordinate = {
@@ -62,10 +63,35 @@ export class SightsTableComponent implements OnInit {
     })
   }
 
+  // Open dialog popup with a ui to select challenges
+  openChallengeSelector(selectedChallenges: Challenge[]) {
+    this.challenges = []
+    // Get list of challenges (get request)
+    this.challengeService.getChallenges("").toPromise().then((res) => {
+      let challenges: Challenge[] = res.challenges
+      // Check if there are already challenges linked to this sight (=selectedChallenges)
+      if (selectedChallenges == null) {
+        selectedChallenges = [];
+      }
+
+      this.dialogService.open(ChallengesDialogComponentComponent, {
+        context: {
+          challenges: challenges,
+          selectedChallenges: selectedChallenges
+        },
+      }).onClose.subscribe(res => {
+        if (res != null) {
+          this.challenges = res;
+        }
+      })
+    }).catch(error => {
+      this.showError(error.message)
+    });
+  }
+
   getSights(urlArgs: string = "") {
     this.sightService.getSights(urlArgs).subscribe(
       result => {
-        this.errors = [];
         this.sights = result.sights
       },
       error => {
@@ -74,66 +100,38 @@ export class SightsTableComponent implements OnInit {
     );
   }
 
-  createSight(name, info, monument, stop, challenges) {
-    this.challengeService.getChallengeById(challenges).toPromise().then((res) => {
-      let challenges: Challenge[] = [];
-      challenges.push(res)
-      
-      let newSight: Sight = {
-        sightId: 0,
-        name: name,
-        info: info,
-        monument: monument,
-        stop: stop,
-        coordinates: this.coordinates,
-        challenges: challenges
-      }
+  createSight(name, info, monument, stop) {
+    let newSight: Sight = {
+      sightId: 0,
+      name: name,
+      info: info,
+      monument: monument,
+      stop: stop,
+      coordinates: this.coordinates,
+      challenges: this.challenges
+    }
 
-      this.sightService.createSight(newSight).subscribe(
-        data => {
-          this.errors = [];
-          console.log(newSight)
-          // refresh the list
-          this.getSights();
-        }, error => {
-          this.errors = [];
-          console.error("Error creating sight!");
-          if (error.status === 400) {
-            console.log(error)
-            const validationErrors = error.error;
-            Object.keys(validationErrors).forEach(prop => {
-              console.log(validationErrors[prop])
-              this.errors.push(validationErrors[prop])
-            });
-          }
-        }
-      );
-   }).catch(err => {
-     console.log(err)
-   });
-    
-    
+    this.sightService.createSight(newSight).subscribe(
+      data => {
+        this.getSights();
+        this.showSuccess("Successfully created a new sight!")
+      }, error => {
+        this.showError("Could not create a new sight!", this.getVilidationErrors(error))
+      }
+    );
   }
 
   updateSight(updatedSight: Sight) {
-    console.log(updatedSight)
-    
+    updatedSight.challenges = this.challenges
     this.sightService.updateSight(updatedSight).subscribe(
       data => {
         this.errors = [];
         console.log(updatedSight)
-        // refresh the list
         this.getSights();
         this.showSuccess("Successfully updated the sight!")
       },
       error => {
-        if (error.status === 400) {
-          const validationErrors = error.error;
-          Object.keys(validationErrors).forEach(prop => {
-            console.log(validationErrors[prop])
-            this.errors.push(validationErrors[prop])
-          });
-        }
+        this.showError("Could not create a new sight!", this.getVilidationErrors(error))
       }
     );
   }
@@ -141,7 +139,6 @@ export class SightsTableComponent implements OnInit {
   deleteSight(sight: Sight) {
     this.sightService.deleteSight(sight).subscribe(
       data => {
-        // Refresh list
         this.getSights();
         this.showSuccess("Successfully deleted the sight!")
       },
@@ -161,5 +158,16 @@ export class SightsTableComponent implements OnInit {
     this.errors = [];
     this.errorMessage = "";
     this.successMessage = message;
+  }
+
+  getVilidationErrors(error): string[] {
+    let errors: string[] = []
+    if (error.status == 400) {
+      const validationErrors = error.error;
+      Object.keys(validationErrors).forEach(prop => {
+        errors.push(validationErrors[prop])
+      });
+    }
+    return errors;
   }
 }

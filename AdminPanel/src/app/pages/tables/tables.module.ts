@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NbAlertModule, NbButtonModule, NbCardModule, NbDialogModule, NbIconModule, NbInputModule, NbTreeGridModule } from '@nebular/theme';
+import { NbAlertModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbTreeGridModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { ThemeModule } from '../../@theme/theme.module';
@@ -18,6 +18,7 @@ import { ChallengesDialogComponentComponent } from './sights-table/challenges-di
   imports: [
     FormsModule,
     NbButtonModule,
+    NbCheckboxModule,
     NbAlertModule,
     NbCardModule,
     NbTreeGridModule,

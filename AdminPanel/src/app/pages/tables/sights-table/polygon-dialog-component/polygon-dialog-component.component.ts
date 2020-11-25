@@ -33,18 +33,18 @@ export class PolygonDialogComponentComponent implements OnInit {
   submit() {
     this.ref.close(this.coordinates);
   }
-  
-  // google maps zoom level
+
+  // Google maps zoom level
   zoom: number = 12;
-  
-  // initial center position for the map
+
+  // Initial center position for the map
   lat: number = 51.2194475;
   lng: number = 4.4024643;
 
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`)
   }
-  
+
   mapClicked($event) {
     if (this.markers.length < 4) {
       this.markers.push({
@@ -57,21 +57,21 @@ export class PolygonDialogComponentComponent implements OnInit {
       this.coordinates[this.markers.length - 1].longitude = $event.coords.lng
     }
   }
-  
+
   markerDragEnd(m: marker, $event) {
     console.log('dragEnd', m, $event);
     m.lat = $event.coords.lat,
-    m.lng = $event.coords.lng,
-    this.coordinates[this.markers.indexOf(m)].latitude = m.lat
+      m.lng = $event.coords.lng,
+      this.coordinates[this.markers.indexOf(m)].latitude = m.lat
     this.coordinates[this.markers.indexOf(m)].longitude = m.lng
   }
-  
+
   markers: marker[] = []
 }
 
 interface marker {
-	lat: number;
-	lng: number;
-	label?: string;
-	draggable: boolean;
+  lat: number;
+  lng: number;
+  label?: string;
+  draggable: boolean;
 }

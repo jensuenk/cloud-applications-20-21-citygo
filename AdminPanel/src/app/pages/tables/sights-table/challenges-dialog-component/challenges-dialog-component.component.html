@@ -1,39 +1,39 @@
 <nb-card>
     <nb-card-header>Challenges selector</nb-card-header>
-    <nb-card-body>
+    <nb-card-body *ngIf="challenges">
         <table>
             <thead>
                 <tr>
-                    <td><label class="label"></label></td>
-                    <td><label class="label">Latitude</label></td>
-                    <td><label class="label">Longitude</label></td>
+                    <td></td>
+                    <td><label class="label">ID</label></td>
+                    <td><label class="label">Name</label></td>
+                    <td><label class="label">Task</label></td>
+                    <td><label class="label">Question</label></td>
+                    <td><label class="label">Answer</label></td>
                     <td></td>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let coordinate of coordinates; index as i">
-                    <td><label class="label">Coordinate {{ i + 1}}</label></td>
-                    <td><input nbInput fullWidth type="number" name="latitude" value={{coordinate.latitude}}
-                            [(ngModel)]="coordinate.latitude"></td>
-                    <td><input nbInput fullWidth type="number" name="longitude" value={{coordinate.longitude}}
-                            [(ngModel)]="coordinate.longitude"></td>
+                <tr *ngFor="let row of rows">
+                    <td>
+                        <nb-checkbox (change)="FieldsChange(row.challenge, $event)" value={{row.checked}}
+                            status="basic"></nb-checkbox>
+                    </td>
+                    <td><input nbInput fullWidth type="text" disabled name="challengeId"
+                            value={{row.challenge.challengeId}}></td>
+                    <td><input nbInput fullWidth type="text" name="name" value={{row.challenge.name}}>
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="task" value={{row.challenge.task}}>
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="questionChallenge"
+                            value={{row.challenge.questionChallenge}}>
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="answer" value={{row.challenge.answer}}>
+                    </td>
+                    <td>
                 </tr>
             </tbody>
         </table>
-        <p></p>
-        <agm-map [latitude]="lat" [longitude]="lng" [disableDefaultUI]="true" [zoom]="zoom" (mapClick)="mapClicked($event)">
-
-            <agm-marker *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.label, i)"
-                [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"
-                (dragEnd)="markerDragEnd(m, $event)">
-
-                <agm-info-window>
-                    <strong>{{ m.lat }}, {{ m.lng }}</strong>
-                </agm-info-window>
-
-            </agm-marker>
-
-        </agm-map>
     </nb-card-body>
     <nb-card-footer>
         <td><button class="cancel" nbButton status="danger" (click)="cancel()">Cancel</button></td>
