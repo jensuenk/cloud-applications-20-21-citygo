@@ -125,7 +125,6 @@ export class SightsTableComponent implements OnInit {
     updatedSight.challenges = this.challenges
     this.sightService.updateSight(updatedSight).subscribe(
       data => {
-        this.errors = [];
         console.log(updatedSight);
         this.getSights();
         this.showSuccess("Successfully updated the sight!");

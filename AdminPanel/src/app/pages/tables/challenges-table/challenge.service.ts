@@ -55,7 +55,6 @@ export interface Challenge {
   challengeId: number;
   name: string;
   task: string;
-  taskDone: boolean;
   questionChallenge: string;
   answer: string;
   sight?: any;

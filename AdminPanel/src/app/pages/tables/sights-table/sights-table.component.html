@@ -34,16 +34,16 @@
                             [(ngModel)]="sight.monument"></td>
                     <td><input nbInput fullWidth type="text" name="stop" value={{sight.stop}} [(ngModel)]="sight.stop">
                     </td>
-                    <td><button nbButton fullWidth (click)="openEditPolygonDialog(sight)">Edit</button>
+                    <td><button nbButton fullWidth outline (click)="openEditPolygonDialog(sight)">Edit</button>
                     </td>
 
-                    <td><button nbButton fullWidth (click)="openChallengeSelector(sight.challenges)">Edit</button>
+                    <td><button nbButton fullWidth outline (click)="openChallengeSelector(sight.challenges)">Edit</button>
                     </td>
 
                     <td><button nbButton fullWidth outline status="success" (click)="updateSight(sight)">Save</button>
-                    <td>
+                    </td>
                     <td><button nbButton fullWidth outline status="danger" (click)="deleteSight(sight)">Delete</button>
-                    <td>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -73,11 +73,11 @@
                 <td><input nbInput fullWidth type="text" name="info" [(ngModel)]="info"></td>
                 <td><input nbInput fullWidth type="text" name="monument" [(ngModel)]="monument"></td>
                 <td><input nbInput fullWidth type="text" name="stop" [(ngModel)]="stop"></td>
-                <td><button nbButton fullWidth (click)="openNewPolygonDialog()">Add</button></td>
-                <td><button nbButton fullWidth (click)="openChallengeSelector()">Add</button></td>
+                <td><button nbButton fullWidth outline (click)="openNewPolygonDialog()">Add</button></td>
+                <td><button nbButton fullWidth outline (click)="openChallengeSelector()">Add</button></td>
                 <td><button nbButton outline status="success"
                         (click)="createSight(name, info, monument, stop)">Create</button>
-                <td>
+                </td>
             </tbody>
         </table>
 
