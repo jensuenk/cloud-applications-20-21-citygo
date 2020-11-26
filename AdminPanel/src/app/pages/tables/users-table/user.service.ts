@@ -54,6 +54,7 @@ export interface User {
   username: string;
   email: string;
   balls: number;
+  items?: any;
   usersItems: Item[];
   challenges: Challenge[];
   friends?: any;

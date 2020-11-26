@@ -79,7 +79,7 @@ export class UsersTableComponent implements OnInit {
     });
   }
 
-  getUsers(urlArgs: string = "") {
+  getUsers(urlArgs: string = "/All") {
     this.userService.getUsers(urlArgs).subscribe(
       result => {
         this.users = result.users;
@@ -97,6 +97,7 @@ export class UsersTableComponent implements OnInit {
       username: username,
       email: email,
       balls: balls,
+      items: this.items,
       usersItems: null,
       challenges: this.challenges,
       friends: null
@@ -114,6 +115,7 @@ export class UsersTableComponent implements OnInit {
 
   updateUser(updatedUser: User) {
     updatedUser.challenges = this.challenges
+    updatedUser.items = this.items
     this.userService.updateUser(updatedUser).subscribe(
       data => {
         console.log(updatedUser);

@@ -29,55 +29,27 @@ namespace Application.Command
                 Email = request.UserVM.Email, 
                 Balls = request.UserVM.Balls
             };
-            /*
-            
-            if (request.UserVM.ItemsId != 0 )
-            {
-                var item = await _context.Items.Where(c => c.ItemId == request.UserVM.ItemsId).SingleAsync();
-                UsersItems usersItems = new UsersItems()
-                {
-                    User = newUser,
-                    UserId = newUser.UserId,
-                    Item = item,
-                    ItemId = item.ItemId
-                };
-                if (request.UserVM.UsersItems == null)
-                {
-                    List<Domain.UsersItems> tussen = new List<Domain.UsersItems>();
-                    tussen.Add(usersItems);
-                    newUser.UsersItems = tussen;
-                }
-                else
-                {
-                    newUser.UsersItems.Add(usersItems);
-                }
-                if (item.UsersItems == null)
-                {
-                    List<Domain.UsersItems> tussen = new List<Domain.UsersItems>();
-                    tussen.Add(usersItems);
-                    item.UsersItems = tussen;
-                }
-                else
-                {
-                    item.UsersItems.Add(usersItems);
-                }
-            }
 
             // Link existing useritems to a user trough the body
             List<Domain.UsersItems> newUserItems = new List<Domain.UsersItems>();
-            foreach (var usersItem in request.UserVM.UsersItems)
+            foreach (var usersItem in request.UserVM.Items)
             {
-                // Check if useritem exists, if so, add it to a list to asign later
-                var foundUserItem = _context.UsersItems.Find(usersItem.ItemId);
-                if (foundUserItem != null)
+                // Check if item exists, if so, create a new userItem and add it to a list to asign later
+                var foundItem = _context.Items.Find(usersItem.ItemId);
+                if (foundItem != null)
                 {
-                    newUserItems.Add(foundUserItem);
+                    UsersItems usersItems = new UsersItems()
+                    {
+                        User = newUser,
+                        UserId = newUser.UserId,
+                        Item = foundItem,
+                        ItemId = foundItem.ItemId
+                    };
+                    newUserItems.Add(usersItems);
                 }
             }
             // Assign the list to the user's useritems
             newUser.UsersItems = newUserItems;
-            */
-
 
             // Link existing challenges to a user trough the body
             List<Domain.Challenge> newChallenges = new List<Domain.Challenge>();
