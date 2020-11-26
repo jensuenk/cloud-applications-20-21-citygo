@@ -26,9 +26,11 @@
                             [(ngModel)]="item.itemId"></td>
                     <td><input nbInput fullWidth type="text" name="name" value={{item.name}} [(ngModel)]="item.name">
                     </td>
-                    <td><input nbInput fullWidth type="text" name="rarity" value={{item.rarity}} [(ngModel)]="item.rarity">
+                    <td><input nbInput fullWidth type="text" name="rarity" value={{item.rarity}}
+                            [(ngModel)]="item.rarity">
                     </td>
-                    <td><input nbInput fullWidth type="text" name="picture" value={{item.picture}} [(ngModel)]="item.picture">
+                    <td><input nbInput fullWidth type="text" name="picture" value={{item.picture}}
+                            [(ngModel)]="item.picture">
                     </td>
                     <td><button nbButton fullWidth (click)="openEditLocationDialog(item)">Edit</button>
                     </td>
@@ -68,7 +70,6 @@
                 <td>
             </tbody>
         </table>
-
     </nb-card-body>
 </nb-card>
 <nb-alert *ngIf="errorMessage" status="danger">{{errorMessage}}</nb-alert>

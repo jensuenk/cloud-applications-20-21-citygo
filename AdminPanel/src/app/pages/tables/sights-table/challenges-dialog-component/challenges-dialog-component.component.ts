@@ -14,7 +14,6 @@ export class ChallengesDialogComponentComponent implements OnInit {
 
   rows: Row[] = []
 
-
   constructor(protected ref: NbDialogRef<ChallengesDialogComponentComponent>) {
   }
 
@@ -26,12 +25,12 @@ export class ChallengesDialogComponentComponent implements OnInit {
         if (challenge.challengeId == selectedChallenge.challengeId) {
           checked = true;
         }
-      })
+      });
 
       let row: Row = {
         checked: checked,
         challenge: challenge
-      }
+      };
       this.rows.push(row);
     });
   }
@@ -45,14 +44,13 @@ export class ChallengesDialogComponentComponent implements OnInit {
   }
 
   FieldsChange(challenge: Challenge, $event) {
-    console.log($event.target.checked);
     if ($event.target.checked) {
-      this.selectedChallenges.push(challenge)
+      this.selectedChallenges.push(challenge);
     }
     else {
-      this.selectedChallenges.splice(this.selectedChallenges.indexOf(challenge))
+      this.selectedChallenges.splice(this.selectedChallenges.indexOf(challenge));
     }
-    console.log("Selected items", this.selectedChallenges)
+    console.log("Selected items", this.selectedChallenges);
   }
 
 }

@@ -11,6 +11,8 @@ import { Coordinate } from '../sight.service';
 export class PolygonDialogComponentComponent implements OnInit {
 
   @Input() coordinates: Coordinate[];
+  
+  markers: marker[] = []
 
   constructor(protected ref: NbDialogRef<PolygonDialogComponentComponent>) {
   }
@@ -41,10 +43,6 @@ export class PolygonDialogComponentComponent implements OnInit {
   lat: number = 51.2194475;
   lng: number = 4.4024643;
 
-  clickedMarker(label: string, index: number) {
-    console.log(`clicked the marker: ${label || index}`)
-  }
-
   mapClicked($event) {
     if (this.markers.length < 4) {
       this.markers.push({
@@ -53,20 +51,17 @@ export class PolygonDialogComponentComponent implements OnInit {
         label: (this.markers.length + 1).toString(),
         draggable: true
       });
-      this.coordinates[this.markers.length - 1].latitude = $event.coords.lat
-      this.coordinates[this.markers.length - 1].longitude = $event.coords.lng
+      this.coordinates[this.markers.length - 1].latitude = $event.coords.lat;
+      this.coordinates[this.markers.length - 1].longitude = $event.coords.lng;
     }
   }
 
   markerDragEnd(m: marker, $event) {
-    console.log('dragEnd', m, $event);
-    m.lat = $event.coords.lat,
-      m.lng = $event.coords.lng,
-      this.coordinates[this.markers.indexOf(m)].latitude = m.lat
-    this.coordinates[this.markers.indexOf(m)].longitude = m.lng
+    m.lat = $event.coords.lat;
+    m.lng = $event.coords.lng;
+    this.coordinates[this.markers.indexOf(m)].latitude = m.lat;
+    this.coordinates[this.markers.indexOf(m)].longitude = m.lng;
   }
-
-  markers: marker[] = []
 }
 
 interface marker {

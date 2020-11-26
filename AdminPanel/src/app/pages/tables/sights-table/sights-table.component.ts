@@ -48,8 +48,8 @@ export class SightsTableComponent implements OnInit {
         let cord: Coordinate = {
           latitude: 51.2194475,
           longitude: 4.4024643
-        }
-        this.coordinates.push(cord)
+        };
+        this.coordinates.push(cord);
       }
     }
     this.dialogService.open(PolygonDialogComponentComponent, {
@@ -65,10 +65,10 @@ export class SightsTableComponent implements OnInit {
 
   // Open dialog popup with a ui to select challenges
   openChallengeSelector(selectedChallenges: Challenge[]) {
-    this.challenges = []
+    this.challenges = [];
     // Get list of challenges (get request)
     this.challengeService.getChallenges("").toPromise().then((res) => {
-      let challenges: Challenge[] = res.challenges
+      let challenges: Challenge[] = res.challenges;
       // Check if there are already challenges linked to this sight (=selectedChallenges)
       if (selectedChallenges == null) {
         selectedChallenges = [];
@@ -85,17 +85,17 @@ export class SightsTableComponent implements OnInit {
         }
       })
     }).catch(error => {
-      this.showError(error.message)
+      this.showError(error.message);
     });
   }
 
   getSights(urlArgs: string = "") {
     this.sightService.getSights(urlArgs).subscribe(
       result => {
-        this.sights = result.sights
+        this.sights = result.sights;
       },
       error => {
-        this.showError(error.message)
+        this.showError(error.message);
       }
     );
   }
@@ -109,14 +109,14 @@ export class SightsTableComponent implements OnInit {
       stop: stop,
       coordinates: this.coordinates,
       challenges: this.challenges
-    }
+    };
 
     this.sightService.createSight(newSight).subscribe(
       data => {
         this.getSights();
-        this.showSuccess("Successfully created a new sight!")
+        this.showSuccess("Successfully created a new sight!");
       }, error => {
-        this.showError("Could not create a new sight!", this.getVilidationErrors(error))
+        this.showError("Could not create a new sight!", this.getVilidationErrors(error));
       }
     );
   }
@@ -126,12 +126,12 @@ export class SightsTableComponent implements OnInit {
     this.sightService.updateSight(updatedSight).subscribe(
       data => {
         this.errors = [];
-        console.log(updatedSight)
+        console.log(updatedSight);
         this.getSights();
-        this.showSuccess("Successfully updated the sight!")
+        this.showSuccess("Successfully updated the sight!");
       },
       error => {
-        this.showError("Could not create a new sight!", this.getVilidationErrors(error))
+        this.showError("Could not create a new sight!", this.getVilidationErrors(error));
       }
     );
   }
@@ -140,10 +140,10 @@ export class SightsTableComponent implements OnInit {
     this.sightService.deleteSight(sight).subscribe(
       data => {
         this.getSights();
-        this.showSuccess("Successfully deleted the sight!")
+        this.showSuccess("Successfully deleted the sight!");
       },
       error => {
-        this.showError(error.message)
+        this.showError(error.message);
       }
     );
   }

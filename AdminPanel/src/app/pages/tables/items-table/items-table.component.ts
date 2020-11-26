@@ -47,7 +47,7 @@ export class ItemsTableComponent implements OnInit {
     }).onClose.subscribe(res => {
       if (res != null) {
         item.location = res;
-        console.log(item.location)
+        console.log(item.location);
       }
     })
   }
@@ -57,7 +57,7 @@ export class ItemsTableComponent implements OnInit {
       this.coordinate = {
         latitude: 51.2194475,
         longitude: 4.4024643
-      }
+      };
     }
     this.dialogService.open(LocationDialogComponentComponent, {
       context: {
@@ -66,7 +66,7 @@ export class ItemsTableComponent implements OnInit {
     }).onClose.subscribe(res => {
       if (res != null) {
         this.coordinate = res;
-        console.log(this.coordinate)
+        console.log(this.coordinate);
       }
     })
   }
@@ -74,9 +74,8 @@ export class ItemsTableComponent implements OnInit {
   getItems(urlArgs: string = "") {
     this.svc.getItems(urlArgs).subscribe(
       result => {
-        this.errors = [];
-        console.log(result.items)
-        this.items = result.items
+        console.log(result.items);
+        this.items = result.items;
         return true;
       },
       error => {
