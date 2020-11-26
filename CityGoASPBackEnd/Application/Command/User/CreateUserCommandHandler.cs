@@ -29,8 +29,8 @@ namespace Application.Command
                 Email = request.UserVM.Email, 
                 Balls = request.UserVM.Balls
             };
-
             /*
+            
             if (request.UserVM.ItemsId != 0 )
             {
                 var item = await _context.Items.Where(c => c.ItemId == request.UserVM.ItemsId).SingleAsync();
@@ -76,6 +76,7 @@ namespace Application.Command
             }
             // Assign the list to the user's useritems
             newUser.UsersItems = newUserItems;
+            */
 
 
             // Link existing challenges to a user trough the body
@@ -91,7 +92,7 @@ namespace Application.Command
             }
             // Assign the list to the user's challenges
             newUser.Challenges = newChallenges;
-            */
+            
 
             var query = _context.Users.Add(newUser);
             return await _context.SaveAsync(cancellationToken);
