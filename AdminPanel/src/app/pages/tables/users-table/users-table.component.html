@@ -1,1 +1,92 @@
-<p>users-table works!</p>
+<nb-card>
+    <nb-card-body>
+        <h2>User Editor</h2>
+        <p>On this page you can manage the users available in the app.</p>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header>
+        Edit Users
+    </nb-card-header>
+    <nb-card-body *ngIf="users">
+        <table>
+            <thead>
+                <tr>
+                    <td><label class="label">ID</label></td>
+                    <td><label class="label">Name</label></td>
+                    <td><label class="label">Username</label></td>
+                    <td><label class="label">Email</label></td>
+                    <td><label class="label">Balls</label></td>
+                    <td><label class="label">Items</label></td>
+                    <td><label class="label">Challenges</label></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td><input nbInput fullWidth type="text" disabled name="userId" value={{user.userId}}
+                            [(ngModel)]="user.userId"></td>
+                    <td><input nbInput fullWidth type="text" name="name" value={{user.name}} [(ngModel)]="user.name">
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="username" value={{user.username}} [(ngModel)]="user.username">
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="email" value={{user.email}}
+                            [(ngModel)]="user.email"></td>
+                    <td><input nbInput fullWidth type="number" name="balls" value={{user.balls}} [(ngModel)]="user.balls">
+                    </td>
+                    <td><button nbButton fullWidth outline (click)="openItemSelector(user.usersItems)">Edit</button>
+                    </td>
+
+                    <td><button nbButton fullWidth outline (click)="openChallengeSelector(user.challenges)">Edit</button>
+                    </td>
+
+                    <td><button nbButton fullWidth outline status="success" (click)="updateUser(user)">Save</button>
+                    </td>
+                    <td><button nbButton fullWidth outline status="danger" (click)="deleteUser(user)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header>
+        Add Users
+    </nb-card-header>
+    <nb-card-body *ngIf="users">
+        <table>
+            <thead>
+                <tr>
+                    <td><label class="label">ID</label></td>
+                    <td><label class="label">Name</label></td>
+                    <td><label class="label">Username</label></td>
+                    <td><label class="label">Email</label></td>
+                    <td><label class="label">Balls</label></td>
+                    <td><label class="label">Items</label></td>
+                    <td><label class="label">Challenges</label></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <td><input nbInput fullWidth type="text" disabled name="userId" [(ngModel)]="userId"></td>
+                <td><input nbInput fullWidth type="text" name="name" [(ngModel)]="name"></td>
+                <td><input nbInput fullWidth type="text" name="username" [(ngModel)]="username"></td>
+                <td><input nbInput fullWidth type="text" name="email" [(ngModel)]="email"></td>
+                <td><input nbInput fullWidth type="number" name="balls" [(ngModel)]="balls"></td>
+                <td><button nbButton fullWidth outline (click)="openItemSelector()">Add</button></td>
+                <td><button nbButton fullWidth outline (click)="openChallengeSelector()">Add</button></td>
+                <td><button nbButton outline status="success"
+                        (click)="createUser(name, username, email, balls)">Create</button>
+                </td>
+            </tbody>
+        </table>
+
+    </nb-card-body>
+</nb-card>
+<nb-alert *ngIf="errorMessage" status="danger">{{errorMessage}}</nb-alert>
+<nb-alert *ngIf="successMessage" status="success">{{successMessage}}</nb-alert>
+<nb-alert status="danger" *ngIf="errors.length > 0">
+    <div *ngFor="let error of errors">
+        <p-message severity="error" text="{{ error }}"></p-message>
+    </div>
+</nb-alert>

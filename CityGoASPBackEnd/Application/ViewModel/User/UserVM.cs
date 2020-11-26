@@ -17,6 +17,7 @@ namespace Application.ViewModel
         public string Email { get; set; }
 
         public int Balls { get; set; }
+        public List<Domain.Item> Items { get; set; }
 
         public List<Domain.UsersItems> UsersItems { get; set; }
 

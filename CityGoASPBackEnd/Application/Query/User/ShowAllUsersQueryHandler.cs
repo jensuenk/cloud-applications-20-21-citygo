@@ -20,9 +20,10 @@ namespace Application.Query
         public async Task<ListUserVM> Handle(ShowAllUsersQuery request, CancellationToken cancellationToken)
         {
             var allUsers = await _context.Users
-                .Include(c => c.Challenges)
                 .Include(i => i.UsersItems)
+                .Include(c => c.Challenges)
                 .ToListAsync();
+
 
             ListUserVM vm = new ListUserVM();
             foreach (var user in allUsers)
