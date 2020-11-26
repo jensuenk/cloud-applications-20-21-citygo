@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NbAlertModule, NbButtonModule, NbCardModule, NbDialogModule, NbIconModule, NbInputModule, NbTreeGridModule } from '@nebular/theme';
+import { NbAlertModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbTreeGridModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { ThemeModule } from '../../@theme/theme.module';
@@ -12,11 +12,14 @@ import { FormsModule } from '@angular/forms';
 import { PolygonDialogComponentComponent } from './sights-table/polygon-dialog-component/polygon-dialog-component.component';
 import { AgmCoreModule } from '@agm/core';
 import { LocationDialogComponentComponent } from './items-table/location-dialog-component/location-dialog-component.component';
+import { ChallengesDialogComponentComponent } from './sights-table/challenges-dialog-component/challenges-dialog-component.component';
+import { ItemsDialogComponentComponent } from './challenges-table/items-dialog-component/items-dialog-component.component';
 
 @NgModule({
   imports: [
     FormsModule,
     NbButtonModule,
+    NbCheckboxModule,
     NbAlertModule,
     NbCardModule,
     NbTreeGridModule,
@@ -38,6 +41,8 @@ import { LocationDialogComponentComponent } from './items-table/location-dialog-
     UsersTableComponent,
     PolygonDialogComponentComponent,
     LocationDialogComponentComponent,
+    ChallengesDialogComponentComponent,
+    ItemsDialogComponentComponent,
   ],
 })
 export class TablesModule { }

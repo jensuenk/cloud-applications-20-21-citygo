@@ -17,7 +17,7 @@
                     <td><label class="label">Task</label></td>
                     <td><label class="label">Question</label></td>
                     <td><label class="label">Answer</label></td>
-                    <td><label class="label">Reward Item ID</label></td>
+                    <td><label class="label">Rewards</label></td>
                     <td></td>
                 </tr>
             </thead>
@@ -33,12 +33,11 @@
                     </td>
                     <td><input nbInput fullWidth type="text" name="answer" value={{challenge.answer}} [(ngModel)]="challenge.answer">
                     </td>
-                    <td><input nbInput fullWidth type="number" name="items" value={{challenge.items}}
-                            [(ngModel)]="challenge.items"></td>
+                    <td><button nbButton outline fullWidth (click)="openItemSelector(challenge.items)">Edit</button></td>
                     <td><button nbButton fullWidth outline status="success" (click)="updateChallenge(challenge)">Save</button>
-                    <td>
+                    </td>
                     <td><button nbButton fullWidth outline status="danger" (click)="deleteChallenge(challenge)">Delete</button>
-                    <td>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -57,7 +56,7 @@
                     <td><label class="label">Task</label></td>
                     <td><label class="label">Question</label></td>
                     <td><label class="label">Answer</label></td>
-                    <td><label class="label">Reward Item ID</label></td>
+                    <td><label class="label">Rewards</label></td>
                     <td></td>
                 </tr>
             </thead>
@@ -66,11 +65,11 @@
                 <td><input nbInput fullWidth type="text" name="name" [(ngModel)]="name"></td>
                 <td><input nbInput fullWidth type="text" name="task" [(ngModel)]="task"></td>
                 <td><input nbInput fullWidth type="text" name="questionChallenge" [(ngModel)]="questionChallenge"></td>
-                <td><input nbInput fullWidth type="text" name="answer" [(ngModel)]="answer"></td>
-                <td><input nbInput fullWidth type="number" name="itemId" [(ngModel)]="itemId"></td>
+                <td><input nbInput outline fullWidth type="text" name="answer" [(ngModel)]="answer"></td>
+                <td><button nbButton outline fullWidth (click)="openItemSelector()">Add</button></td>
                 <td><button nbButton outline status="success"
-                        (click)="createChallenge(name, task, questionChallenge, answer, itemId)">Create</button>
-                <td>
+                        (click)="createChallenge(name, task, questionChallenge, answer)">Create</button>
+                </td>
             </tbody>
         </table>
 

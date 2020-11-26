@@ -26,16 +26,18 @@
                             [(ngModel)]="item.itemId"></td>
                     <td><input nbInput fullWidth type="text" name="name" value={{item.name}} [(ngModel)]="item.name">
                     </td>
-                    <td><input nbInput fullWidth type="text" name="rarity" value={{item.rarity}} [(ngModel)]="item.rarity">
+                    <td><input nbInput fullWidth type="text" name="rarity" value={{item.rarity}}
+                            [(ngModel)]="item.rarity">
                     </td>
-                    <td><input nbInput fullWidth type="text" name="picture" value={{item.picture}} [(ngModel)]="item.picture">
+                    <td><input nbInput fullWidth type="text" name="picture" value={{item.picture}}
+                            [(ngModel)]="item.picture">
                     </td>
-                    <td><button nbButton fullWidth (click)="openEditLocationDialog(item)">Edit</button>
+                    <td><button nbButton fullWidth outline (click)="openEditLocationDialog(item)">Edit</button>
                     </td>
                     <td><button nbButton fullWidth outline status="success" (click)="updateItem(item)">Save</button>
-                    <td>
+                    </td>
                     <td><button nbButton fullWidth outline status="danger" (click)="deleteItem(item)">Delete</button>
-                    <td>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -62,13 +64,12 @@
                 <td><input nbInput fullWidth type="text" name="name" [(ngModel)]="name"></td>
                 <td><input nbInput fullWidth type="text" name="rarity" [(ngModel)]="rarity"></td>
                 <td><input nbInput fullWidth type="text" name="picture" [(ngModel)]="picture"></td>
-                <td><button nbButton fullWidth (click)="openNewLocationDialog()">Edit</button></td>
+                <td><button nbButton outline fullWidth (click)="openNewLocationDialog()">Edit</button></td>
                 <td><button nbButton outline status="success"
                         (click)="createItem(name, rarity, picture)">Create</button>
-                <td>
+                </td>
             </tbody>
         </table>
-
     </nb-card-body>
 </nb-card>
 <nb-alert *ngIf="errorMessage" status="danger">{{errorMessage}}</nb-alert>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Challenge } from '../challenges-table/challenge.service';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export interface Sight {
   monument: boolean;
   stop: boolean;
   coordinates: Coordinate[];
-  challenges?: any;
+  challenges?: Challenge[];
 }
 
 export interface RootObject {

@@ -11,34 +11,21 @@ import { LocationDialogComponentComponent } from './location-dialog-component/lo
   styleUrls: ['./items-table.component.scss']
 })
 export class ItemsTableComponent implements OnInit {
-
-  errorMessage: string
-  successfulSave: boolean;
-  successMessage: string;
-  errors: string[];
+  errorMessage: string = "";
+  successMessage: string = "";
+  errors: string[] = [];
 
   items: Item[] = [];
-  item: Item
+  item: Item;
+  coordinate: Coordinate;
 
-  filterItemId: string = "";
-  filterName: string = "";
-  filterLocation: string = "";
-  filterSort: string = "";
-  filterPage: string = "";
-  filterLength: string = "";
-  filterDir: string = "";
-
-  constructor(private dialogService: NbDialogService, private svc: ItemService) { }
+  constructor(private dialogService: NbDialogService, private itemService: ItemService) { }
 
   ngOnInit() {
     this.getItems();
-    this.errorMessage = "";
-    this.successMessage = "";
-    this.errors = [];
   }
 
-  coordinate: Coordinate;
-
+  // Open dialog popup with a ui to edit the location coordinates
   openEditLocationDialog(item: Item) {
     this.dialogService.open(LocationDialogComponentComponent, {
       context: {
@@ -47,17 +34,18 @@ export class ItemsTableComponent implements OnInit {
     }).onClose.subscribe(res => {
       if (res != null) {
         item.location = res;
-        console.log(item.location)
+        console.log(item.location);
       }
     })
   }
 
+  // Open dialog popup with a ui to create new location coordinates
   openNewLocationDialog() {
     if (this.coordinate == null) {
       this.coordinate = {
         latitude: 51.2194475,
         longitude: 4.4024643
-      }
+      };
     }
     this.dialogService.open(LocationDialogComponentComponent, {
       context: {
@@ -66,36 +54,18 @@ export class ItemsTableComponent implements OnInit {
     }).onClose.subscribe(res => {
       if (res != null) {
         this.coordinate = res;
-        console.log(this.coordinate)
+        console.log(this.coordinate);
       }
     })
   }
 
   getItems(urlArgs: string = "") {
-    this.svc.getItems(urlArgs).subscribe(
+    this.itemService.getItems(urlArgs).subscribe(
       result => {
-        this.errors = [];
-        console.log(result.items)
-        this.items = result.items
-        return true;
+        this.items = result.items;
       },
       error => {
-        console.error("Error while retreiving items!");
-        this.showError(error.message)
-      }
-    );
-  }
-
-  getItem(id: number) {
-    this.svc.getItemById(id).subscribe(
-      result => {
-        this.errors = [];
-        this.item = result
-        return true;
-      },
-      error => {
-        console.error("Error while retreiving item!");
-        this.showError(error.message)
+        this.showError(error.message);
       }
     );
   }
@@ -110,79 +80,60 @@ export class ItemsTableComponent implements OnInit {
       usersItems: null,
       challenge: null
     }
-    this.svc.createItem(newItem).subscribe(
+    this.itemService.createItem(newItem).subscribe(
       data => {
-        this.errors = [];
-        console.log(newItem)
-        // refresh the list
         this.getItems();
         this.showSuccess("Successfully created a new item!")
-        this.successfulSave = true
-        return true;
       }, error => {
-        this.errors = [];
-        this.showError("Error accured trying to create a item!")
-        this.successfulSave = false
-        if (error.status === 400) {
-          console.log(error)
-          const validationErrors = error.error;
-          Object.keys(validationErrors).forEach(prop => {
-            console.log(validationErrors[prop])
-            this.errors.push(validationErrors[prop])
-          });
-        }
+        this.showError("Could not create a new sight!", this.getVilidationErrors(error));
       }
     );
   }
 
   updateItem(updatedItem: Item) {
-    this.svc.updateItem(updatedItem).subscribe(
+    this.itemService.updateItem(updatedItem).subscribe(
       data => {
-        this.errors = [];
-        console.log(updatedItem)
-        // refresh the list
         this.getItems();
         this.showSuccess("Successfully updated the item!")
-        this.successfulSave = true
-        return true;
       },
       error => {
-        this.errors = [];
-        this.showError("Error accured trying to update this item!")
-        this.successfulSave = false
-        if (error.status === 400) {
-          const validationErrors = error.error;
-          Object.keys(validationErrors).forEach(prop => {
-            console.log(validationErrors[prop])
-            this.errors.push(validationErrors[prop])
-          });
-        }
+        this.showError("Could not create a new sight!", this.getVilidationErrors(error));
       }
     );
   }
 
   deleteItem(item) {
-    this.svc.deleteItem(item).subscribe(
+    this.itemService.deleteItem(item).subscribe(
       data => {
-        this.errors = [];
-        // refresh the list
         this.getItems();
         this.showSuccess("Successfully deleted the item!")
-        return true;
       },
       error => {
-        console.error("Error deleting item!");
         this.showError(error.message)
       }
     );
   }
 
-  showError(message: string) {
+  showError(message: string, errors?: string[]) {
     this.errorMessage = message;
+    this.errors = errors;
     this.successMessage = "";
   }
+
   showSuccess(message: string) {
+    this.errors = [];
     this.errorMessage = "";
     this.successMessage = message;
+  }
+
+  getVilidationErrors(error): string[] {
+    let errors: string[] = []
+    if (error.status == 400) {
+      const validationErrors = error.error;
+      Object.keys(validationErrors).forEach(prop => {
+        errors.push(validationErrors[prop])
+      });
+    }
+    return errors;
   }
 }

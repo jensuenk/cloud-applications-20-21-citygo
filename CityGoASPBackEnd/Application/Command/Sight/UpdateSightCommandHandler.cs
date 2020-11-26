@@ -30,39 +30,27 @@ namespace Application.Command.Sight
                 Coordinates = request.SightVM.Coordinates
             };
 
-            List<Domain.Coordinate> tussen1 = new List<Domain.Coordinate>();
-            for (int i = 0; i < request.SightVM.CoordinateIds.Length; i++)
+            // Link existing challenges to a sight trough the body
+            List<Domain.Challenge> newChallenges = new List<Domain.Challenge>();
+            foreach (var challenge in request.SightVM.Challenges)
             {
-                if (request.SightVM.CoordinateIds[i] != 0)
+                // Check if challenge exists, if so, add it to a list to asign later
+                var foundChallenge = _context.Challenges.Find(challenge.ChallengeId);
+                if (foundChallenge != null)
                 {
-                    var id = request.SightVM.CoordinateIds[i];
-                    var coordinate = await _context.Coordinates.Where(i => i.CoordinateId == id).SingleAsync();
-                    tussen1.Add(coordinate);
-                    newSight.Coordinates = tussen1;
+                    newChallenges.Add(foundChallenge);
                 }
             }
 
-            List<Domain.Challenge> tussen2 = new List<Domain.Challenge>();
-            for (int i = 0; i < request.SightVM.CoordinateIds.Length; i++)
-            {
-                if (request.SightVM.ChallengeIds[i] != 0)
-                {
-                    var id = request.SightVM.ChallengeIds[i];
-                    var challenge = await _context.Challenges.Where(i => i.ChallengeId == id).SingleAsync();
-                    tussen2.Add(challenge);
-                    newSight.Challenges = tussen2;
-                }
-            }
-
-           
             var oldSight = await _context.Sights.Where(s => s.SightId == newSight.SightId)
+                .Include(c => c.Challenges)
                 .Include(c => c.Coordinates)
                 .SingleAsync();
             oldSight.Name = newSight.Name;
             oldSight.Info = newSight.Info;
             oldSight.Monument = newSight.Monument;
             oldSight.Stop = newSight.Stop;
-            oldSight.Challenges = newSight.Challenges;
+            oldSight.Challenges = newChallenges;
             oldSight.Coordinates = newSight.Coordinates;
 
 

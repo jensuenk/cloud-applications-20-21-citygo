@@ -27,32 +27,22 @@ namespace Application.Command.Sight
                 Monument = request.SightVM.Monument, 
                 Name = request.SightVM.Name, 
                 Stop = request.SightVM.Stop,
-                Coordinates = request.SightVM.Coordinates
+                Coordinates = request.SightVM.Coordinates,
             };
 
-            List<Domain.Coordinate> tussen1 = new List<Domain.Coordinate>();
-            for (int i = 0; i < request.SightVM.CoordinateIds.Length; i++)
+            // Link existing challenges to a sight trough the body
+            List<Domain.Challenge> newChallenges = new List<Domain.Challenge>();
+            foreach (var challenge in request.SightVM.Challenges)
             {
-                if (request.SightVM.CoordinateIds[i] != 0)
+                // Check if challenge exists, if so, add it to a list to asign later
+                var foundChallenge = _context.Challenges.Find(challenge.ChallengeId);
+                if (foundChallenge != null)
                 {
-                    var id = request.SightVM.CoordinateIds[i];
-                    var coordinate = await _context.Coordinates.Where(i => i.CoordinateId == id).SingleAsync();
-                    tussen1.Add(coordinate);
-                    newSight.Coordinates = tussen1;
+                    newChallenges.Add(foundChallenge);
                 }
             }
-
-            List<Domain.Challenge> tussen2 = new List<Domain.Challenge>();
-            for (int i = 0; i < request.SightVM.CoordinateIds.Length; i++)
-            {
-                if (request.SightVM.ChallengeIds[i] != 0)
-                {
-                    var id = request.SightVM.ChallengeIds[i];
-                    var challenge = await _context.Challenges.Where(i => i.ChallengeId == id).SingleAsync();
-                    tussen2.Add(challenge);
-                    newSight.Challenges = tussen2;
-                }
-            }
+            // Assign the list to the sight's challenges
+            newSight.Challenges = newChallenges;
 
             var query = _context.Sights.Add(newSight);
             return await _context.SaveAsync(cancellationToken);
