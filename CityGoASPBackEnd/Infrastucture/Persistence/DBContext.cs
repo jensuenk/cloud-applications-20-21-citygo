@@ -21,7 +21,7 @@ namespace Infrastucture.Persistence
         public DbSet<Challenge> Challenges { get; set; }
         public DbSet<UsersItems> UsersItems { get; set; }
         public DbSet<Coordinate> Coordinates { get; set; }
-        //public DbSet<UsersFriends> UsersFriends { get; set; }
+        public DbSet<UsersFriends> UsersFriends { get; set; }
 
         public Task<int> SaveAsync(CancellationToken cancellationToken)
         {
