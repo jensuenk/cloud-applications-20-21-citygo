@@ -29,7 +29,7 @@ const AuthorizationStack = () => {
     } else if (isFirstLaunch == true) {
         routeName = 'Welcome';
     } else {
-        routeName = 'Welcome';
+        routeName = 'Login';
     }
 
     return (
@@ -45,7 +45,11 @@ const AuthorizationStack = () => {
                 options={{ header: () => null }}
             />
             <Stack.Screen name="Register" component={RegisterScreen}/>
-            <Stack.Screen name="Main" component={MainScreen}/>
+            <Stack.Screen 
+                name="Main" 
+                component={MainScreen}
+                options={{ header: () => null }}
+            />
         </Stack.Navigator>
     );
 };
