@@ -29,7 +29,8 @@ namespace Application.Command
                 Email = request.UserVM.Email, 
                 Balls = request.UserVM.Balls
             };
-          
+
+            /*
             if (request.UserVM.ItemsId != 0 )
             {
                 var item = await _context.Items.Where(c => c.ItemId == request.UserVM.ItemsId).SingleAsync();
@@ -61,13 +62,37 @@ namespace Application.Command
                     item.UsersItems.Add(usersItems);
                 }
             }
-            if (request.UserVM.ChallengeId != 0)
+
+            // Link existing useritems to a user trough the body
+            List<Domain.UsersItems> newUserItems = new List<Domain.UsersItems>();
+            foreach (var usersItem in request.UserVM.UsersItems)
             {
-                var challenge = await _context.Challenges.Where(c => c.ChallengeId == request.UserVM.ChallengeId).SingleAsync();
-                List<Domain.Challenge> challenges = new List<Domain.Challenge>();
-                challenges.Add(challenge);
-                newUser.Challenges = challenges;
+                // Check if useritem exists, if so, add it to a list to asign later
+                var foundUserItem = _context.UsersItems.Find(usersItem.ItemId);
+                if (foundUserItem != null)
+                {
+                    newUserItems.Add(foundUserItem);
+                }
             }
+            // Assign the list to the user's useritems
+            newUser.UsersItems = newUserItems;
+
+
+            // Link existing challenges to a user trough the body
+            List<Domain.Challenge> newChallenges = new List<Domain.Challenge>();
+            foreach (var challenge in request.UserVM.Challenges)
+            {
+                // Check if challenge exists, if so, add it to a list to asign later
+                var foundChallenge = _context.Challenges.Find(challenge.ChallengeId);
+                if (foundChallenge != null)
+                {
+                    newChallenges.Add(foundChallenge);
+                }
+            }
+            // Assign the list to the user's challenges
+            newUser.Challenges = newChallenges;
+            */
+
             var query = _context.Users.Add(newUser);
             return await _context.SaveAsync(cancellationToken);
         }

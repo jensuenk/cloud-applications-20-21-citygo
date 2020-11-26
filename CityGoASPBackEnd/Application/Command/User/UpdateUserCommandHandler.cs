@@ -30,6 +30,7 @@ namespace Application.Command
                 Balls = request.UserVM.Balls, 
                 UsersItems = request.UserVM.UsersItems 
             };
+            /*
             if (request.UserVM.ItemsId != 0)
             {
                 var item = await _context.Items.Where(c => c.ItemId == request.UserVM.ItemsId).SingleAsync();
@@ -68,7 +69,11 @@ namespace Application.Command
                 challenges.Add(challenge);
                 newUser.Challenges = challenges;
             }
-            var olduser = await _context.Users.Where(u => u.UserId == newUser.UserId).SingleAsync();
+            */
+            var olduser = await _context.Users.Where(u => u.UserId == newUser.UserId)
+                .Include(c => c.Challenges)
+                .Include(i => i.UsersItems)
+                .SingleAsync();
             olduser.Name = newUser.Name;
             olduser.Username = newUser.Username;
             olduser.Email = newUser.Email;

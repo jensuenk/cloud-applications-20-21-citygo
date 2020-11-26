@@ -29,37 +29,6 @@ namespace Application.Command.Item
                 Rarity = request.ItemVM.Rarity, 
                 UsersItems = request.ItemVM.UsersItems 
             };
-            if (request.ItemVM.UserId != 0)
-            {
-                var user = await _context.Users.Where(c => c.UserId == request.ItemVM.UserId).SingleAsync();
-                UsersItems usersItems = new UsersItems()
-                {
-                    User = user,
-                    UserId = user.UserId,
-                    Item = newItem,
-                    ItemId = newItem.ItemId
-                };
-                if (request.ItemVM.UsersItems == null)
-                {
-                    List<Domain.UsersItems> tussen = new List<Domain.UsersItems>();
-                    tussen.Add(usersItems);
-                    newItem.UsersItems = tussen;
-                }
-                else
-                {
-                    newItem.UsersItems.Add(usersItems);
-                }
-                if (user.UsersItems == null)
-                {
-                    List<Domain.UsersItems> tussen = new List<Domain.UsersItems>();
-                    tussen.Add(usersItems);
-                    user.UsersItems = tussen;
-                }
-                else
-                {
-                    user.UsersItems.Add(usersItems);
-                }
-            }
 
             var oldItem = await _context.Items.Where(u => u.ItemId == newItem.ItemId).SingleAsync();
             oldItem.Name = newItem.Name;
