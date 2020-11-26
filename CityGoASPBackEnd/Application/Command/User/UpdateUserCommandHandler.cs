@@ -70,6 +70,21 @@ namespace Application.Command
                 newUser.Challenges = challenges;
             }
             */
+
+            // Link existing challenges to a user trough the body
+            List<Domain.Challenge> newChallenges = new List<Domain.Challenge>();
+            foreach (var challenge in request.UserVM.Challenges)
+            {
+                // Check if challenge exists, if so, add it to a list to asign later
+                var foundChallenge = _context.Challenges.Find(challenge.ChallengeId);
+                if (foundChallenge != null)
+                {
+                    newChallenges.Add(foundChallenge);
+                }
+            }
+            // Assign the list to the user's challenges
+            newUser.Challenges = newChallenges;
+
             var olduser = await _context.Users.Where(u => u.UserId == newUser.UserId)
                 .Include(c => c.Challenges)
                 .Include(i => i.UsersItems)
@@ -78,7 +93,7 @@ namespace Application.Command
             olduser.Username = newUser.Username;
             olduser.Email = newUser.Email;
             olduser.Balls = newUser.Balls;
-            olduser.Challenges = newUser.Challenges;
+            olduser.Challenges = newChallenges;
             olduser.UsersItems = newUser.UsersItems;
             var query = _context.Users.Update(olduser);
             return await _context.SaveAsync(cancellationToken);
