@@ -22,18 +22,19 @@ namespace Application.Query.User
         public async Task<ListUserVM> Handle(ShowAllFriendsQuery request, CancellationToken cancellationToken)
         {
             var allUsers = await _context.Users
-                    .Include(i => i.UsersFriends)
+                    .Include(i => i.Friends)
                     .ToListAsync();
-
-
 
             ListUserVM vm = new ListUserVM();
             foreach (var user in allUsers)
             {
-                var usersItems = await _context.UsersItems
-                    .Include(f => f.User)
-                    .Where(u => u.UserId == user.UserId)
-                    .ToListAsync();
+              
+                List<Domain.User> tussen = new List<Domain.User>();
+                foreach (var item in user.Friends)
+                {
+                    var friend = await _context.Users.Where(u => u.UserId == item.FriendId).SingleAsync();
+                    tussen.Add(friend);
+                }
                 vm.Users.Add(new UserVM()
                 {
                     UserId = user.UserId,
@@ -41,8 +42,7 @@ namespace Application.Query.User
                     Username = user.Username,
                     Balls = user.Balls,
                     Email = user.Email,
-                    Friends = user.UsersFriends
-
+                    UserFriends = tussen
                 });
             }
             return vm;

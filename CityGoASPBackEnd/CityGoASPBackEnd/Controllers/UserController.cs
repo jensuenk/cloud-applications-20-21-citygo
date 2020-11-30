@@ -100,7 +100,7 @@ namespace CityGoASPBackEnd.Controllers
         }
 
         [Route("Friends")]
-        [HttpPut]
+        [HttpGet]
         public async Task<IActionResult> ShowFriendFromUser()
         {
             var command = new ShowAllFriendsQuery();

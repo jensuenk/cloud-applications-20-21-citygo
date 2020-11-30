@@ -30,7 +30,7 @@ namespace Domain
         public List<Challenge> Challenges { get; set; }
 
         [JsonIgnore]
-        public List<UsersFriends> UsersFriends { get; set; }
+        public List<Friends> Friends { get; set; }
 
     }
 }
