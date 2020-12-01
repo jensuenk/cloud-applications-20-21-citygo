@@ -101,9 +101,18 @@ namespace CityGoASPBackEnd.Controllers
 
         [Route("Friends")]
         [HttpGet]
-        public async Task<IActionResult> ShowFriendFromUser()
+        public async Task<IActionResult> ShowFriendsFromAllUsers()
         {
             var command = new ShowAllFriendsQuery();
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [Route("{id}/Friends")]
+        [HttpGet]
+        public async Task<IActionResult> ShowFriendsFromUser(int id)
+        {
+            var command = new ShowUserWithAllFriendsQuery(id);
             var result = await _mediator.Send(command);
             return Ok(result);
         }
