@@ -90,22 +90,31 @@ namespace CityGoASPBackEnd.Controllers
             return Ok(result);
         }
 
-        //[Route("{uid}/Friends/{fid}")]
-        //[HttpPut]
-        //public async Task<IActionResult> AddFriendToUser(int uid, int fid)
-        //{
-        //    var command = new AddFriendCommand(uid, fid);
-        //    var result = await _mediator.Send(command);
-        //    return Ok(result);
-        //}
+        [Route("{uid}/Friends/{fid}")]
+        [HttpPut]
+        public async Task<IActionResult> AddFriendToUser(int uid, int fid)
+        {
+            var command = new AddFriendCommand(uid, fid);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
 
-        //[Route("Friends")]
-        //[HttpPut]
-        //public async Task<IActionResult> ShowFriendFromUser()
-        //{
-        //    var command = new ShowAllFriendsQuery();
-        //    var result = await _mediator.Send(command);
-        //    return Ok(result);
-        //}
+        [Route("Friends")]
+        [HttpGet]
+        public async Task<IActionResult> ShowFriendsFromAllUsers()
+        {
+            var command = new ShowAllFriendsQuery();
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [Route("{id}/Friends")]
+        [HttpGet]
+        public async Task<IActionResult> ShowFriendsFromUser(int id)
+        {
+            var command = new ShowUserWithAllFriendsQuery(id);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
     }
 }

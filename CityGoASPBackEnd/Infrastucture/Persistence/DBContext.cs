@@ -21,7 +21,7 @@ namespace Infrastucture.Persistence
         public DbSet<Challenge> Challenges { get; set; }
         public DbSet<UsersItems> UsersItems { get; set; }
         public DbSet<Coordinate> Coordinates { get; set; }
-        //public DbSet<UsersFriends> UsersFriends { get; set; }
+        public DbSet<Friends> Friends { get; set; }
 
         public Task<int> SaveAsync(CancellationToken cancellationToken)
         {
@@ -63,19 +63,10 @@ namespace Infrastucture.Persistence
                 .WithOne(c => c.User)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            //modelbuilder.Entity<UsersFriends>()
-            //   .HasKey(uf => new { uf.UserId, uf.FriendId });
-
-
-            //modelbuilder.Entity<UsersFriends>(b =>
-            //{
-            //    b.HasOne(f => f.User)
-            //    .WithMany(u => u.UsersFriends)
-            //    .HasForeignKey(f => f.UserId);
-            //    b.HasOne(u => u.Friend)
-            //    .WithMany(f => f.UsersFriends)
-            //    .HasForeignKey(u => u.FriendId);
-            //});
+            modelbuilder.Entity<User>()
+                .HasMany(u=>u.Friends)
+                .WithOne(f=>f.User)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

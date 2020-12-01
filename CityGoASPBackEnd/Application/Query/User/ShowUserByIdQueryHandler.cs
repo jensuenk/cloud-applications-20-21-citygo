@@ -20,14 +20,32 @@ namespace Application.Query
         }
         public async Task<UserVM> Handle(ShowUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
+            var user = await _context.Users.Where(u => u.UserId == request.UserId)
+                .Include(i => i.UsersItems)
+                .Include(c => c.Challenges)
+                .Include(i => i.Friends)
+                .SingleAsync();
+            List<Domain.User> tussen = new List<Domain.User>();
+            foreach (var item in user.Friends)
+            {
+                var friend = await _context.Users.Where(u => u.UserId == item.FriendId).SingleAsync();
+                tussen.Add(friend);
+            }
+            var usersItems = await _context.UsersItems
+               .Include(i => i.Item)
+               .Where(u => u.UserId == request.UserId)
+               .ToListAsync();
+          
             UserVM vm = new UserVM() 
             { 
                 UserId = user.UserId, 
                 Name = user.Name, 
                 Username = user.Username, 
                 Email = user.Email, 
-                Balls = user.Balls
+                Balls = user.Balls,
+                UserFriends = tussen,
+                Challenges = user.Challenges,
+                UsersItems = usersItems
             };
             return vm;
         }
