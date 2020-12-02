@@ -25,7 +25,7 @@ const AuthorizationStack = () => {
     }, []);
 
     if (isFirstLaunch == null) {
-        routeName = 'Welcome';
+        routeName = 'Login';
     } else if (isFirstLaunch == true) {
         routeName = 'Welcome';
     } else {
