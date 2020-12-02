@@ -25,9 +25,18 @@ namespace CityGoASPBackEnd.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllChallenges()
         {
-            var query = new ShowAllChallengesQuery();
-            var result = await _mediator.Send(query);
-            return Ok(result);
+            try
+            {
+                var query = new ShowAllChallengesQuery();
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+           
         }
         [Route("{id}")]
         [HttpGet]
@@ -35,7 +44,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowChallengeByIdQuery(id);
             var result = await _mediator.Send(query);
-            return Ok(result);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
 
         [HttpPost]
@@ -93,5 +109,7 @@ namespace CityGoASPBackEnd.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+
+       
     }
 }
