@@ -65,6 +65,16 @@ namespace CityGoASPBackEnd.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+
+        [Route("{uid}/Challenges/{cid}")]
+        [HttpPut]
+        public async Task<IActionResult> AddChallengeToUser(int uid, int cid)
+        {
+            var command = new AddChallengeToUserCommand(uid, cid);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
         [Route("{id}/Items")]
         [HttpGet]
         public async Task<IActionResult> GetItemsFromUserWithId(int id)
