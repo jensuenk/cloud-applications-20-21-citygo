@@ -43,7 +43,6 @@ export default class AddFriends extends React.Component {
             })
     }
 
-
     contains = ({ name, email }, query) => {
         const { first, last } = name
         if (
