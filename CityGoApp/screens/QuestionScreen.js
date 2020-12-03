@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Alert, Text, TextInput, StyleSheet } from 'react-native'
+import { View, Alert, Text, TextInput, StyleSheet,ToastAndroid } from 'react-native'
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline, Polygon } from 'react-native-maps';
@@ -30,7 +30,8 @@ export default class QuestionScreen extends React.Component {
       huidigeSightNaam: "(Naam van plaats)",
       huidigeSightId: 0,
       vraag: "(Hier komt vraag van API)",
-      antwoord: ""
+      antwoord: "",
+      juistantwoord:""
     }
   }
 
@@ -62,21 +63,6 @@ export default class QuestionScreen extends React.Component {
                 this.setState({ huidigeSightNaam: element.name })
                 this.setState({ huidigeSightId: element.sightId })
               }
-
-              
-              /*console.warn(element.coordinates)
-              console.warn(this.state.coordinaten)
-              // Dit is code om te zien of je in een bepaald polygon bent
-              GeoFencing.containsLocation(this.state.coordinaten, element.coordinates)
-                // nu nog programmeren dat de bijgepaste challenge wordt geladen
-                .then(() => {
-                  console.warn("yeeeeeeeeeeet")
-                  this.setState({ huidigeSight: element.name })
-                  this.setState({ huidigeSightId: element.sightId })
-                })
-                .catch(
-                  console.warn("niks in de buurt")
-                )*/
 
 
 
@@ -126,7 +112,41 @@ export default class QuestionScreen extends React.Component {
     let resp = await fetch(url)
     let respJson = await resp.json();
     this.setState({ vraag: respJson.challenges[0].task })
-    this.setState({ antwoord: respJson.challenges[0].answer })
+    this.setState({ juistantwoord: respJson.challenges[0].answer })
+  }
+
+  confirm=()=>{
+    // feedback werkt enkel voor android via toast
+    if(this.state.antwoord==this.state.juistantwoord){
+
+      const putMethod = {
+        method: 'PUT', // Method itself
+        headers: {
+         'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+        },
+        body: {}
+       }
+       
+       // make the HTTP put request using fetch api
+       // voorlopig hardcoded, kan wanneer login af is
+       fetch("https://citygoaspbackend20201120025600.azurewebsites.net/users/1/challenges/1", putMethod)
+       .then(response => response.json())
+       .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
+       .catch(err => console.log(err)) // Do something with the error
+
+
+      this.props.changeComponent('One')
+      ToastAndroid.show("Congratulations!", ToastAndroid.LONG);
+    }
+    else{
+      ToastAndroid.show("Wrong answer!", ToastAndroid.LONG);
+    }
+
+  }
+
+  antwoordtekst=(tekst)=>{
+    this.setState({ antwoord: tekst })
+
   }
 
 
@@ -139,10 +159,10 @@ export default class QuestionScreen extends React.Component {
         <TextInput
           style={styles.textinput}
           placeholder="Answer"
-          onPress={text => onChangeText(text)}
+          onChangeText={this.antwoordtekst}
         //value={value}
         />
-        <TouchableOpacity style={styles.button1} onPress={() => this.props.changeComponent('One')}>
+        <TouchableOpacity style={styles.button1} onPress={this.confirm}>
           <Text style={styles.btntext}>Confirm</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button2} onPress={() => this.props.changeComponent('One')}>
