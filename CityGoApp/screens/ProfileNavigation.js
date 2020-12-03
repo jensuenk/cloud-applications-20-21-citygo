@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import AddFriends from './AddFriends'
 import ProfileScreen from './ProfileScreen'
+import Friends from './Friends'
 
 
 export default class ProfileNavigatoin extends React.Component{
@@ -31,6 +32,8 @@ constructor(props) {
       return <ProfileScreen changeComponent={this.changeComponent} />
     } else if (component == 'Two') {
       return <AddFriends changeComponent={this.changeComponent} />
+    } else if (component == 'Three') {
+      return <Friends changeComponent={this.changeComponent} />
     } 
   }
 

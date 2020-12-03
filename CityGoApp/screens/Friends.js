@@ -75,7 +75,6 @@ export default class Friends extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-              <Text  onPress={this.onPress} style={styles.appButtonText} >Back</Text>
 
          <TextInput
                 autoCapitalize='none'
@@ -91,10 +90,10 @@ export default class Friends extends React.Component {
                 textStyle={{ color: '#000' }}
                 clearButtonMode='always'
                 ></TextInput>
-            
         </View>
 
     )
+
 
     renderSeparator = () => {
         return (
@@ -128,12 +127,15 @@ export default class Friends extends React.Component {
     };
     render() {
         return (
+
             <View style={{
                 flex: 1,
                 paddingHorizontal: 20,
                 paddingVertical: 20,
                 marginTop: 40
               }}>
+            <Text  onPress={this.onPress} style={styles.backstyle}>Back</Text>
+
             <FlatList
                 data = {this.state.data}
                 renderItem={({ item }) => (
@@ -177,6 +179,13 @@ const styles = StyleSheet.create({
       flex: 1,
       height: undefined,
       width: undefined
+    },
+    backstyle:{
+        fontSize: 15,
+        alignSelf: 'flex-start',
+        color: "#000",
+        fontWeight: "bold",
+        textTransform: "uppercase"
     },
     titleBar: {
       flexDirection: "row",
