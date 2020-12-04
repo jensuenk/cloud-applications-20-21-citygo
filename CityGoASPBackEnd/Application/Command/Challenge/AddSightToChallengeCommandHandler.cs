@@ -20,6 +20,15 @@ namespace Application.Command.Challenge
 
         public async Task<int> Handle(AddSightToChallengeCommand request, CancellationToken cancellationToken)
         {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             var challenge = await _context.Challenges.Where(u => u.ChallengeId == request.ChallengeId).SingleAsync();
             var sight = await _context.Sights.Where(i => i.SightId == request.SightId).SingleAsync();
 

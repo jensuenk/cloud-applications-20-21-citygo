@@ -26,7 +26,7 @@ namespace Application.Command.Challenge
 
             //Voeg challenge toe bij item
             item.Challenge = challenge;
-
+            
             //Alles opslaan in de database
             var query1 = _context.Challenges.Update(challenge);
             var query2 = _context.Items.Update(item);
