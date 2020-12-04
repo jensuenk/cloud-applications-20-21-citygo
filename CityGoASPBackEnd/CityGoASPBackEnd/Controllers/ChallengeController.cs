@@ -99,7 +99,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowChallengeWithItemByIdQuery(id);
             var result = await _mediator.Send(query);
-            return Ok(result);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
         [Route("{id}/Sights")]
         [HttpGet]
@@ -107,7 +114,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowChallengeWithSightByIdQuery(id);
             var result = await _mediator.Send(query);
-            return Ok(result);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
 
        

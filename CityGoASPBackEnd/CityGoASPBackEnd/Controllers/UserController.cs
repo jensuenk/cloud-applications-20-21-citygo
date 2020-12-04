@@ -38,7 +38,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowUserByIdQuery(id);
             var result = await _mediator.Send(query);
-            return Ok(result);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
 
         [HttpPost]
@@ -81,7 +88,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowUserWithItemByIdQuery(id);
             var result = await _mediator.Send(query);
-            return Ok(result);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
         [Route("{id}")]
         [HttpDelete]
@@ -124,7 +138,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new ShowUserWithAllFriendsQuery(id);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
     }
 }

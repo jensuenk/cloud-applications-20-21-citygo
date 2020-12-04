@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,5 +20,8 @@ namespace Application.ViewModel.Item
         public List<Domain.Coordinate> Coordinates { get; set; }
 
         public List<Domain.Challenge> Challenges { get; set; }
+
+        [JsonIgnore]
+        public string Error { get; set; }
     }
 }

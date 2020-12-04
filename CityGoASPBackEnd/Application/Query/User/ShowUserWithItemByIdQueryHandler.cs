@@ -21,27 +21,40 @@ namespace Application.Query.User
         }
         public async Task<UserVM> Handle(ShowUserWithItemByIdQuery request, CancellationToken cancellationToken)
         {
-            var usersItems = await _context.UsersItems
-                .Include(i => i.Item)
-                .Where(u => u.UserId == request.UserId)
-                .ToListAsync();
+            try
+            {
+                var usersItems = await _context.UsersItems
+                    .Include(i => i.Item)
+                    .Where(u => u.UserId == request.UserId)
+                    .ToListAsync();
 
-            var user = await _context.Users
-                .Include(i => i.UsersItems)
-                .Where(u => u.UserId == request.UserId)
-                .SingleAsync();
+                var user = await _context.Users
+                    .Include(i => i.UsersItems)
+                    .Where(u => u.UserId == request.UserId)
+                    .SingleAsync();
 
-            UserVM vm = new UserVM() 
-            { 
-                UserId = user.UserId, 
-                Name = user.Name,
-                Username = user.Username, 
-                Email = user.Email, 
-                Balls = user.Balls,
-                UsersItems = usersItems 
-            };
+                UserVM vm = new UserVM()
+                {
+                    UserId = user.UserId,
+                    Name = user.Name,
+                    Username = user.Username,
+                    Email = user.Email,
+                    Balls = user.Balls,
+                    UsersItems = usersItems
+                };
 
-            return vm;
+                return vm;
+            }
+            catch (Exception)
+            {
+
+                UserVM vm = new UserVM()
+                {
+                    Error = "NotFound"
+                };
+                return vm;
+            }
+           
 
         }
 

@@ -21,21 +21,34 @@ namespace Application.Query.Sight
 
         public async Task<SightVM> Handle(ShowSightWithChallengeByIdQuery request, CancellationToken cancellationToken)
         {
-            var sight = await _context.Sights.Include(s => s.Challenges)
+            try
+            {
+                var sight = await _context.Sights.Include(s => s.Challenges)
                                     .Where(s => s.SightId == request.SightId)
                                     .SingleAsync();
-            SightVM vm = new SightVM()
-            {
-                SightId = sight.SightId,
-                Info = sight.Info,
-                Monument = sight.Monument,
-                Name = sight.Name,
-                Stop = sight.Stop,
-                Coordinates = sight.Coordinates,
-                Challenges = sight.Challenges
-            };
+                SightVM vm = new SightVM()
+                {
+                    SightId = sight.SightId,
+                    Info = sight.Info,
+                    Monument = sight.Monument,
+                    Name = sight.Name,
+                    Stop = sight.Stop,
+                    Coordinates = sight.Coordinates,
+                    Challenges = sight.Challenges
+                };
 
-            return vm;
+                return vm;
+            }
+            catch (Exception)
+            {
+
+                SightVM vm = new SightVM()
+                {
+                    Error = "NotFound"
+                };
+                return vm;
+            }
+            
         }
     }
 }

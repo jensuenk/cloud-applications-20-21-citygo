@@ -35,7 +35,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowSightByIdQuery(id);
             var result = await _mediator.Send(query);
-            return Ok(result);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
 
         [HttpPost]
@@ -67,7 +74,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowSightWithChallengeByIdQuery(id);
             var result = await _mediator.Send(query);
-            return Ok(result);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
         [Route("All")]
         [HttpGet]

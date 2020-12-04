@@ -20,17 +20,28 @@ namespace Application.Query.Sight
         }
         public async Task<SightVM> Handle(ShowSightByIdQuery request, CancellationToken cancellationToken)
         {
-            var sight = await _context.Sights.Where(s => s.SightId == request.SightId).SingleAsync();
-            SightVM vm = new SightVM() 
-            { 
-                SightId = sight.SightId,
-                Info = sight.Info, 
-                Monument = sight.Monument, 
-                Name = sight.Name,
-                Stop = sight.Stop,
-                Coordinates = sight.Coordinates
-            };
-            return vm;
+            try
+            {
+                var sight = await _context.Sights.Where(s => s.SightId == request.SightId).SingleAsync();
+                SightVM vm = new SightVM()
+                {
+                    SightId = sight.SightId,
+                    Info = sight.Info,
+                    Monument = sight.Monument,
+                    Name = sight.Name,
+                    Stop = sight.Stop,
+                    Coordinates = sight.Coordinates
+                };
+                return vm;
+            }
+            catch (Exception)
+            {
+                SightVM vm = new SightVM()
+                {
+                    Error = "NotFound"
+                };
+                return vm;
+            }  
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,5 +16,8 @@ namespace Application.ViewModel.Coordinate
         public Domain.Sight Sight { get; set; }
 
         public int SightId { get; set; }
+
+        [JsonIgnore]
+        public string Error { get; set; }
     }
 }
