@@ -91,7 +91,18 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddSightToChallengeCommand(cid, sid);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "NotFound_Challenge")
+            {
+                return NotFound("Invalid id given for Challenge, try using an exsisting id");
+            }
+            else if (result.Error == "NotFound_Sight")
+            {
+                return NotFound("Invalid id given for Sight, try using an exsisting id");
+            }
+            else 
+            {
+                return Created("Command succesfull", result);
+            }
         }
         [Route("{id}/Items")]
         [HttpGet]

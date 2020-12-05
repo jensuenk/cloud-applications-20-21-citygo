@@ -11,6 +11,15 @@ namespace Infrastucture.Persistence
 {
     public class DBContext: DbContext, IDBContext
     {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CityGoDB", builder =>
+            {
+                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            });
+            base.OnConfiguring(optionsBuilder);
+        }
+
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
             
