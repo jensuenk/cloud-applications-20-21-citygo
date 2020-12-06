@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
-import GoogleButton from '../components/GoogleButton';
 import StandardButton from '../components/StandardButton';
 import InputField from '../components/InputField';
 import Firebase from '../config/Firebase';
@@ -14,8 +13,9 @@ const LoginScreen = ({ navigation }) => {
     function handleLogin() {
         Firebase.auth()
             .signInWithEmailAndPassword(email, password)
+            .then(() => this.props.navigation.navigate("Main"))    
             .catch(error => console.log(error))
-            .then(navigation.navigate("Main"))            
+           
     }
 
 

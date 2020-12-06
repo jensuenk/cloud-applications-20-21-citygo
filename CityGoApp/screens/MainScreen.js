@@ -1,11 +1,26 @@
 import {StyleSheet, View, Text} from 'react-native';
 import * as React from 'react';
 import Map from './Map';
+import StandardButton from '../components/StandardButton';
+import Firebase from '../config/Firebase';
 
-const MainScreen = () => {
+const MainScreen = ({ navigation }) => {
+
+    function signOut() {
+        Firebase.auth()
+            .signOut()
+            .then(() => this.props.navigation.navigate("Login"))
+            .catch(error => console.log(error))
+    }
+
     return (
-        <View style={{ flex: 1 }}>
-            <Map />
+        <View style={styles.container}>
+            <Text>MAIN screen</Text>
+
+            <StandardButton 
+                buttonTitle="Log Out"
+                onPress={() => { signOut() }}
+            />
         </View>
     );
 }

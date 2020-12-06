@@ -15,8 +15,9 @@ const RegisterScreen = ({ navigation }) => {
 
     function handleSignUp() {
         Firebase.auth()
-            .createUserWithEmailAndPassword(email, password)
-            .catch(error => console.log(error))
+            .createUserWithEmailAndPassword(email,password)
+            .then(()=> this.props.navigation.navigate("Login"))
+            .catch(error=>console.log(error))
     }
 
     return (
@@ -54,7 +55,7 @@ const RegisterScreen = ({ navigation }) => {
 
             <StandardButton
                 buttonTitle="Register Now"
-                onPress={() => { handleSignUp() ; navigation.navigate("Login")}}
+                onPress={() => { handleSignUp() }}
             />
 
             <TouchableOpacity style={styles.forgotButton} onPress={() => navigation.navigate("Login")}>
