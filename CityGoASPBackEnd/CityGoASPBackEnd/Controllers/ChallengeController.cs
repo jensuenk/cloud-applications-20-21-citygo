@@ -59,7 +59,21 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new CreateChallengeCommand(newChallenge);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "BadRequest_Challenge")
+            {
+                return BadRequest("The data in your body does not match with the data from the database");
+            }
+            else if (result.Error == "NotFound_Item")
+            {
+                return NotFound("Invalid id given for Item, try using an exsisting id");
+            }
+            else if(result.Error == "NotFound_User")
+            {
+                return NotFound("Invalid id given for User, try using an exsisting id");
+            }
+            {
+                return Created("Command succesfull", result);
+            }
         }
 
         [HttpPut]
@@ -67,7 +81,21 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new UpdateChallengeCommand(newChallenge);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "BadRequest_Challenge")
+            {
+                return BadRequest("The data in your body does not match with the data from the database");
+            }
+            else if (result.Error == "NotFound_Item")
+            {
+                return NotFound("Invalid id given for Item, try using an exsisting id");
+            }
+            else if (result.Error == "NotFound_User")
+            {
+                return NotFound("Invalid id given for User, try using an exsisting id");
+            }
+            {
+                return Created("Command succesfull", result);
+            }
         }
         [Route("{id}")]
         [HttpDelete]
@@ -75,7 +103,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new DeleteChallengeCommand(id);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
         [Route("{cid}/Items/{iid}")]
         [HttpPut]
@@ -83,7 +118,18 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddItemToChallengeCommand(cid, iid);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "NotFound_Challenge")
+            {
+                return NotFound("Invalid id given for Challenge, try using an exsisting id");
+            }
+            else if (result.Error == "NotFound_Item")
+            {
+                return NotFound("Invalid id given for Item, try using an exsisting id");
+            }
+            else
+            {
+                return Created("Command succesfull", result);
+            }
         }
         [Route("{cid}/Sights/{sid}")]
         [HttpPut]

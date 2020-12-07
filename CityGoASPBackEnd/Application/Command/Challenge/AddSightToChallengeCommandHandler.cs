@@ -30,11 +30,7 @@ namespace Application.Command.Challenge
             }
             catch (Exception)
             {
-
-                ChallengeVM vm1 = new ChallengeVM()
-                {
-                    Error = "NotFound_Challenge"
-                };
+                ChallengeVM vm1 = new ChallengeVM(){ Error = "NotFound_Challenge" };
                 return vm1;
             }
 
@@ -44,11 +40,7 @@ namespace Application.Command.Challenge
             }
             catch (Exception)
             {
-
-                ChallengeVM vm2 = new ChallengeVM()
-                {
-                    Error = "NotFound_Sight"
-                };
+                ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_Sight" };
                 return vm2;
             }
 
