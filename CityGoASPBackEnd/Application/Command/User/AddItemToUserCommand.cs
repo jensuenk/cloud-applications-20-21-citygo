@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Command.User
 {
-    public class AddItemToUserCommand : IRequest<int>
+    public class AddItemToUserCommand : IRequest<UserVM>
     {
         public int UserId { get; set; }
         public int ItemId { get; set; }

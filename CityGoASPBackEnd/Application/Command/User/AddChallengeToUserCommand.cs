@@ -1,11 +1,12 @@
-﻿using MediatR;
+﻿using Application.ViewModel;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Application.Command.User
 {
-    public class AddChallengeToUserCommand : IRequest<int>
+    public class AddChallengeToUserCommand : IRequest<UserVM>
     {
         public int UserId { get; set; }
         public int ChallengeId { get; set; }

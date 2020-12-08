@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.User
 {
-    public class AddFriendCommandHandler : IRequestHandler<AddFriendCommand, int>
+    public class AddFriendCommandHandler : IRequestHandler<AddFriendCommand, UserVM>
     {
         IDBContext _context;
         public AddFriendCommandHandler(IDBContext context)
@@ -19,10 +19,30 @@ namespace Application.Command.User
             _context = context;
         }
 
-        public async Task<int> Handle(AddFriendCommand request, CancellationToken cancellationToken)
+        public async Task<UserVM> Handle(AddFriendCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
-            var friend = await _context.Users.Where(u => u.UserId == request.FriendId).SingleAsync();
+            Domain.User user;
+            Domain.User friend;
+            try
+            {
+                user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
+
+            }
+            catch (Exception)
+            {
+                UserVM vm1 = new UserVM() { Error = "NotFound_User" };
+                return vm1;
+            }
+            try
+            {
+                friend = await _context.Users.Where(u => u.UserId == request.FriendId).SingleAsync();
+
+            }
+            catch (Exception)
+            {
+                UserVM vm1 = new UserVM() { Error = "NotFound_Friend" };
+                return vm1;
+            }
 
             List<Domain.Friends> Friends = new List<Domain.Friends>();
 
@@ -37,7 +57,11 @@ namespace Application.Command.User
             user.Friends = Friends;
             var query1 = _context.Users.Update(user);
             var query2 = _context.Friends.Add(Friend);
-            return await _context.SaveAsync(cancellationToken);
+            UserVM vm3 = new UserVM()
+            {
+                Error = "OK",
+            };
+            return vm3;
         }
     }
 }

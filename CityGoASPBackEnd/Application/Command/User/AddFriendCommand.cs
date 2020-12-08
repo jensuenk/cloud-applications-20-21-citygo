@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Command.User
 {
-    public class AddFriendCommand : IRequest<int>
+    public class AddFriendCommand : IRequest<UserVM>
     {
         public int UserId { get; set; }
         public int FriendId { get; set; }
