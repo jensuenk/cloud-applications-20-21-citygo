@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.ViewModel.Item;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.Sight
 {
-    public class DeleteSightCommandHandler : IRequestHandler<DeleteSightCommand, int>
+    public class DeleteSightCommandHandler : IRequestHandler<DeleteSightCommand, SightVM>
     {
         IDBContext _context;
         public DeleteSightCommandHandler(IDBContext context)
@@ -18,11 +19,31 @@ namespace Application.Command.Sight
             _context = context;
         }
 
-        public async Task<int> Handle(DeleteSightCommand request, CancellationToken cancellationToken)
+        public async Task<SightVM> Handle(DeleteSightCommand request, CancellationToken cancellationToken)
         {
-            var sight = await _context.Sights.Where(c => c.SightId == request.SightId).SingleAsync();
+            Domain.Sight sight;
+            try
+            {
+                sight = await _context.Sights.Where(c => c.SightId == request.SightId).SingleAsync();
+
+            }
+            catch (Exception)
+            {
+                SightVM vm1 = new SightVM() { Error = "NotFound_Sight" };
+                return vm1;
+            }
             var query = _context.Sights.Remove(sight);
-            return await _context.SaveAsync(cancellationToken);
+            SightVM vm3 = new SightVM()
+            {
+                SightId = sight.SightId,
+                Info = sight.Info,
+                Monument = sight.Monument,
+                Name = sight.Name,
+                Stop = sight.Stop,
+                Coordinates = sight.Coordinates,
+                Challenges = sight.Challenges
+            };
+            return vm3;
         }
     }
 }

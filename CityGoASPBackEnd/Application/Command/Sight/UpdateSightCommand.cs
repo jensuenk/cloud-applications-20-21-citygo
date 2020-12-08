@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Command.Sight
 {
-    public class UpdateSightCommand : IRequest<int>, IRequest<SightVM>
+    public class UpdateSightCommand : IRequest<SightVM>
     {
         public SightVM SightVM { get; set; }
         public UpdateSightCommand(SightVM updateSight)
