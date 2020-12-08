@@ -13,7 +13,7 @@ const LoginScreen = ({ navigation }) => {
     function handleLogin() {
         Firebase.auth()
             .signInWithEmailAndPassword(email, password)
-            .then(() => this.props.navigation.navigate("Main"))    
+            .then(() => navigation.navigate("Main"))    
             .catch(error => console.log(error))
            
     }
