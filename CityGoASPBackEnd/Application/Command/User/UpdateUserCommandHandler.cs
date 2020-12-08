@@ -64,7 +64,7 @@ namespace Application.Command
             }
             catch (Exception)
             {
-                UserVM vm1 = new UserVM() { Error = "BadRequest_Item" };
+                UserVM vm1 = new UserVM() { Error = "NotFound_Item" };
                 return vm1;
             }
 
@@ -89,7 +89,7 @@ namespace Application.Command
             }
             catch (Exception)
             {
-                UserVM vm1 = new UserVM() { Error = "BadRequest_Challenge" };
+                UserVM vm1 = new UserVM() { Error = "NotFound_Challenge" };
                 return vm1;
             }
 

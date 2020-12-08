@@ -71,6 +71,7 @@ namespace CityGoASPBackEnd.Controllers
             {
                 return NotFound("Invalid id given for User, try using an exsisting id");
             }
+            else
             {
                 return Created("Command succesfull", result);
             }
@@ -93,6 +94,7 @@ namespace CityGoASPBackEnd.Controllers
             {
                 return NotFound("Invalid id given for User, try using an exsisting id");
             }
+            else
             {
                 return Created("Command succesfull", result);
             }

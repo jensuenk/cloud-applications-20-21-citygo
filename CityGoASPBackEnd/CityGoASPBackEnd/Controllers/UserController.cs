@@ -53,7 +53,21 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new CreateUserCommand(newUser);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "BadRequest_User")
+            {
+                return BadRequest("The data in your body does not match with the data from the database");
+            }
+            else if (result.Error == "NotFound_Challenge")
+            {
+                return NotFound("Invalid id given for Challenge, try using an exsisting id");
+            }
+            else if (result.Error == "NotFound_Item")
+            {
+                return NotFound("Invalid id given for Item, try using an exsisting id");
+            }else
+            {
+                return Created("Command succesfull", result);
+            }
         }
 
         [HttpPut]
@@ -61,7 +75,22 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new UpdateUserCommand(newUser);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "BadRequest_User")
+            {
+                return BadRequest("The data in your body does not match with the data from the database");
+            }
+            else if (result.Error == "NotFound_Challenge")
+            {
+                return NotFound("Invalid id given for Challenge, try using an exsisting id");
+            }
+            else if (result.Error == "NotFound_Item")
+            {
+                return NotFound("Invalid id given for Item, try using an exsisting id");
+            }
+            else
+            {
+                return Created("Command succesfull", result);
+            }
         }
 
         [Route("{uid}/Items/{iid}")]
@@ -70,7 +99,18 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddItemToUserCommand(uid, iid);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "NotFound_User")
+            {
+                return NotFound("Invalid id given for User, try using an exsisting id");
+            }
+            else if (result.Error == "NotFound_Item")
+            {
+                return NotFound("Invalid id given for Item, try using an exsisting id");
+            }
+            else
+            {
+                return Created("Command succesfull", result);
+            }
         }
 
         [Route("{uid}/Challenges/{cid}")]
@@ -79,7 +119,18 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddChallengeToUserCommand(uid, cid);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "NotFound_User")
+            {
+                return NotFound("Invalid id given for User, try using an exsisting id");
+            }
+            else if (result.Error == "NotFound_Challenge")
+            {
+                return NotFound("Invalid id given for Challenge, try using an exsisting id");
+            }
+            else
+            {
+                return Created("Command succesfull", result);
+            }
         }
 
         [Route("{id}/Items")]
@@ -103,7 +154,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new DeleteUserCommand(id);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "NotFound_User")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
         [Route("All")]
         [HttpGet]
@@ -120,7 +178,18 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddFriendCommand(uid, fid);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result.Error == "NotFound_User")
+            {
+                return NotFound("Invalid id given for User, try using an exsisting id");
+            }
+            else if (result.Error == "NotFound_Friend")
+            {
+                return NotFound("Invalid id given for Friend, try using an exsisting id");
+            }
+            else
+            {
+                return Created("Command succesfull", result);
+            }
         }
 
         [Route("Friends")]
