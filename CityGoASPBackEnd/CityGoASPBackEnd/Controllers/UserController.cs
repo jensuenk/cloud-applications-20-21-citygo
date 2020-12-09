@@ -208,7 +208,7 @@ namespace CityGoASPBackEnd.Controllers
             }
             else
             {
-                return Created("Command succesfull", result);
+                return Ok(result);
             }
         }
 

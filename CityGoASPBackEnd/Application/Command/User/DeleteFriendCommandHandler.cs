@@ -25,7 +25,9 @@ namespace Application.Command.User
             Domain.User friend;
             try
             {
-                user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
+                user = await _context.Users.Where(u => u.UserId == request.UserId)
+                    .Include(f=>f.Friends)
+                    .SingleAsync();
 
             }
             catch (Exception)
@@ -48,7 +50,7 @@ namespace Application.Command.User
             Friends = user.Friends;
             foreach (var item in Friends)
             {
-                if (item.UserId == friend.UserId)
+                if (item.FriendId == friend.UserId)
                 {
                     Friends.Remove(item);
                 }
