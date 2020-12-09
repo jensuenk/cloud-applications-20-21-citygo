@@ -85,6 +85,23 @@ export default class Friends extends React.Component {
          return response.json();
        });
 
+
+            
+      const urlFriendDelete2 = 'https://citygo5.azurewebsites.net/Users/'+fid+'/Friends/'+uid
+      console.log(urlFriendDelete)
+
+      const deleteMethod2 = {
+        method: "delete",
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+
+       // make the HTTP Delete request using fetch api
+       fetch(urlFriendDelete2, deleteMethod2).then((response)=>{
+         return response.json();
+       });
+
     }
   
  
