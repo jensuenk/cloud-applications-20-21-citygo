@@ -24,6 +24,9 @@ export default class AddFriends extends React.Component {
         this.makeRemoteRequest()
     }
 
+    // versturen van een verzoek zal nu hardcoded zijn vanuit het standpunt van user1
+   //'https://citygo5.azurewebsites.net/Users/{uid}/Friends/{fid}'
+
 
     makeRemoteRequest = () => {
         const { page, seed } = this.state
@@ -129,12 +132,11 @@ export default class AddFriends extends React.Component {
                 flex: 1,
                 paddingHorizontal: 20,
                 paddingVertical: 20,
-                marginTop: 40
+                marginTop: 40,
               }}>
             <FlatList
                 data = {this.state.data}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => alert('Friend request sended')}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -151,9 +153,16 @@ export default class AddFriends extends React.Component {
                           category='s1'
                           style={{
                             color: '#000'
-                          }}>{`${item.name}`}</Text>
+                          }}>{`${item.name}`}
+                          </Text>
+                          <TouchableOpacity onPress={() => alert('Friend request verstuurd')} >
+                          <View style={styles.button}>
+                              <Text style={styles.buttonText} >
+                                Add
+                            </Text>
+                             </View>
+                             </TouchableOpacity>
                       </View>
-                    </TouchableOpacity>
                   )}
                   keyExtractor={item => item.email}
                   ItemSeparatorComponent={this.renderSeparator}
@@ -237,15 +246,13 @@ const styles = StyleSheet.create({
       marginTop: 32
     },
     button: {
-      flexDirection: "row",
-      marginBottom: 10,
-      elevation: 8,
-      backgroundColor: "#FFF",
-      borderRadius: 10,
-      width: 350,
+      marginLeft:100,
+      backgroundColor: "darkorange",
+      width: 100,
       height: 50,
-      paddingVertical: 10,
-      paddingHorizontal: 12
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderRadius:25
     },
     buttonlogout: {
       flexDirection: "row",
@@ -259,6 +266,11 @@ const styles = StyleSheet.create({
       paddingVertical: 10,
       paddingHorizontal: 12
   
+    },
+    buttonText: {
+      alignSelf:'center',
+      color: "black",
+      fontSize: 18
     },
     appButtonText: {
       fontSize: 15,
