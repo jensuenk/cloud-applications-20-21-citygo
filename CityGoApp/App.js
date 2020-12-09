@@ -5,11 +5,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import "firebase/auth";
 import AuthNavigator from './navigation/AuthStack';
 import ApplicationNavigator from './navigation/AppStack';
-import Routes1 from './navigation/Routes1';
+import Routes from './navigation/Routes';
 
 export default class App extends React.Component{
   render(){
-    return <Routes1/>;
+    return <Routes/>;
   }
 }
 
