@@ -79,6 +79,7 @@ export default class AddFriends extends React.Component {
  // versturen van een verzoek zal nu hardcoded zijn vanuit het standpunt van user1
   
   sendFriendRequest = (fid, uid = '1' ) => {
+    console.log(fid)
     const urlFriendRequest = 'https://citygo5.azurewebsites.net/Users/'+{uid}+'/Friends/'+{fid}
     const putMethod = {
       method: 'PUT',
@@ -198,7 +199,7 @@ render() {
                     color: '#000'
                   }}>{`${item.name}`} 
                 </Text>
-                <TouchableOpacity onPress={() => sendFriendRequest(item.userId)} >
+                <TouchableOpacity onPress={this.sendFriendRequest(item.userId)}>
                   <View style={styles.button}>
                     <Text style={styles.buttonText} >
                       Add
