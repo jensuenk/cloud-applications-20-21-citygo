@@ -11,15 +11,15 @@ class LoginScreen extends React.Component {
         this.state = {
             email: '', 
             password:'',
-            user: false
         };
     }
 
-    handleLogin = () => {        
+    handleLogin = () => {
+        console.log("voor functie",global.Myuser)
         Firebase.auth()
-            .signInWithEmailAndPassword(this.state.email,this.state.password)            
-            .then(this.state.user = true)
-            .catch(error => console.log(error), this.state.user=false)
+            .signInWithEmailAndPassword(this.state.email,this.state.password)
+            .then(global.Myuser = true, console.log("tijdens", global.Myuser), )                       
+            .catch(error=> console(error))        
     }
 
     render() {

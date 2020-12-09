@@ -8,6 +8,7 @@ import ApplicationNavigator from './navigation/AppStack';
 import Routes from './navigation/Routes';
 
 export default class App extends React.Component{
+
   render(){
     return <Routes/>;
   }
