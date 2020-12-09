@@ -1,0 +1,41 @@
+<nb-card>
+    <nb-card-header>Challenges selector</nb-card-header>
+    <nb-card-body *ngIf="challenges">
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td><label class="label">ID</label></td>
+                    <td><label class="label">Name</label></td>
+                    <td><label class="label">Task</label></td>
+                    <td><label class="label">Question</label></td>
+                    <td><label class="label">Answer</label></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of rows">
+                    <td>
+                        <nb-checkbox (change)="FieldsChange(row.challenge, $event)" value={{row.checked}}
+                            status="basic"></nb-checkbox>
+                    </td>
+                    <td><input nbInput fullWidth type="text" disabled name="challengeId"
+                            value={{row.challenge.challengeId}}></td>
+                    <td><input nbInput fullWidth type="text" name="name" value={{row.challenge.name}}>
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="task" value={{row.challenge.task}}>
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="questionChallenge"
+                            value={{row.challenge.questionChallenge}}>
+                    </td>
+                    <td><input nbInput fullWidth type="text" name="answer" value={{row.challenge.answer}}>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </nb-card-body>
+    <nb-card-footer>
+        <td><button class="cancel" nbButton status="danger" (click)="cancel()">Cancel</button></td>
+        <td><button nbButton status="success" (click)="submit()">Submit</button></td>
+    </nb-card-footer>
+</nb-card>

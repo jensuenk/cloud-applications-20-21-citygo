@@ -1,8 +1,10 @@
 ﻿using Application.Interfaces;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,13 +22,14 @@ namespace Application.Command.Item
         {
             Domain.Item newItem = new Domain.Item() 
             { 
-                ItemId = request.Item.ItemId,
-                Name = request.Item.Name, 
-                Location = request.Item.Location, 
-                Picture = request.Item.Picture, 
-                Rarity = request.Item.Rarity , 
-                UsersItems = request.Item.UsersItems 
+                ItemId = request.ItemVM.ItemId,
+                Name = request.ItemVM.Name, 
+                Location = request.ItemVM.Location, 
+                Picture = request.ItemVM.Picture, 
+                Rarity = request.ItemVM.Rarity,
+                UsersItems = request.ItemVM.UsersItems
             };
+
             var query = _context.Items.Add(newItem);
             return await _context.SaveAsync(cancellationToken);
         }

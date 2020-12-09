@@ -22,19 +22,21 @@ namespace Application.Command.Item
         {
             Domain.Item newItem = new Domain.Item() 
             { 
-                ItemId = request.Item.ItemId, 
-                Name = request.Item.Name, 
-                Location = request.Item.Location, 
-                Picture = request.Item.Picture, 
-                Rarity = request.Item.Rarity, 
-                UsersItems = request.Item.UsersItems 
+                ItemId = request.ItemVM.ItemId, 
+                Name = request.ItemVM.Name, 
+                Location = request.ItemVM.Location, 
+                Picture = request.ItemVM.Picture, 
+                Rarity = request.ItemVM.Rarity, 
+                UsersItems = request.ItemVM.UsersItems 
             };
+
             var oldItem = await _context.Items.Where(u => u.ItemId == newItem.ItemId).SingleAsync();
             oldItem.Name = newItem.Name;
             oldItem.Location = newItem.Location;
             oldItem.Picture = newItem.Picture;
             oldItem.Rarity = newItem.Rarity;
             oldItem.UsersItems = newItem.UsersItems;
+
             var query = _context.Items.Update(oldItem);
             return await _context.SaveAsync(cancellationToken);
         }

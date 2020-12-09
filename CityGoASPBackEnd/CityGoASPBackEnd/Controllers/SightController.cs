@@ -69,5 +69,13 @@ namespace CityGoASPBackEnd.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+        [Route("All")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllSightsWithRelations()
+        {
+            var query = new ShowSightsWithAllRelationsQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
     }
 }

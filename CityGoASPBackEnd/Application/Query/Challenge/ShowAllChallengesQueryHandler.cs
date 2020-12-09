@@ -20,7 +20,9 @@ namespace Application.Query.Challenge
 
         public async Task<ListChallengeVM> Handle(ShowAllChallengesQuery request, CancellationToken cancellationToken)
         {
-            var allChallenge = await _context.Challenges.ToListAsync();
+            var allChallenge = await _context.Challenges
+                .Include(i => i.Items)
+                .ToListAsync();
 
             ListChallengeVM vm = new ListChallengeVM();
             foreach (var challenge in allChallenge)
@@ -31,7 +33,8 @@ namespace Application.Query.Challenge
                     Name = challenge.Name, 
                     Task = challenge.Task,
                     Answer = challenge.Answer, 
-                    QuestionChallenge = challenge.QuestionChallenge 
+                    QuestionChallenge = challenge.QuestionChallenge,
+                    Items = challenge.Items
                 });
             }
             return vm;

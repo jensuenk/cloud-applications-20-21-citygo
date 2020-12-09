@@ -8,10 +8,10 @@ namespace Application.Command
 {
     public class CreateUserCommand : IRequest<int>
     {
-        public UserVM User { get; set; }
+        public UserVM UserVM { get; set; }
         public CreateUserCommand(UserVM newUser) 
         {
-            User = newUser;
+            UserVM = newUser;
         }
     }
 }

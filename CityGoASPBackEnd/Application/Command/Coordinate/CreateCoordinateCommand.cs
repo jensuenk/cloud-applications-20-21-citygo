@@ -8,10 +8,10 @@ namespace Application.Command.Coordinate
 {
     public class CreateCoordinateCommand : IRequest<int>
     {
-        public CoordinateVM Coordinate { get; set; }
+        public CoordinateVM CoordinateVM { get; set; }
         public CreateCoordinateCommand(CoordinateVM newCoordinate)
         {
-            Coordinate = newCoordinate;
+            CoordinateVM = newCoordinate;
         }
     }
 }

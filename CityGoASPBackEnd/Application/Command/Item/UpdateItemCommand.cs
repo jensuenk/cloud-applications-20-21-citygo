@@ -8,10 +8,10 @@ namespace Application.Command.Item
 {
     public class UpdateItemCommand : IRequest<int>, IRequest<ItemVM>
     {
-        public ItemVM Item { get; set; }
+        public ItemVM ItemVM { get; set; }
         public UpdateItemCommand(ItemVM updateItem)
         {
-            Item = updateItem;
+            ItemVM = updateItem;
         }
     }
 }

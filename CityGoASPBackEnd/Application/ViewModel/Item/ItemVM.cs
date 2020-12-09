@@ -11,11 +11,13 @@ namespace Application.ViewModel
 
         public string Name { get; set; }
 
-        public string Location { get; set; }
+        public Domain.Coordinate Location { get; set; }
 
         public string Rarity { get; set; }
 
         public string Picture { get; set; }
+
+        public int UserId { get; set; }
 
         public List<Domain.UsersItems> UsersItems { get; set; }
 

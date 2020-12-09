@@ -2,8 +2,10 @@
 using Application.ViewModel;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,13 +23,49 @@ namespace Application.Command
         {
             Domain.User newUser = new Domain.User()
             {
-                UserId = request.User.UserId, 
-                Name = request.User.Name, 
-                Username = request.User.Username, 
-                Email = request.User.Email, 
-                Balls = request.User.Balls, 
-                UsersItems = request.User.UsersItems
+                UserId = request.UserVM.UserId, 
+                Name = request.UserVM.Name, 
+                Username = request.UserVM.Username, 
+                Email = request.UserVM.Email, 
+                Balls = request.UserVM.Balls
             };
+
+            // Link existing useritems to a user trough the body
+            List<Domain.UsersItems> newUserItems = new List<Domain.UsersItems>();
+            foreach (var usersItem in request.UserVM.Items)
+            {
+                // Check if item exists, if so, create a new userItem and add it to a list to asign later
+                var foundItem = _context.Items.Find(usersItem.ItemId);
+                if (foundItem != null)
+                {
+                    UsersItems usersItems = new UsersItems()
+                    {
+                        User = newUser,
+                        UserId = newUser.UserId,
+                        Item = foundItem,
+                        ItemId = foundItem.ItemId
+                    };
+                    newUserItems.Add(usersItems);
+                }
+            }
+            // Assign the list to the user's useritems
+            newUser.UsersItems = newUserItems;
+
+            // Link existing challenges to a user trough the body
+            List<Domain.Challenge> newChallenges = new List<Domain.Challenge>();
+            foreach (var challenge in request.UserVM.Challenges)
+            {
+                // Check if challenge exists, if so, add it to a list to asign later
+                var foundChallenge = _context.Challenges.Find(challenge.ChallengeId);
+                if (foundChallenge != null)
+                {
+                    newChallenges.Add(foundChallenge);
+                }
+            }
+            // Assign the list to the user's challenges
+            newUser.Challenges = newChallenges;
+            
+
             var query = _context.Users.Add(newUser);
             return await _context.SaveAsync(cancellationToken);
         }

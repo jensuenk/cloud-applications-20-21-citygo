@@ -14,7 +14,10 @@ namespace Infrastucture.Persistence
                 new Domain.Item()
                 {
                     Name = "test",
-                    Location = "somewhere",
+                    Location = new Domain.Coordinate() {
+                        Latitude = 0,
+                        Longitude = 0
+                    },
                     Rarity = "rare",
                     Picture = "nice"
                 }
@@ -27,6 +30,20 @@ namespace Infrastucture.Persistence
                     Username = "Jh0nD03",
                     Email = "jhon.doe@gmail.com",
                     Balls = 1
+                },
+                new Domain.User()
+                {
+                   Name = "Jhon Doe2",
+                   Username = "Jh0nD032",
+                   Email = "jhon.doe2@gmail.com",
+                   Balls = 3
+                },
+                new Domain.User()
+                {
+                   Name = "Jhon Doe3",
+                   Username = "Jh0nD033",
+                   Email = "jhon.doe3@gmail.com",
+                   Balls = 3
                 }
             };
             List<Domain.Challenge> challengesL = new List<Domain.Challenge>()

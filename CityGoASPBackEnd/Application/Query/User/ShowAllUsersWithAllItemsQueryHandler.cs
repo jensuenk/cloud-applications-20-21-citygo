@@ -21,13 +21,10 @@ namespace Application.Query.User
 
         public async Task<ListUserVM> Handle(ShowAllUsersWithAllItemsQuery request, CancellationToken cancellationToken)
         {
-           
-
             var allUsers = await _context.Users
                 .Include(i => i.UsersItems)
+                .Include(c => c.Challenges)
                 .ToListAsync();
-
-           
 
             ListUserVM vm = new ListUserVM();
             foreach (var user in allUsers)
@@ -43,6 +40,7 @@ namespace Application.Query.User
                     Username = user.Username,
                     Balls = user.Balls,
                     Email = user.Email,
+                    Challenges = user.Challenges,
                     UsersItems = usersItems
                     
                 });

@@ -22,17 +22,33 @@ namespace Application.Command.Challenge
         {
             Domain.Challenge newChallenge = new Domain.Challenge() 
             { 
-                ChallengeId = request.Challenge.ChallengeId,
-                Name = request.Challenge.Name, 
-                Task = request.Challenge.Task, 
-                Answer = request.Challenge.Answer, 
-                QuestionChallenge = request.Challenge.QuestionChallenge
+                ChallengeId = request.ChallengeVM.ChallengeId,
+                Name = request.ChallengeVM.Name, 
+                Task = request.ChallengeVM.Task, 
+                Answer = request.ChallengeVM.Answer, 
+                QuestionChallenge = request.ChallengeVM.QuestionChallenge
             };
-            var oldChallenge = await _context.Challenges.Where(c => c.ChallengeId == newChallenge.ChallengeId).SingleAsync();
+
+            // Link existing Items to a challenge trough the body
+            List<Domain.Item> newItems = new List<Domain.Item>();
+            foreach (var item in request.ChallengeVM.Items)
+            {
+                // Check if Items exists, if so, add it to a list to asign later
+                var foundItem = _context.Items.Find(item.ItemId);
+                if (foundItem != null)
+                {
+                    newItems.Add(foundItem);
+                }
+            }
+
+            var oldChallenge = await _context.Challenges.Where(c => c.ChallengeId == newChallenge.ChallengeId)
+                .Include(i => i.Items).SingleAsync();
             oldChallenge.Name = newChallenge.Name;
             oldChallenge.Task = newChallenge.Task;
             oldChallenge.Answer = newChallenge.Answer;
             oldChallenge.QuestionChallenge = newChallenge.QuestionChallenge;
+            oldChallenge.Items = newItems;
+
             var query = _context.Challenges.Update(oldChallenge);
             return await _context.SaveAsync(cancellationToken);
         }

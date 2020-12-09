@@ -137,12 +137,15 @@ export default class ProfileScreen extends React.Component {
       .then(() => this.props.navigation.navigate('LoginScreen'))
       .catch(error => console.log(error))
   }
+  goToFriends = () => {
+    this.props.changeComponent('Three')
+  }
 
   //logout functie
   /*
   logout = () => {
     //logout via firebase afhandelen
-    this.props.changeComponent('Three')
+    this.props.changeComponent('login')
   };
   */
 
@@ -156,8 +159,8 @@ export default class ProfileScreen extends React.Component {
       text = this.state.errorMessage;
     } else if (this.state.location) {
       text = JSON.stringify(this.state.location);
-      stad = JSON.stringify(stad);
-      land = JSON.stringify(land);
+      stad = stad;
+      land = land;
     }
 
     return (
@@ -196,7 +199,7 @@ export default class ProfileScreen extends React.Component {
             </View>
             <View style={styles.statsBox}>
               <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
-              <Text style={[styles.text, styles.subText]}>friends</Text>
+              <Text  onPress={() => this.goToFriends()} style={[styles.text, styles.subText]}>friends</Text>
             </View>
 
           </View>
