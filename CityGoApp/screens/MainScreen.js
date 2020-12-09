@@ -1,29 +1,31 @@
 import { StyleSheet, View, Text } from 'react-native';
-import * as React from 'react';
+import React from 'react';
 import Map from './Map';
 import StandardButton from '../components/StandardButton';
 import Firebase from '../config/Firebase';
+import { Component } from 'react';
 
+class MainScreen extends React.Component {
 
-const MainScreen = ({ navigation }) => {
-
-    function signOut() {
+    signOut = () => {
         Firebase.auth()
             .signOut()
-            .then(() => navigation.navigate("Login"))
+            .then(() => this.props.navigation.navigate('LoginScreen'))
             .catch(error => console.log(error))
     }
 
-    return (
-        <View style={styles.container}>
-            <Text>MAIN screen</Text>
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text>MAIN screen</Text>
 
-            <StandardButton
-                buttonTitle="Log Out"
-                onPress={() => { signOut() }}
-            />
-        </View>
-    );
+                <StandardButton
+                    buttonTitle="Log Out"
+                    onPress={() => { this.signOut() }}
+                />
+            </View>
+        );
+    }
 }
 
 export default MainScreen;

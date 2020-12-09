@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import StandardButton from '../components/StandardButton';
 import InputField from '../components/InputField';
@@ -6,116 +6,71 @@ import InputField from '../components/InputField';
 import Firebase from '../config/Firebase';
 
 
+class RegisterScreen extends React.Component {
 
-
-const RegisterScreen = ({ navigation }) => {
-
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-
-    function handleSignUp() {
-        Firebase.auth()
-            .createUserWithEmailAndPassword(email,password)
-            .then(()=> navigation.navigate("Login"))
-            .catch(error=>console.log(error))
+    constructor(props) {
+        super(props);
+        this.state = { 
+            email: '',
+            password: '', 
+            confirmPassword:''
+        };
     }
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Create your profile here!</Text>
-            <InputField
-                labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
-                placeholderText="Email"
-                iconType="user"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-            />
-            <InputField
-                labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
-                placeholderText="Password"
-                iconType="lock"
-                secureTextEntry={true}
-            />
+    handleSignUp = () => {
+        Firebase.auth()
+            .createUserWithEmailAndPassword(this.state.email,this.state.password)
+            .then(() => this.props.navigation.navigate('LoginScreen'))
+            .catch(error => console.log(error))
+    }
+    
 
-            <InputField
-                labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
-                placeholderText="Confirm Password"
-                iconType="lock"
-                secureTextEntry={true}
-            />
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.text}>Create your profile here!</Text>
+                <InputField
+                    labelValue={this.state.email}
+                    onChangeText={(email) => this.setState({ email })}
+                    placeholderText="Email"
+                    iconType="user"
+                    secureTextEntry={false}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <InputField
+                    labelValue={this.state.password}
+                    onChangeText={(password) => this.setState({ password })}
+                    placeholderText="Password"
+                    iconType="lock"
+                    secureTextEntry={true}
+                />
+                <InputField
+                    labelValue={this.state.confirmPassword}
+                    onChangeText={(confirmPassword) => this.setState({ confirmPassword })}
+                    placeholderText="Confirm Password"
+                    iconType="lock"
+                    secureTextEntry={true}
+                />
 
-            <View>
-                <Text style={styles.textPrivate}>By registering you agree with our Terms of Service and Privacy Policy.</Text>
+                <View>
+                    <Text style={styles.textPrivate}>By registering you agree with our Terms of Service and Privacy Policy.</Text>
+                </View>
+
+
+                <StandardButton
+                    buttonTitle="Register Now"
+                    onPress={() => { this.handleSignUp() }}
+                />
+
+                <TouchableOpacity style={styles.forgotButton} onPress={() => this.props.navigation.navigate('LoginScreen')}>
+                    <Text style={styles.navButtonText} >Already registered? Sign in</Text>
+                </TouchableOpacity>
+
             </View>
-
-
-            <StandardButton
-                buttonTitle="Register Now"
-                onPress={() => { handleSignUp() }}
-            />
-
-            <TouchableOpacity style={styles.forgotButton} onPress={() => navigation.navigate("Login")}>
-                <Text style={styles.navButtonText} >Already registered? Sign in</Text>
-            </TouchableOpacity>
-
-        </View>
-    );
-};
-
-
-/*
-//Saved for later
-    return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Create your profile here!</Text>
-            <InputField
-            ///dit wordt nog veranderd
-                labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
-                placeholderText="Email"
-                iconType="user"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-            />
-            <InputField
-                value={password}
-                //labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
-                placeholderText="Password"
-                iconType="lock"
-                secureTextEntry={true}
-            />
-
-            <InputField
-                value={password}
-                //labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
-                placeholderText="Confirm Password"
-                iconType="lock"
-                secureTextEntry={true}
-            />
-
-            <View>
-                <Text style={styles.textPrivate}>By registering you agree with our Terms of Service and Privacy Policy.</Text>
-            </View>
-
-
-            <StandardButton
-                buttonTitle="Register Now"
-                onPress={() => { handleSignUp() ; navigation.navigate("Login")}}
-            />
-
-            <TouchableOpacity style={styles.forgotButton} onPress={() => navigation.navigate("Login")}>
-                <Text style={styles.navButtonText} >Have an account? Sign in</Text>
-            </TouchableOpacity>
-
-        </View>
-*/
+        );
+    }
+}
 
 export default RegisterScreen;
 

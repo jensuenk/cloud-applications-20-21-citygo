@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native';
+/*import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import Routes from './Routes';
 
@@ -8,4 +8,4 @@ const Providers = () => {
     );
 }
 
-export default Providers;
+export default Providers;*/

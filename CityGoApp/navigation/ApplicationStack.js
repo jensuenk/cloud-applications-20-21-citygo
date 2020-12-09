@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import MainScreen from "../screens/MainScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
@@ -10,4 +10,4 @@ const ApplicationStack=()=>{
         </Stack.Navigator>
     );
 }
-export default ApplicationStack;
+export default ApplicationStack;*/

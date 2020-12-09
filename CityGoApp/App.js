@@ -80,16 +80,36 @@ export default createAppContainer(TabNavigator);*/
 
 
 import React from 'react';
-import Providers from './navigation';
-// must be listed before other Firebase SDKs
-import firebase from "firebase/app";
-import FirebaseConfig from "./config/Firebase.js";
+import { StyleSheet, Text, View} from 'react-native';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 
 // Add the Firebase services that you want to use
 import "firebase/auth";
+import MainScreen from './screens/MainScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import WelcomeScreen from './screens/RegisterScreen';
 
-const App = () => {
-  return <Providers />
+export default class App extends React.Component{
+  render(){
+    return <AppNavigator/>;
+  }
 }
 
-export default App;
+const AppSwitchNavigator = createSwitchNavigator({
+  WelcomeScreen: WelcomeScreen,
+  LoginScreen: LoginScreen,
+  RegisterScreen: RegisterScreen,
+  MainScreen: MainScreen
+});
+
+const AppNavigator = createAppContainer(AppSwitchNavigator);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+});

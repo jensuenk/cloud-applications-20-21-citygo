@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+/*mport React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import WelcomeScreen from '../screens/WelcomeScreen';
@@ -54,4 +54,4 @@ const AuthorizationStack = () => {
     );
 };
 
-export default AuthorizationStack;
+export default AuthorizationStack;*/

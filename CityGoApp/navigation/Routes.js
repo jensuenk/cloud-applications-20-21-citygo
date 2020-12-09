@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthorizationStack from './AuthorizationStack';
 
@@ -11,4 +11,4 @@ const Routes = () => {
     );
 };
 
-export default Routes;
+export default Routes;*/

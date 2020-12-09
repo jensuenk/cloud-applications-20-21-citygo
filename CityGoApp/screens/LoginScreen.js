@@ -1,90 +1,62 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import StandardButton from '../components/StandardButton';
 import InputField from '../components/InputField';
 import Firebase from '../config/Firebase';
 
-const LoginScreen = ({ navigation }) => {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-
-
-
-    function handleLogin() {
-        Firebase.auth()
-            .signInWithEmailAndPassword(email, password)
-            .then(() => navigation.navigate("Main"))    
-            .catch(error => console.log(error))
-           
+class LoginScreen extends React.Component {
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            email: '', 
+            password:''
+        };
     }
 
+    handleLogin = () => {
+        Firebase.auth()
+            .signInWithEmailAndPassword(this.state.email,this.state.password)
+            .then(() => this.props.navigation.navigate('MainScreen'))
+            .catch(error => console.log(error))
+    }
 
-    return (
-        <View style={styles.container}>
-            <Image
-                source={require('../assets/LogoWelcome.png')}
-                style={styles.logo}
-            />
-            <InputField
-                labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
-                placeholderText="Email"
-                iconType="user"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-            />
-            <InputField
-                labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
-                placeholderText="Password"
-                iconType="lock"
-                secureTextEntry={true}
-            />
-            <StandardButton
-                buttonTitle="Log In"
-                onPress={() => { handleLogin() }}
-            />
+    render() {
+        return (
+            <View style={styles.container}>
+                <Image
+                    source={require('../assets/LogoWelcome.png')}
+                    style={styles.logo}
+                />
+                <InputField
+                    labelValue={this.state.email}
+                    onChangeText={(email) => this.setState({ email })}
+                    placeholderText="Email"
+                    iconType="user"
+                    secureTextEntry={false}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <InputField
+                    labelValue={this.state.password}
+                    onChangeText={(password) => this.setState({ password })}
+                    placeholderText="Password"
+                    iconType="lock"
+                    secureTextEntry={true}
+                />
+                <StandardButton
+                    buttonTitle="Log In"
+                    onPress={() => { this.handleLogin() }}
+                />
 
-            <TouchableOpacity style={styles.forgotButton} onPress={() => navigation.navigate("Register")}>
-                <Text style={styles.navButtonText} >Not registered yet? Register here</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.forgotButton} onPress={() => this.props.navigation.navigate('RegisterScreen')}>
+                    <Text style={styles.navButtonText} >Not registered yet? Register here</Text>
+                </TouchableOpacity>
 
-        </View>
-    );
-
-    /*<InputField
-                labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
-                placeholderText="Email"
-                iconType="user"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-            />
-            <InputField
-                labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
-                placeholderText="Password"
-                iconType="lock"
-                secureTextEntry={true}
-            />
-            <StandardButton
-                buttonTitle="Log In"
-                onPress={() => { handleLogin() }}
-            />
-
-            <GoogleButton
-                buttonTitle="Sign in with Google"
-                btnType="google"
-                backgroundColor="#f2ced6"
-                onPress={() => { alert("Google Sign In") }}
-            />
-
-            <TouchableOpacity style={styles.forgotButton} onPress={() => navigation.navigate("Register")}>
-                <Text style={styles.navBu*/
-
-};
+            </View>
+        );
+    }
+}
 
 export default LoginScreen;
 
