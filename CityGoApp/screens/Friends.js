@@ -66,6 +66,27 @@ export default class Friends extends React.Component {
     }
 
 
+  /*
+  deleteFriend = (fid, uid = '1' ) => {
+    console.log(fid)
+    const urlFriendRequest = 'https://citygo5.azurewebsites.net/Users/'+{uid}+'/Friends/'+{fid}
+    const putMethod = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+       // make the HTTP put request using fetch api
+       fetch(urlFriendRequest, putMethod)
+       .then(response => response.json())
+       .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
+       .catch(err => console.log(err)) // Do something with the error
+       
+  }
+  */
+ 
+
     renderHeader = () => (
         <View
             style={{
@@ -155,7 +176,9 @@ export default class Friends extends React.Component {
                           category='s1'
                           style={{
                             color: '#000'
-                          }}>{`${item.name}`}</Text>
+                          }}>{`${item.name}`}
+                          </Text>
+ 
                       </View>
                     </TouchableOpacity>
                   )}
@@ -169,9 +192,16 @@ export default class Friends extends React.Component {
           
         )
     }
-
-
 }
+/*
+                         <TouchableOpacity >
+                          <View style={styles.button}>
+                           <Text style={styles.buttonText} >
+                             Delete
+                            </Text>
+                        </View>
+                </TouchableOpacity>
+*/
 
 const styles = StyleSheet.create({
     image: {
@@ -248,15 +278,18 @@ const styles = StyleSheet.create({
       marginTop: 32
     },
     button: {
-      flexDirection: "row",
-      marginBottom: 10,
-      elevation: 8,
-      backgroundColor: "#FFF",
-      borderRadius: 10,
-      width: 350,
+      marginLeft: 100,
+      backgroundColor: "darkorange",
+      width: 100,
       height: 50,
-      paddingVertical: 10,
-      paddingHorizontal: 12
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderRadius: 25
+    },
+    buttonText: {
+      alignSelf: 'center',
+      color: "black",
+      fontSize: 18
     },
     buttonlogout: {
       flexDirection: "row",
