@@ -27,7 +27,7 @@ export default class Friends extends React.Component {
 
     makeRemoteRequest = () => {
         const { page, seed } = this.state
-        const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
+        const url = 'https://citygo5.azurewebsites.net/Users/1/Friends'
         this.setState({ loading: true })
 
 
@@ -35,21 +35,20 @@ export default class Friends extends React.Component {
             .then(res => res.json())
             .then(res => {
                 this.setState({
-                    data: page === 1 ? res.results : [...this.state.data, ...res.results],
+                    data: page === 1 ? res.userFriends : [...this.state.data, ...res.userFriends],
                     error: res.error || null,
                     loading: false,
-                    fullData: res.results
+                    fullData: res.userFriends
                 })
             })
     }
 
 
-    contains = ({ name, email }, query) => {
-        const { first, last } = name
+    contains = ({ name, email}, query) => {
+       
         if (
-            first.includes(query) ||
-            last.includes(query) ||
-            email.includes(query)
+            name.includes(query)||
+            email.includes(query) 
         ) {
             return true
         }
@@ -147,7 +146,7 @@ export default class Friends extends React.Component {
                           alignItems: 'center'
                         }}>
                         <Image
-                          source={{ uri: item.picture.thumbnail }}
+                          source={{ uri: 'https://i.ytimg.com/vi/LkHcB34a2yo/hqdefault.jpg' }}
                           size='giant'
                           style={styles.profileImage}>
                           </Image>
@@ -156,7 +155,7 @@ export default class Friends extends React.Component {
                           category='s1'
                           style={{
                             color: '#000'
-                          }}>{`${item.name.first} ${item.name.last}`}</Text>
+                          }}>{`${item.name}`}</Text>
                       </View>
                     </TouchableOpacity>
                   )}
