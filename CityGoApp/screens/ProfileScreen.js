@@ -5,6 +5,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
+import StandardButton from '../components/StandardButton';
+import Firebase from '../config/Firebase';
 
 
 
@@ -129,6 +131,13 @@ export default class ProfileScreen extends React.Component {
       this.props.changeComponent('Two')
   };
 
+  signOut = () => {
+    Firebase.auth()
+      .signOut()
+      .then(() => this.props.navigation.navigate('LoginScreen'))
+      .catch(error => console.log(error))
+  }
+
   //logout functie
   /*
   logout = () => {
@@ -234,7 +243,10 @@ export default class ProfileScreen extends React.Component {
               <Text style={styles.appButtonText} >ADD FRIENDS</Text>
             </TouchableOpacity>
           </View>
-
+          <StandardButton
+            buttonTitle="Log Out"
+            onPress={() => { this.signOut() }}
+          />
 
 
         </ScrollView>
