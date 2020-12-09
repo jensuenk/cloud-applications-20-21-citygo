@@ -27,7 +27,7 @@ export default class Friends extends React.Component {
 
     makeRemoteRequest = () => {
         const { page, seed } = this.state
-        const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
+        const url = 'https://citygo5.azurewebsites.net/Users/1/Friends'
         this.setState({ loading: true })
 
 
@@ -35,21 +35,20 @@ export default class Friends extends React.Component {
             .then(res => res.json())
             .then(res => {
                 this.setState({
-                    data: page === 1 ? res.results : [...this.state.data, ...res.results],
+                    data: page === 1 ? res.userFriends : [...this.state.data, ...res.userFriends],
                     error: res.error || null,
                     loading: false,
-                    fullData: res.results
+                    fullData: res.userFriends
                 })
             })
     }
 
 
-    contains = ({ name, email }, query) => {
-        const { first, last } = name
+    contains = ({ name, email}, query) => {
+       
         if (
-            first.includes(query) ||
-            last.includes(query) ||
-            email.includes(query)
+            name.includes(query)||
+            email.includes(query) 
         ) {
             return true
         }
@@ -66,6 +65,27 @@ export default class Friends extends React.Component {
         this.setState({ data, query: text })
     }
 
+
+  /*
+  deleteFriend = (fid, uid = '1' ) => {
+    console.log(fid)
+    const urlFriendRequest = 'https://citygo5.azurewebsites.net/Users/'+{uid}+'/Friends/'+{fid}
+    const putMethod = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+       // make the HTTP put request using fetch api
+       fetch(urlFriendRequest, putMethod)
+       .then(response => response.json())
+       .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
+       .catch(err => console.log(err)) // Do something with the error
+       
+  }
+  */
+ 
 
     renderHeader = () => (
         <View
@@ -147,7 +167,7 @@ export default class Friends extends React.Component {
                           alignItems: 'center'
                         }}>
                         <Image
-                          source={{ uri: item.picture.thumbnail }}
+                          source={{ uri: 'https://i.ytimg.com/vi/LkHcB34a2yo/hqdefault.jpg' }}
                           size='giant'
                           style={styles.profileImage}>
                           </Image>
@@ -156,7 +176,9 @@ export default class Friends extends React.Component {
                           category='s1'
                           style={{
                             color: '#000'
-                          }}>{`${item.name.first} ${item.name.last}`}</Text>
+                          }}>{`${item.name}`}
+                          </Text>
+ 
                       </View>
                     </TouchableOpacity>
                   )}
@@ -170,9 +192,16 @@ export default class Friends extends React.Component {
           
         )
     }
-
-
 }
+/*
+                         <TouchableOpacity >
+                          <View style={styles.button}>
+                           <Text style={styles.buttonText} >
+                             Delete
+                            </Text>
+                        </View>
+                </TouchableOpacity>
+*/
 
 const styles = StyleSheet.create({
     image: {
@@ -249,15 +278,18 @@ const styles = StyleSheet.create({
       marginTop: 32
     },
     button: {
-      flexDirection: "row",
-      marginBottom: 10,
-      elevation: 8,
-      backgroundColor: "#FFF",
-      borderRadius: 10,
-      width: 350,
+      marginLeft: 100,
+      backgroundColor: "darkorange",
+      width: 100,
       height: 50,
-      paddingVertical: 10,
-      paddingHorizontal: 12
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderRadius: 25
+    },
+    buttonText: {
+      alignSelf: 'center',
+      color: "black",
+      fontSize: 18
     },
     buttonlogout: {
       flexDirection: "row",
