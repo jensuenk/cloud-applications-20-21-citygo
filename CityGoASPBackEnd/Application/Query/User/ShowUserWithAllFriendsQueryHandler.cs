@@ -24,8 +24,8 @@ namespace Application.Query.User
             try
             {
                 var user = await _context.Users.Where(u => u.UserId == request.UserId)
-               .Include(i => i.Friends)
-               .SingleAsync();
+                    .Include(i => i.Friends)
+                    .SingleAsync();
                 List<Domain.User> tussen = new List<Domain.User>();
                 foreach (var item in user.Friends)
                 {

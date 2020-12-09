@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Command
 {
-    public class CreateUserCommand : IRequest<UserVM>
+    public class CreateUserCommand : IRequest<int>
     {
         public UserVM UserVM { get; set; }
         public CreateUserCommand(UserVM newUser) 

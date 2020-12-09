@@ -1,4 +1,7 @@
 ﻿using Application.Interfaces;
+using Application.ViewModel;
+using Application.ViewModel.Challenge;
+using Application.ViewModel.Item;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -36,6 +39,7 @@ namespace Infrastucture.Persistence
         {
             return base.SaveChangesAsync(cancellationToken);
         }
+
         protected override void OnModelCreating(ModelBuilder modelbuilder) 
         {
             modelbuilder.Entity<UsersItems>()

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.User
 {
-    public class AddFriendCommandHandler : IRequestHandler<AddFriendCommand, UserVM>
+    public class AddFriendCommandHandler : IRequestHandler<AddFriendCommand, int>
     {
         IDBContext _context;
         public AddFriendCommandHandler(IDBContext context)
@@ -19,9 +19,9 @@ namespace Application.Command.User
             _context = context;
         }
 
-        public async Task<UserVM> Handle(AddFriendCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(AddFriendCommand request, CancellationToken cancellationToken)
         {
-            Domain.User user;
+            Domain.User user = new Domain.User();
             Domain.User friend;
             try
             {
@@ -31,7 +31,7 @@ namespace Application.Command.User
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_User" };
-                return vm1;
+                return 4041;
             }
             try
             {
@@ -41,27 +41,37 @@ namespace Application.Command.User
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_Friend" };
-                return vm1;
+                return 4042;
             }
 
             List<Domain.Friends> Friends = new List<Domain.Friends>();
-
-            Domain.Friends Friend = new Domain.Friends()
+            Domain.Friends Friend;
+            if (user.Friends == null)
             {
-                User = user,
-                UserId = user.UserId,
-                FriendId = request.FriendId
-            };
+               Friend = new Domain.Friends()
+               {
+                    User = user,
+                    UserId = user.UserId,
+                    FriendId = request.FriendId
+               };
 
-            Friends.Add(Friend);
-            user.Friends = Friends;
+                Friends.Add(Friend);
+                user.Friends = Friends;
+            }
+            else
+            {
+                Friend = new Domain.Friends()
+                {
+                    User = user,
+                    UserId = user.UserId,
+                    FriendId = request.FriendId
+                };
+                user.Friends.Add(Friend);
+            }
+  
             var query1 = _context.Users.Update(user);
             var query2 = _context.Friends.Add(Friend);
-            UserVM vm3 = new UserVM()
-            {
-                Error = "OK",
-            };
-            return vm3;
+            return await _context.SaveAsync(cancellationToken);
         }
     }
 }

@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace Application.Command
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserVM>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
     {
         IDBContext _context;
         public CreateUserCommandHandler(IDBContext context) 
         {
             _context = context;
         }
-        public async Task<UserVM> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             Domain.User newUser;
             try
@@ -36,7 +36,7 @@ namespace Application.Command
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "BadRequest_User" };
-                return vm1;
+                return 4001;
             }
 
 
@@ -65,7 +65,7 @@ namespace Application.Command
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_Item" };
-                return vm1;
+                return 4041;
             }
             
             // Assign the list to the user's useritems
@@ -90,7 +90,7 @@ namespace Application.Command
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_Challenge" };
-                return vm1;
+                return 4042;
             }
             
             // Assign the list to the user's challenges
@@ -109,7 +109,7 @@ namespace Application.Command
                 UsersItems = newUser.UsersItems,
                 Error = "OK",
             };
-            return vm3;
+            return await _context.SaveAsync(cancellationToken);
         }
     }
 }

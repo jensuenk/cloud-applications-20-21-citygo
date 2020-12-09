@@ -53,15 +53,15 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new CreateUserCommand(newUser);
             var result = await _mediator.Send(command);
-            if (result.Error == "BadRequest_User")
+            if (result == 4001)
             {
                 return BadRequest("The data in your body does not match with the data from the database");
             }
-            else if (result.Error == "NotFound_Challenge")
+            else if (result == 4041)
             {
                 return NotFound("Invalid id given for Challenge, try using an exsisting id");
             }
-            else if (result.Error == "NotFound_Item")
+            else if (result == 4042)
             {
                 return NotFound("Invalid id given for Item, try using an exsisting id");
             }else
@@ -75,15 +75,15 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new UpdateUserCommand(newUser);
             var result = await _mediator.Send(command);
-            if (result.Error == "BadRequest_User")
+            if (result == 4001)
             {
                 return BadRequest("The data in your body does not match with the data from the database");
             }
-            else if (result.Error == "NotFound_Challenge")
+            else if (result == 4041)
             {
                 return NotFound("Invalid id given for Challenge, try using an exsisting id");
             }
-            else if (result.Error == "NotFound_Item")
+            else if (result == 4042)
             {
                 return NotFound("Invalid id given for Item, try using an exsisting id");
             }
@@ -99,11 +99,11 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddItemToUserCommand(uid, iid);
             var result = await _mediator.Send(command);
-            if (result.Error == "NotFound_User")
+            if (result == 4041)
             {
                 return NotFound("Invalid id given for User, try using an exsisting id");
             }
-            else if (result.Error == "NotFound_Item")
+            else if (result == 4042)
             {
                 return NotFound("Invalid id given for Item, try using an exsisting id");
             }
@@ -119,11 +119,11 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddChallengeToUserCommand(uid, cid);
             var result = await _mediator.Send(command);
-            if (result.Error == "NotFound_User")
+            if (result == 4041)
             {
                 return NotFound("Invalid id given for User, try using an exsisting id");
             }
-            else if (result.Error == "NotFound_Challenge")
+            else if (result == 4042)
             {
                 return NotFound("Invalid id given for Challenge, try using an exsisting id");
             }
@@ -154,7 +154,7 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new DeleteUserCommand(id);
             var result = await _mediator.Send(command);
-            if (result.Error == "NotFound_User")
+            if (result == 4041)
             {
                 return NotFound("Invalid id given, try using an exsisting id");
             }
@@ -178,11 +178,31 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddFriendCommand(uid, fid);
             var result = await _mediator.Send(command);
-            if (result.Error == "NotFound_User")
+            if (result == 4041)
             {
                 return NotFound("Invalid id given for User, try using an exsisting id");
             }
-            else if (result.Error == "NotFound_Friend")
+            else if (result == 4042)
+            {
+                return NotFound("Invalid id given for Friend, try using an exsisting id");
+            }
+            else
+            {
+                return Created("Command succesfull", result);
+            }
+        }
+
+        [Route("{uid}/Friends/{fid}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFriendFromUser(int uid, int fid)
+        {
+            var command = new DeleteFriendCommand(uid, fid);
+            var result = await _mediator.Send(command);
+            if (result == 4041)
+            {
+                return NotFound("Invalid id given for User, try using an exsisting id");
+            }
+            else if (result == 4042)
             {
                 return NotFound("Invalid id given for Friend, try using an exsisting id");
             }

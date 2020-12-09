@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Command.User
 {
-    public class DeleteUserCommand : IRequest<UserVM>
+    public class DeleteUserCommand : IRequest<int>
     {
         public int UserId { get; set; }
         public DeleteUserCommand(int id)

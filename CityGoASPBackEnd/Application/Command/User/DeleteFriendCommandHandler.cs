@@ -11,42 +11,50 @@ using System.Threading.Tasks;
 
 namespace Application.Command.User
 {
-    public class AddChallengeToUserCommandHandler : IRequestHandler<AddChallengeToUserCommand, int>
+    public class DeleteFriendCommandHandler : IRequestHandler<DeleteFriendCommand, int>
     {
         IDBContext _context;
-        public AddChallengeToUserCommandHandler(IDBContext context)
+        public DeleteFriendCommandHandler(IDBContext context)
         {
             _context = context;
         }
 
-        public async Task<int> Handle(AddChallengeToUserCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(DeleteFriendCommand request, CancellationToken cancellationToken)
         {
             Domain.User user;
-            Domain.Challenge challenge;
+            Domain.User friend;
             try
             {
                 user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
+
             }
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_User" };
                 return 4041;
             }
-
             try
             {
-                challenge = await _context.Challenges.Where(u => u.ChallengeId == request.ChallengeId).SingleAsync();
+                friend = await _context.Users.Where(u => u.UserId == request.FriendId).SingleAsync();
+
             }
             catch (Exception)
             {
-                UserVM vm1 = new UserVM() { Error = "NotFound_Challenge" };
+                UserVM vm1 = new UserVM() { Error = "NotFound_Friend" };
                 return 4042;
             }
 
-            challenge.User = user;
-
-            var query1 = _context.Challenges.Update(challenge);
-            var query2 = _context.Users.Update(user);
+            List<Domain.Friends> Friends = new List<Domain.Friends>();
+            Friends = user.Friends;
+            foreach (var item in Friends)
+            {
+                if (item.UserId == friend.UserId)
+                {
+                    Friends.Remove(item);
+                }
+            }
+            user.Friends = Friends;
+            var query1 = _context.Users.Update(user);
             return await _context.SaveAsync(cancellationToken);
         }
     }

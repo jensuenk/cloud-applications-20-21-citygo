@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace Application.Command
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserVM>
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, int>
     {
         IDBContext _context;
         public UpdateUserCommandHandler(IDBContext context)
         {
             _context = context;
         }
-        public async Task<UserVM> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             Domain.User newUser;
             try
@@ -36,7 +36,7 @@ namespace Application.Command
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "BadRequest_User" };
-                return vm1;
+                return 4001;
             }
 
 
@@ -65,7 +65,7 @@ namespace Application.Command
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_Item" };
-                return vm1;
+                return 4041;
             }
 
             // Assign the list to the user's useritems
@@ -90,7 +90,7 @@ namespace Application.Command
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_Challenge" };
-                return vm1;
+                return 4042;
             }
 
             // Assign the list to the user's challenges
@@ -107,18 +107,7 @@ namespace Application.Command
             olduser.Challenges = newChallenges;
             olduser.UsersItems = newUserItems;
             var query = _context.Users.Update(olduser);
-            UserVM vm3 = new UserVM()
-            {
-                UserId = olduser.UserId,
-                Name = olduser.Name,
-                Balls = olduser.Balls,
-                Challenges = olduser.Challenges,
-                Email = olduser.Email,
-                Username = olduser.Username,
-                UsersItems = olduser.UsersItems,
-                Error = "OK",
-            };
-            return vm3;
+            return await _context.SaveAsync(cancellationToken);
         }     
     }
 }

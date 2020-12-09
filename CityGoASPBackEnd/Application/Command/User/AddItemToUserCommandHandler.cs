@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.User
 {
-    public class AddItemToUserCommandHandler : IRequestHandler<AddItemToUserCommand, UserVM>
+    public class AddItemToUserCommandHandler : IRequestHandler<AddItemToUserCommand, int>
     {
         IDBContext _context;
         public AddItemToUserCommandHandler(IDBContext context)
@@ -20,7 +20,7 @@ namespace Application.Command.User
             _context = context;
         }
 
-        public async Task<UserVM> Handle(AddItemToUserCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(AddItemToUserCommand request, CancellationToken cancellationToken)
         {
             Domain.User user;
             Domain.Item item;
@@ -32,7 +32,7 @@ namespace Application.Command.User
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_User" };
-                return vm1;
+                return 4041;
             }
             try
             {
@@ -42,7 +42,7 @@ namespace Application.Command.User
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_Item" };
-                return vm1;
+                return 4042;
             }
             UsersItems usersItems = new UsersItems() 
             { 
@@ -72,18 +72,7 @@ namespace Application.Command.User
             var query1 = _context.Users.Update(user);
             var query2 = _context.Items.Update(item);
             var query3 = _context.UsersItems.Add(usersItems);
-            UserVM vm3 = new UserVM()
-            {
-                UserId = user.UserId,
-                Name = user.Name,
-                Balls = user.Balls,
-                Challenges = user.Challenges,
-                Email = user.Email,
-                Username = user.Username,
-                UsersItems = user.UsersItems,
-                Error = "OK",
-            };
-            return vm3;
+            return await _context.SaveAsync(cancellationToken);
         }
     }
 }
