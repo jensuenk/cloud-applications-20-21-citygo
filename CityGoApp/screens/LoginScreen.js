@@ -4,6 +4,10 @@ import StandardButton from '../components/StandardButton';
 import InputField from '../components/InputField';
 import Firebase from '../config/Firebase';
 
+import AuthNavigator from '../navigation/AuthStack';
+import ApplicationNavigator from '../navigation/AppStack';
+import { NavigationContainer } from '@react-navigation/native';
+
 class LoginScreen extends React.Component {
     
     constructor(props){
@@ -12,14 +16,15 @@ class LoginScreen extends React.Component {
             email: '', 
             password:'',
         };
+        global.Myuser=false;
     }
 
     handleLogin = () => {
         console.log("voor functie",global.Myuser)
         Firebase.auth()
             .signInWithEmailAndPassword(this.state.email,this.state.password)
-            .then(global.Myuser = true, console.log("tijdens", global.Myuser), )                       
-            .catch(error=> console(error))        
+            .then(global.Myuser = true, console.log("tijdens", global.Myuser), this.props.navigation.navigate("MainScreen"))                       
+            .catch(error=> console(error))  
     }
 
     render() {

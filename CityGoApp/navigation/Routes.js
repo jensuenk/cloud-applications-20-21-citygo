@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+/*import React, {useContext, useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
 import AuthNavigator from './AuthStack';
@@ -7,8 +7,6 @@ import LoginScreen from '../screens/LoginScreen';
 
 const Routes = () => {
     
-    global.Myuser = false;
-    console.log("dit is de user",global.Myuser)
 
     return(
         <NavigationContainer>
@@ -17,4 +15,4 @@ const Routes = () => {
     );
 };
 
-export default Routes;
+export default Routes;*/

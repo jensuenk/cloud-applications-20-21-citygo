@@ -4,6 +4,9 @@ import Map from './Map';
 import StandardButton from '../components/StandardButton';
 import Firebase from '../config/Firebase';
 import { Component } from 'react';
+import AuthNavigator from '../navigation/AuthStack';
+import ApplicationNavigator from '../navigation/AppStack';
+import { NavigationContainer } from '@react-navigation/native';
 
 class MainScreen extends React.Component {
 
@@ -15,15 +18,11 @@ class MainScreen extends React.Component {
     }
 
     render() {
+        console.log("testje")
         return (
-            <View style={styles.container}>
-                <Text>MAIN screen</Text>
-
-                <StandardButton
-                    buttonTitle="Log Out"
-                    onPress={() => { this.signOut() }}
-                />
-            </View>
+            <NavigationContainer independent={true}>
+                <ApplicationNavigator />
+            </NavigationContainer>
         );
     }
 }
