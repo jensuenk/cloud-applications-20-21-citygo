@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import StandardButton from '../components/StandardButton';
 import InputField from '../components/InputField';
@@ -10,15 +10,16 @@ class LoginScreen extends React.Component {
         super(props);
         this.state = {
             email: '', 
-            password:''
+            password:'',
+            user: false
         };
     }
 
-    handleLogin = () => {
+    handleLogin = () => {        
         Firebase.auth()
-            .signInWithEmailAndPassword(this.state.email,this.state.password)
-            .then(() => this.props.navigation.navigate('MainScreen'))
-            .catch(error => console.log(error))
+            .signInWithEmailAndPassword(this.state.email,this.state.password)            
+            .then(this.state.user = true)
+            .catch(error => console.log(error), this.state.user=false)
     }
 
     render() {
