@@ -178,7 +178,13 @@ export default class Friends extends React.Component {
                             color: '#000'
                           }}>{`${item.name}`}
                           </Text>
- 
+                          <TouchableOpacity >
+                          <View style={styles.button}>
+                           <Text style={styles.buttonText} >
+                             Delete
+                            </Text>
+                        </View>
+                </TouchableOpacity>
                       </View>
                     </TouchableOpacity>
                   )}
@@ -193,15 +199,7 @@ export default class Friends extends React.Component {
         )
     }
 }
-/*
-                         <TouchableOpacity >
-                          <View style={styles.button}>
-                           <Text style={styles.buttonText} >
-                             Delete
-                            </Text>
-                        </View>
-                </TouchableOpacity>
-*/
+
 
 const styles = StyleSheet.create({
     image: {
