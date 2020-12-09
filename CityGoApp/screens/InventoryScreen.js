@@ -37,12 +37,14 @@ export default class InventoryScreen extends React.Component {
         <FlatList
           data={this.state.sights}
           renderItem={({ item }) =>
-            <View><Text style={styles.item}>  {item.name}</Text>        <CheckBox
+            <View>
+              <Text style={styles.item}>  {item.name}</Text>        
+              <CheckBox
               checkedIcon={<Image source={require('../assets/checked.png')} />}
               uncheckedIcon={<Image source={require('../assets/unchecked.png')} />}
-              checked="true"
-              onPress={() => this.setState({ checked: !this.state.checked })}
-            /></View>
+              checked="false"
+            />
+            </View>
           }
           keyExtractor={(item, index) => index.toString()}
         />
