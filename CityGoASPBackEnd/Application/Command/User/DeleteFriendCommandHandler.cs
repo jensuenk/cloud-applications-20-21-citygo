@@ -35,6 +35,7 @@ namespace Application.Command.User
                 UserVM vm1 = new UserVM() { Error = "NotFound_User" };
                 return 4041;
             }
+
             try
             {
                 friend = await _context.Users.Where(u => u.UserId == request.FriendId).SingleAsync();
@@ -46,17 +47,22 @@ namespace Application.Command.User
                 return 4042;
             }
 
+
+            Domain.Friends fr = new Domain.Friends()
+            {
+                User = user,
+                UserId = user.UserId,
+                FriendId = friend.UserId
+            };
+
+
             List<Domain.Friends> Friends = new List<Domain.Friends>();
             Friends = user.Friends;
-            foreach (var item in Friends)
-            {
-                if (item.FriendId == friend.UserId)
-                {
-                    Friends.Remove(item);
-                }
-            }
+            var itemToRemove = Friends.FirstOrDefault(r => r.FriendId == friend.UserId);
+            Friends.Remove(itemToRemove);
             user.Friends = Friends;
-            var query1 = _context.Users.Update(user);
+            var query2 = _context.Users.Update(user);
+            //var query1 = _context.Friends.Remove(fr);
             return await _context.SaveAsync(cancellationToken);
         }
     }

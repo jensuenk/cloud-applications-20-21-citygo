@@ -79,7 +79,7 @@ namespace Infrastucture.Persistence
             modelbuilder.Entity<User>()
                 .HasMany(u=>u.Friends)
                 .WithOne(f=>f.User)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
