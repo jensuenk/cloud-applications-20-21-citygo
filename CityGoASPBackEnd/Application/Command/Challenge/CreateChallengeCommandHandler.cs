@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.Challenge
 {
-    public class CreateChallengeCommandHandler : IRequestHandler<CreateChallengeCommand, ChallengeVM>
+    public class CreateChallengeCommandHandler : IRequestHandler<CreateChallengeCommand, int>
     {
         IDBContext _context;
         public CreateChallengeCommandHandler(IDBContext context)
@@ -19,7 +19,7 @@ namespace Application.Command.Challenge
             _context = context;
         }
 
-        public async Task<ChallengeVM> Handle(CreateChallengeCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateChallengeCommand request, CancellationToken cancellationToken)
         {
             Domain.Challenge newChallenge;
             try
@@ -36,7 +36,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm1 = new ChallengeVM() { Error = "BadRequest_Challenge" };
-                return vm1;
+                return 4001;
             }
 
 
@@ -58,7 +58,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_Item" };
-                return vm2;
+                return 4041;
             }
 
 
@@ -78,7 +78,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_User" };
-                return vm2;
+                return 4042;
             }
 
             // Assign the list to the challenge's items
@@ -86,19 +86,7 @@ namespace Application.Command.Challenge
             newChallenge.User = newUser;
           
             var query = _context.Challenges.Add(newChallenge);
-            ChallengeVM vm3 = new ChallengeVM()
-            {
-                ChallengeId = newChallenge.ChallengeId,
-                QuestionChallenge = newChallenge.QuestionChallenge,
-                Answer = newChallenge.Answer,
-                Items = newChallenge.Items,
-                Name = newChallenge.Name,
-                Sight = newChallenge.Sight,
-                Task = newChallenge.Task,
-                User = newChallenge.User,
-                Error = "OK"
-            };
-            return vm3;
+            return await _context.SaveAsync(cancellationToken);
         }
     }
 }

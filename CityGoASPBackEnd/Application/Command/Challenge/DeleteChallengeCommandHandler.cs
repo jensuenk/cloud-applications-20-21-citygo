@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.Challenge
 {
-    public class DeleteChallengeCommandHandler : IRequestHandler<DeleteChallengeCommand, ChallengeVM>
+    public class DeleteChallengeCommandHandler : IRequestHandler<DeleteChallengeCommand, int>
     {
         IDBContext _context;
         public DeleteChallengeCommandHandler(IDBContext context)
@@ -19,7 +19,7 @@ namespace Application.Command.Challenge
             _context = context;
         }
 
-        public async Task<ChallengeVM> Handle(DeleteChallengeCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(DeleteChallengeCommand request, CancellationToken cancellationToken)
         {
             Domain.Challenge challenge;
             try
@@ -29,23 +29,11 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm1 = new ChallengeVM() { Error = "NotFound" };
-                return vm1;
+                return 4041;
             }
            
             var query = _context.Challenges.Remove(challenge);
-            ChallengeVM vm3 = new ChallengeVM()
-            {
-                ChallengeId = challenge.ChallengeId,
-                QuestionChallenge = challenge.QuestionChallenge,
-                Answer = challenge.Answer,
-                Items = challenge.Items,
-                Name = challenge.Name,
-                Sight = challenge.Sight,
-                Task = challenge.Task,
-                User = challenge.User,
-                Error = "OK"
-            };
-            return vm3;
+            return await _context.SaveAsync(cancellationToken);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Command.Sight
 {
-    public class DeleteSightCommand : IRequest<SightVM>
+    public class DeleteSightCommand : IRequest<int>
     {
         public int SightId { get; set; }
         public DeleteSightCommand(int id)

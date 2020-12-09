@@ -59,15 +59,15 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new CreateChallengeCommand(newChallenge);
             var result = await _mediator.Send(command);
-            if (result.Error == "BadRequest_Challenge")
+            if (result == 4001)
             {
                 return BadRequest("The data in your body does not match with the data from the database");
             }
-            else if (result.Error == "NotFound_Item")
+            else if (result == 4041)
             {
                 return NotFound("Invalid id given for Item, try using an exsisting id");
             }
-            else if(result.Error == "NotFound_User")
+            else if(result == 4042)
             {
                 return NotFound("Invalid id given for User, try using an exsisting id");
             }
@@ -82,15 +82,15 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new UpdateChallengeCommand(newChallenge);
             var result = await _mediator.Send(command);
-            if (result.Error == "BadRequest_Challenge")
+            if (result == 4001)
             {
                 return BadRequest("The data in your body does not match with the data from the database");
             }
-            else if (result.Error == "NotFound_Item")
+            else if (result == 4041)
             {
                 return NotFound("Invalid id given for Item, try using an exsisting id");
             }
-            else if (result.Error == "NotFound_User")
+            else if (result == 4042)
             {
                 return NotFound("Invalid id given for User, try using an exsisting id");
             }
@@ -105,7 +105,7 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new DeleteChallengeCommand(id);
             var result = await _mediator.Send(command);
-            if (result.Error == "NotFound")
+            if (result == 4041)
             {
                 return NotFound("Invalid id given, try using an exsisting id");
             }
@@ -120,11 +120,11 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddItemToChallengeCommand(cid, iid);
             var result = await _mediator.Send(command);
-            if (result.Error == "NotFound_Challenge")
+            if (result == 4041)
             {
                 return NotFound("Invalid id given for Challenge, try using an exsisting id");
             }
-            else if (result.Error == "NotFound_Item")
+            else if (result == 4042)
             {
                 return NotFound("Invalid id given for Item, try using an exsisting id");
             }
@@ -139,11 +139,11 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddSightToChallengeCommand(cid, sid);
             var result = await _mediator.Send(command);
-            if (result.Error == "NotFound_Challenge")
+            if (result == 4041)
             {
                 return NotFound("Invalid id given for Challenge, try using an exsisting id");
             }
-            else if (result.Error == "NotFound_Sight")
+            else if (result == 4042)
             {
                 return NotFound("Invalid id given for Sight, try using an exsisting id");
             }

@@ -50,7 +50,17 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new CreateSightCommand(newSight);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result == 4001)
+            {
+                return BadRequest("The data in your body does not match with the data from the database");
+
+            }
+            else if(result == 4041) {
+                return NotFound("Invalid id given for Challenge, try using an exsisting id");
+            }
+            else {
+                return Created("Command succesfull", result);
+            }
         }
 
         [HttpPut]
@@ -58,7 +68,23 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new UpdateSightCommand(newSight);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result == 4001)
+            {
+                return BadRequest("The data in your body does not match with the data from the database");
+
+            }
+            else if (result == 4041)
+            {
+                return NotFound("Invalid id given for Challenge, try using an exsisting id");
+            }
+            else if (result == 4042)
+            {
+                return NotFound("Invalid id given for the new Sight, try using an exsisting id");
+            }
+            else
+            {
+                return Created("Command succesfull", result);
+            }
         }
         [Route("{id}")]
         [HttpDelete]
@@ -66,7 +92,14 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new DeleteSightCommand(id);
             var result = await _mediator.Send(command);
-            return Ok(result);
+            if (result == 4041)
+            {
+                return NotFound("Invalid id given for Sight, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
         [Route("{id}/Challenges")]
         [HttpGet]

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.Challenge
 {
-    public class AddSightToChallengeCommandHandler : IRequestHandler<AddSightToChallengeCommand, ChallengeVM>
+    public class AddSightToChallengeCommandHandler : IRequestHandler<AddSightToChallengeCommand, int>
     {
         IDBContext _context;
         public AddSightToChallengeCommandHandler(IDBContext context)
@@ -19,7 +19,7 @@ namespace Application.Command.Challenge
             _context = context;
         }
 
-        public async Task<ChallengeVM> Handle(AddSightToChallengeCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(AddSightToChallengeCommand request, CancellationToken cancellationToken)
         {
             Domain.Challenge challenge;
             Domain.Sight sight;
@@ -31,7 +31,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm1 = new ChallengeVM(){ Error = "NotFound_Challenge" };
-                return vm1;
+                return 4041;
             }
 
             try
@@ -41,7 +41,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_Sight" };
-                return vm2;
+                return 4042;
             }
 
 
@@ -49,19 +49,7 @@ namespace Application.Command.Challenge
 
             var query1 = _context.Challenges.Update(challenge);
             var query2 = _context.Sights.Update(sight);
-            ChallengeVM vm3 = new ChallengeVM()
-            {
-                ChallengeId = challenge.ChallengeId,
-                QuestionChallenge = challenge.QuestionChallenge,
-                Answer = challenge.Answer,
-                Items = challenge.Items,
-                Name = challenge.Name,
-                Sight = challenge.Sight,
-                Task = challenge.Task,
-                User = challenge.User,
-                Error = "OK"
-            };
-            return vm3;
+            return await _context.SaveAsync(cancellationToken);
         }
     }
 }

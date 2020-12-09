@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace Application.Command.Sight
 {
-    public class CreateSightCommandHandler : IRequestHandler<CreateSightCommand, SightVM>
+    public class CreateSightCommandHandler : IRequestHandler<CreateSightCommand, int>
     {
         IDBContext _context;
         public CreateSightCommandHandler(IDBContext context)
         {
             _context = context;
         }
-        public async Task<SightVM> Handle(CreateSightCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateSightCommand request, CancellationToken cancellationToken)
         {
             Domain.Sight newSight;
             try
@@ -37,7 +37,7 @@ namespace Application.Command.Sight
             catch (Exception)
             {
                 SightVM vm1 = new SightVM() { Error = "BadRequest_Sight" };
-                return vm1;
+                return 4001;
             }
 
 
@@ -59,24 +59,14 @@ namespace Application.Command.Sight
             catch (Exception)
             {
                 SightVM vm1 = new SightVM() { Error = "NotFound_Challenge" };
-                return vm1;
+                return 4041;
             }
             
             // Assign the list to the sight's challenges
             newSight.Challenges = newChallenges;
 
             var query = _context.Sights.Add(newSight);
-            SightVM vm3 = new SightVM() 
-            {
-                SightId = newSight.SightId,
-                Info = newSight.Info,
-                Monument = newSight.Monument,
-                Name = newSight.Name,
-                Stop = newSight.Stop,
-                Coordinates = newSight.Coordinates,
-                Challenges = newChallenges
-            };
-            return vm3;
+            return await _context.SaveAsync(cancellationToken);
         }
     }
 }

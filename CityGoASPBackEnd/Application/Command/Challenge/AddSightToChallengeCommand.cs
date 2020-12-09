@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Command.Challenge
 {
-    public class AddSightToChallengeCommand : IRequest<ChallengeVM>
+    public class AddSightToChallengeCommand : IRequest<int>
     {
         public int ChallengeId { get; set; }
         public int SightId { get; set; }

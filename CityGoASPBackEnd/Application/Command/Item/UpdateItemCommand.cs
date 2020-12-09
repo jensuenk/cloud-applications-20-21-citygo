@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Command.Item
 {
-    public class UpdateItemCommand : IRequest<int>, IRequest<ItemVM>
+    public class UpdateItemCommand : IRequest<int>
     {
         public ItemVM ItemVM { get; set; }
         public UpdateItemCommand(ItemVM updateItem)

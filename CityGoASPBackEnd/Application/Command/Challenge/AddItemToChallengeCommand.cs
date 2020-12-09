@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Command.Challenge
 {
-    public class AddItemToChallengeCommand : IRequest<ChallengeVM>
+    public class AddItemToChallengeCommand : IRequest<int>
     {
         public int ChallengeId { get; set; }
         public int ItemId { get; set; }

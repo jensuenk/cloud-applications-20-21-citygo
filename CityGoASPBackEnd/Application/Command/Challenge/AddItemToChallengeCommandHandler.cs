@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.Challenge
 {
-    public class AddItemToChallengeCommandHandler : IRequestHandler<AddItemToChallengeCommand, ChallengeVM>
+    public class AddItemToChallengeCommandHandler : IRequestHandler<AddItemToChallengeCommand, int>
     {
         IDBContext _context;
         public AddItemToChallengeCommandHandler(IDBContext context)
@@ -20,7 +20,7 @@ namespace Application.Command.Challenge
             _context = context;
         }
 
-        public async Task<ChallengeVM> Handle(AddItemToChallengeCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(AddItemToChallengeCommand request, CancellationToken cancellationToken)
         {
             Domain.Challenge challenge;
             Domain.Item item = new Domain.Item(); ;
@@ -32,7 +32,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm1 = new ChallengeVM() { Error = "NotFound_Challenge" };
-                return vm1;
+                return 4041;
             }
             try
             {
@@ -41,7 +41,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_Item" };
-                return vm2;
+                return 4042;
             }
 
             //Voeg challenge toe bij item
@@ -51,22 +51,7 @@ namespace Application.Command.Challenge
             //Alles opslaan in de database
             var query1 = _context.Challenges.Update(challenge);
             var query2 = _context.Items.Update(item);
-
-
-
-            ChallengeVM vm3 = new ChallengeVM()
-            {
-                ChallengeId = challenge.ChallengeId,
-                QuestionChallenge = challenge.QuestionChallenge,
-                Answer = challenge.Answer,
-                Items = challenge.Items,
-                Name = challenge.Name,
-                Sight = challenge.Sight,
-                Task = challenge.Task,
-                User = challenge.User,
-                Error = "OK"
-            };
-            return vm3;
+            return await _context.SaveAsync(cancellationToken);
         }
     }
 }

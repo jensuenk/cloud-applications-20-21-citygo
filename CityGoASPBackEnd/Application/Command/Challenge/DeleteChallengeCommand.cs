@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Command.Challenge
 {
-    public class DeleteChallengeCommand : IRequest<ChallengeVM>
+    public class DeleteChallengeCommand : IRequest<int>
     {
         public int ChallengeId { get; set; }
         public DeleteChallengeCommand(int id)

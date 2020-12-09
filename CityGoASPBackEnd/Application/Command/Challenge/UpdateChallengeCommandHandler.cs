@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.Challenge
 {
-    public class UpdateChallengeCommandHandler : IRequestHandler<UpdateChallengeCommand, ChallengeVM>
+    public class UpdateChallengeCommandHandler : IRequestHandler<UpdateChallengeCommand, int>
     {
         IDBContext _context;
         public UpdateChallengeCommandHandler(IDBContext context)
@@ -19,7 +19,7 @@ namespace Application.Command.Challenge
             _context = context;
         }
 
-        public async Task<ChallengeVM> Handle(UpdateChallengeCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(UpdateChallengeCommand request, CancellationToken cancellationToken)
         {
             Domain.Challenge newChallenge;
             try
@@ -36,7 +36,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm1 = new ChallengeVM() { Error = "BadRequest_Challenge" };
-                return vm1;
+                return 4001;
             }
             // Link existing Items to a challenge trough the body
             List<Domain.Item> newItems;
@@ -56,7 +56,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_Item" };
-                return vm2;
+                return 4041;
             }
 
 
@@ -76,7 +76,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_User" };
-                return vm2;
+                return 4042;
             }
 
             var oldChallenge = await _context.Challenges.Where(c => c.ChallengeId == newChallenge.ChallengeId)
@@ -90,19 +90,7 @@ namespace Application.Command.Challenge
             oldChallenge.Items = newItems;
 
             var query = _context.Challenges.Update(oldChallenge);
-            ChallengeVM vm3 = new ChallengeVM()
-            {
-                ChallengeId = newChallenge.ChallengeId,
-                QuestionChallenge = newChallenge.QuestionChallenge,
-                Answer = newChallenge.Answer,
-                Items = newChallenge.Items,
-                Name = newChallenge.Name,
-                Sight = newChallenge.Sight,
-                Task = newChallenge.Task,
-                User = newChallenge.User,
-                Error = "OK"
-            };
-            return vm3;
+            return await _context.SaveAsync(cancellationToken);
         }
     }
 }
