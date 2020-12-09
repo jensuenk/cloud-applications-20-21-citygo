@@ -129,7 +129,7 @@ export default class QuestionScreen extends React.Component {
        
        // make the HTTP put request using fetch api
        // voorlopig hardcoded, kan wanneer login af is
-       fetch("https://citygoaspbackend20201120025600.azurewebsites.net/users/1/challenges/1", putMethod)
+       fetch("https://citygo5.azurewebsites.net/users/1/challenges/1", putMethod)
        .then(response => response.json())
        .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
        .catch(err => console.log(err)) // Do something with the error

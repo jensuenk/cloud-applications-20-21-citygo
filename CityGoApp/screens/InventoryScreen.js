@@ -13,7 +13,8 @@ export default class InventoryScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: []
+      sights: [],
+      voltooideChallenges:[]
     }
   }
 
@@ -23,9 +24,9 @@ export default class InventoryScreen extends React.Component {
   }
 
   async apiCall() {
-    let resp = await fetch('https://citygo.azurewebsites.net/sights')
+    let resp = await fetch('https://citygo5.azurewebsites.net/sights')
     let respJson = await resp.json();
-    this.setState({ data: respJson.sights })
+    this.setState({ sights: respJson.sights })
   }
 
   // er moet nog weergegeven of het voltooid is of niet met bv vinkje
@@ -34,14 +35,16 @@ export default class InventoryScreen extends React.Component {
       <View style={styles.container}>
         <Text style={styles.header}>COMPLETED SIGHTS</Text>
         <FlatList
-          data={this.state.data}
+          data={this.state.sights}
           renderItem={({ item }) =>
-            <View><Text style={styles.item}>  {item.name}</Text>        <CheckBox
+            <View>
+              <Text style={styles.item}>  {item.name}</Text>        
+              <CheckBox
               checkedIcon={<Image source={require('../assets/checked.png')} />}
               uncheckedIcon={<Image source={require('../assets/unchecked.png')} />}
-              checked={item.}
-              onPress={() => this.setState({ checked: !this.state.checked })}
-            /></View>
+              checked="false"
+            />
+            </View>
           }
           keyExtractor={(item, index) => index.toString()}
         />
