@@ -8,6 +8,7 @@ import Constants from 'expo-constants';
 import filter from 'lodash.filter';
 
 
+
 export default class AddFriends extends React.Component {
   state = {
     loading: false,
@@ -16,16 +17,17 @@ export default class AddFriends extends React.Component {
     seed: 1,
     error: null,
     query: '',
-    fullData: []
+    fullData: [],
+    friendlist:[]
   }
 
+  _friendlist:[];
 
   componentDidMount() {
     this.makeRemoteRequest()
   }
 
-  // versturen van een verzoek zal nu hardcoded zijn vanuit het standpunt van user1
-  //'https://citygo5.azurewebsites.net/Users/{uid}/Friends/{fid}'
+ 
 
 
   makeRemoteRequest = () => {
@@ -44,36 +46,57 @@ export default class AddFriends extends React.Component {
           loading: false,
           fullData: res.users
         })
+        /*
+        console.log(this.state.data.size())
+        this.state.data.forEach(element => {
+          this._friendlist.push(element);
+          //if(element.userId!=1){
+            this.setState({friendlist:[this._friendlist]});
+  
+          //}
+        });
+        */
+      
       })
+
+
+
+
   }
 
-
-  sendFriendRequest = () => {
+  contains = ({ name, email, userId }, query) => {
+    if (name.includes(query) ||
+      email.includes(query) ||
+      userId.includes(query)
+    ) {
+      return true
+    }
+    return false
+  
+  
+  }
+  
+ // versturen van een verzoek zal nu hardcoded zijn vanuit het standpunt van user1
+  
+  sendFriendRequest = (fid, uid = '1' ) => {
+    const urlFriendRequest = 'https://citygo5.azurewebsites.net/Users/'+{uid}+'/Friends/'+{fid}
     const putMethod = {
       method: 'PUT',
       headers: {
-        'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
-      },
-      body: JSON.stringify(someData) // We send data in JSON format
-    }
-  }
-  // make the HTTP put request using fetch api
-  fetch(url, putMethod)
-.then(response => response.json())
-.then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
-  .catch(err => console.log(err)) // Do something with the error
+        'Content-Type': 'application/json'
+      }
     }
 
-contains = ({ name, email }, query) => {
-  if (name.includes(query) ||
-    email.includes(query)
-  ) {
-    return true
+       // make the HTTP put request using fetch api
+       fetch(urlFriendRequest, putMethod)
+       .then(response => response.json())
+       .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
+       .catch(err => console.log(err)) // Do something with the error
+       
   }
-  return false
+ 
 
 
-}
 
 handleSearch = text => {
   // const formattedQuery = text.toLowercase()
@@ -143,6 +166,7 @@ renderFooter = () => {
 onPress = () => {
   this.props.changeComponent('One')
 };
+
 render() {
   return (
     <View style={{
@@ -151,44 +175,47 @@ render() {
       paddingVertical: 20,
       marginTop: 40,
     }}>
-      <FlatList
+      <FlatList 
         data={this.state.data}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              flexDirection: 'row',
-              padding: 16,
-              alignItems: 'center'
-            }}>
-            <Image
-              source={{ uri: 'https://i.ytimg.com/vi/LkHcB34a2yo/hqdefault.jpg' }}
-              size='giant'
-              style={styles.profileImage}>
-            </Image>
+        renderItem={ 
+          ({ item }) =>  {
+            if(item.userId != 1){
+              return(  <View
+                style={{
+                  flexDirection: 'row',
+                  padding: 16,
+                  alignItems: 'center'
+                }}>
+                <Image
+                  source={{ uri: 'https://i.ytimg.com/vi/LkHcB34a2yo/hqdefault.jpg' }}
+                  size='giant'
+                  style={styles.profileImage}>
+                </Image>
+    
+                <Text
+                  category='s1'
+                  style={{
+                    color: '#000'
+                  }}>{`${item.name}`} 
+                </Text>
+                <TouchableOpacity onPress={() => sendFriendRequest(item.userId)} >
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText} >
+                      Add
+                                </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>)
+            }
+        
+        }}
 
-            <Text
-              category='s1'
-              style={{
-                color: '#000'
-              }}>{`${item.name}`}
-            </Text>
-            <TouchableOpacity onPress={() => alert('Friend request verstuurd')} >
-              <View style={styles.button}>
-                <Text style={styles.buttonText} >
-                  Add
-                            </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        )}
         keyExtractor={item => item.email}
         ItemSeparatorComponent={this.renderSeparator}
         ListFooterComponent={this.renderFooter}
         ListHeaderComponent={this.renderHeader}
       ></FlatList>
     </View>
-
-
   )
 }
 
@@ -309,14 +336,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   }
 });
-
-/*
-const App = () => (
-    <ApplicationProvider mapping={mapping} theme={lightTheme}>
-      <HomeScreen />
-    </ApplicationProvider>
-  )
-
-
-  export default App
-  */
