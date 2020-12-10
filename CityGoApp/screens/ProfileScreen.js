@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, SafeAreaView, Image, ScrollView } from "react-native";
+import {ActivityIndicator, StyleSheet, Text, View, FlatList, SafeAreaView, Image, ScrollView, LogBox } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Location from 'expo-location';
@@ -11,73 +11,55 @@ import Constants from 'expo-constants';
 export default class ProfileScreen extends React.Component {
 
   
+  
   state = {
     location: null,
     city:null,
     country: null,
     errorMessage: null,
+    name: [],
+    balls: [],
+    result: null,
+    loading: false,
+    data: [],
+    page: 1,
+    seed: 1,
+    error: null,
+    query: '',
+    fullData: [],
+    isLoading: true
     
   };
 
 
-  state = {
-    name: [],
-    balls: [],
-    result: null
-  }
-  async componentDidMount() {
-    const { page, seed } = this.state
-    //const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
-    const url = 'https://citygo5.azurewebsites.net/Users'
-    this.setState({ loading: true })
-    const racesResponse = await fetch(RACES).then(res => res.json())
-    .then(res => {
+  
+/*
+    apiCall = async () =>  {
+      const url = 'https://citygo5.azurewebsites.net/Users/1'
+      const { page, seed } = this.state
+      let resp = await  fetch(url).then(res => res.json())
+       .then(res => {
       this.setState({
         data: page === 1 ? res.userFriends : [...this.state.data, ...res.userFriends],
         error: res.error || null,
         loading: false,
         fullData: res.userFriends
+        
       })
-    })
-    
-  }
-
-  contains = ({ name, balls, userId }, query) => {
-    if (name.includes(query) ||
-       balls.includes(query) ||
-      userId.includes(query)
-    ) {
-      return true
-    }
-    return false
-  
-  
-   }
-
-  getAllUsers = () => {
-    const { page, seed } = this.state
-    //const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
-    const url = 'https://citygo5.azurewebsites.net/Users'
-    this.setState({ loading: true })
-
-
-    fetch(url)
-    .then(res => res.json())
-    .then(res => {
-      this.setState({
-        data: page === 1 ? res.userFriends : [...this.state.data, ...res.userFriends],
-        error: res.error || null,
-        loading: false,
-        fullData: res.userFriends
-      })
+      
     })
   }
+  */
 
- 
-
-
-
-
+  componentDidMount() {
+   this.apiCall();
+  }
+  async apiCall() {
+    let resp = await fetch('https://citygo5.azurewebsites.net/Users/1')
+    let respJson = await resp.json();
+    console.log(respJson)
+    this.setState({ data: page === 1 ? res.userFriends : [...this.state.data, ...res.userFriends] })
+  }
 
   componentWillMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
@@ -119,33 +101,6 @@ export default class ProfileScreen extends React.Component {
   };
 
   
-  state = {
-    names: [
-      {
-        id: 0,
-        name: 'Ben',
-        completed: '60%'
-      },
-      {
-        id: 1,
-        name: 'Susan',
-        completed: '60%'
-
-      },
-      {
-        id: 2,
-        name: 'Robert',
-        completed: '60%'
-
-      },
-      {
-        id: 3,
-        name: 'Mary',
-        completed: '60%'
-
-      }
-    ]
-  }
   
   alertItemName = (item) => {
     alert(item.name)
@@ -169,7 +124,7 @@ export default class ProfileScreen extends React.Component {
 
   
   render() {
-
+    const { data, isLoading } = this.state;
     let text = 'Waiting..';
     let stad = this.state.city;
     let land = this.state.country;
@@ -207,13 +162,17 @@ export default class ProfileScreen extends React.Component {
           </View>
 
           <View style={styles.statsContainer}>
+          <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
+              <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
+              <Text style={[styles.text, styles.subText]}>score</Text>
+            </View>
             <View style={styles.statsBox}>
               <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
               <Text style={[styles.text, styles.subText]}>challanges</Text>
             </View>
             <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
               <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
-              <Text style={[styles.text, styles.subText]}>trophies</Text>
+              <Text style={[styles.text, styles.subText]}>balls</Text>
             </View>
             <View style={styles.statsBox}>
               <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
@@ -243,20 +202,40 @@ export default class ProfileScreen extends React.Component {
               </View>
             </ScrollView>
           </View>
-          <ScrollView>
-            <View style={{ marginTop: 32 }}>
-              {this.state.names.map((item, index) => (
-                <TouchableOpacity key={item.id} style={styles.button} onPress={() => this.alertItemName(item)}>
-                  <Text style={{ alignSelf: "flex-start" }}>
-                    {item.name}
-                  </Text>
-                  <Text style={{ alignSelf: "flex-end" }}>{item.completed}</Text>
-                </TouchableOpacity>
-              ))
-              }
-            </View>
-          </ScrollView>
+          <View style={styles.centerText}>
+            <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Top Friends</Text>
+          </View>
+          <View style={{ flex: 1, padding: 24 }}>
+          <FlatList 
+        data={this.state.data}
+        renderItem={ 
+          ({ item }) =>  {
+            if(item.userId != 1){
+              return(  <View
+                style={{
+                  flexDirection: 'row',
+                  padding: 16,
+                  alignItems: 'center'
+                }}>   
+                <Text
+                  category='s1'
+                  style={{
+                    color: '#000'
+                  }}>{`${item.name}`} 
+                </Text>
+              </View>)
+            }
+        
+        }}
 
+        keyExtractor={item => item.email}
+        ItemSeparatorComponent={this.renderSeparator}
+        ListFooterComponent={this.renderFooter}
+        ListHeaderComponent={this.renderHeader}
+      ></FlatList>
+        
+      </View>
+           
           <View>
             <TouchableOpacity 
              onPress={this.onPress}
@@ -348,6 +327,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     marginTop: 32
+  },
+  centerText:{
+    alignSelf: "center",
+    fontWeight: "200",
+     fontSize: 36 
   },
   button: {
     flexDirection: "row",
