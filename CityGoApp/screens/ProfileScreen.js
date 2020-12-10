@@ -55,10 +55,13 @@ export default class ProfileScreen extends React.Component {
    this.apiCall();
   }
   async apiCall() {
+    const { page, seed } = this.state
     let resp = await fetch('https://citygo5.azurewebsites.net/Users/1')
     let respJson = await resp.json();
-    console.log(respJson)
-    this.setState({ data: page === 1 ? res.userFriends : [...this.state.data, ...res.userFriends] })
+   // console.log(respJson)
+    this.setState({ data: page === 1 ? respJson.userFriends : [...this.state.data, ...respJson.userFriends] })
+    console.log(this.state.data)
+    // TODO: order friends
   }
 
   componentWillMount() {
