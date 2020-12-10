@@ -66,25 +66,47 @@ export default class Friends extends React.Component {
     }
 
 
-  /*
-  deleteFriend = (fid, uid = '1' ) => {
-    console.log(fid)
-    const urlFriendRequest = 'https://citygo5.azurewebsites.net/Users/'+{uid}+'/Friends/'+{fid}
-    const putMethod = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+  
+    deleteFriend = (fid, uid = '1' ) => {
 
-       // make the HTTP put request using fetch api
-       fetch(urlFriendRequest, putMethod)
-       .then(response => response.json())
-       .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
-       .catch(err => console.log(err)) // Do something with the error
-       
-  }
-  */
+     
+      const urlFriendDelete = 'https://citygo5.azurewebsites.net/Users/'+uid+'/Friends/'+fid
+      console.log(urlFriendDelete)
+
+      const deleteMethod = {
+        method: "delete",
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+
+       // make the HTTP Delete request using fetch api
+       fetch(urlFriendDelete, deleteMethod).then((response)=>{
+         return response.json();
+       });
+
+
+            
+      const urlFriendDelete2 = 'https://citygo5.azurewebsites.net/Users/'+fid+'/Friends/'+uid
+      console.log(urlFriendDelete)
+
+      const deleteMethod2 = {
+        method: "delete",
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+
+       // make the HTTP Delete request using fetch api
+       fetch(urlFriendDelete2, deleteMethod2).then((response)=>{
+         return response.json();
+       });
+
+       //TODO: verbeteren?
+       this.makeRemoteRequest()
+
+    }
+  
  
 
     renderHeader = () => (
@@ -159,7 +181,6 @@ export default class Friends extends React.Component {
             <FlatList
                 data = {this.state.data}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => alert('Hier komt popup met user info')}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -178,9 +199,14 @@ export default class Friends extends React.Component {
                             color: '#000'
                           }}>{`${item.name}`}
                           </Text>
- 
+                          <TouchableOpacity onPress={() => this.deleteFriend(item.userId)} >
+                          <View style={styles.button}>
+                           <Text style={styles.buttonText} >
+                             Delete
+                            </Text>
+                        </View>
+                        </TouchableOpacity>
                       </View>
-                    </TouchableOpacity>
                   )}
                   keyExtractor={item => item.email}
                   ItemSeparatorComponent={this.renderSeparator}
@@ -193,15 +219,6 @@ export default class Friends extends React.Component {
         )
     }
 }
-/*
-                         <TouchableOpacity >
-                          <View style={styles.button}>
-                           <Text style={styles.buttonText} >
-                             Delete
-                            </Text>
-                        </View>
-                </TouchableOpacity>
-*/
 
 const styles = StyleSheet.create({
     image: {
@@ -325,13 +342,3 @@ const styles = StyleSheet.create({
     }
   });
   
-/*
-const App = () => (
-    <ApplicationProvider mapping={mapping} theme={lightTheme}>
-      <HomeScreen />
-    </ApplicationProvider>
-  )
-  
-  
-  export default App
-  */

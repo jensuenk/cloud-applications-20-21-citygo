@@ -17,11 +17,10 @@ export default class AddFriends extends React.Component {
     seed: 1,
     error: null,
     query: '',
-    fullData: [],
-    friendlist:[]
+    fullData: []
   }
 
-  _friendlist:[];
+ 
 
   componentDidMount() {
     this.makeRemoteRequest()
@@ -79,13 +78,14 @@ export default class AddFriends extends React.Component {
  // versturen van een verzoek zal nu hardcoded zijn vanuit het standpunt van user1
   
   sendFriendRequest = (fid, uid = '1' ) => {
-    console.log(fid)
-    const urlFriendRequest = 'https://citygo5.azurewebsites.net/Users/'+{uid}+'/Friends/'+{fid}
+    const urlFriendRequest = 'https://citygo5.azurewebsites.net/Users/'+uid+'/Friends/'+fid
+    console.log(urlFriendRequest)
     const putMethod = {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+       },
+      body: {}
     }
 
        // make the HTTP put request using fetch api
@@ -93,6 +93,26 @@ export default class AddFriends extends React.Component {
        .then(response => response.json())
        .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
        .catch(err => console.log(err)) // Do something with the error
+
+
+
+
+       const urlFriendRequest2 = 'https://citygo5.azurewebsites.net/Users/'+fid+'/Friends/'+uid
+       console.log(urlFriendRequest)
+       const putMethod2 = {
+         method: 'PUT',
+         headers: {
+           'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+          },
+         body: {}
+       }
+   
+          // make the HTTP put request using fetch api
+          fetch(urlFriendRequest2, putMethod2)
+          .then(response => response.json())
+          .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
+          .catch(err => console.log(err)) // Do something with the error
+          
        
   }
  
@@ -199,7 +219,7 @@ render() {
                     color: '#000'
                   }}>{`${item.name}`} 
                 </Text>
-                <TouchableOpacity onPress={this.sendFriendRequest(item.userId)}>
+                <TouchableOpacity onPress={() => this.sendFriendRequest(item.userId)}>
                   <View style={styles.button}>
                     <Text style={styles.buttonText} >
                       Add
