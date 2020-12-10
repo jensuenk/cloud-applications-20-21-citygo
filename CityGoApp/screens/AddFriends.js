@@ -45,16 +45,6 @@ export default class AddFriends extends React.Component {
           loading: false,
           fullData: res.users
         })
-        /*
-        console.log(this.state.data.size())
-        this.state.data.forEach(element => {
-          this._friendlist.push(element);
-          //if(element.userId!=1){
-            this.setState({friendlist:[this._friendlist]});
-  
-          //}
-        });
-        */
       
       })
 
@@ -96,7 +86,7 @@ export default class AddFriends extends React.Component {
 
 
 
-
+        //moet op beide plaatsen aangemaakt worden
        const urlFriendRequest2 = 'https://citygo5.azurewebsites.net/Users/'+fid+'/Friends/'+uid
        console.log(urlFriendRequest)
        const putMethod2 = {

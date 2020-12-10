@@ -86,7 +86,7 @@ export default class Friends extends React.Component {
        });
 
 
-            
+        // verwijderen van de friend op de 2 plaatsen (zowel curr user als friend)    
       const urlFriendDelete2 = 'https://citygo5.azurewebsites.net/Users/'+fid+'/Friends/'+uid
       console.log(urlFriendDelete)
 
