@@ -102,6 +102,9 @@ export default class Friends extends React.Component {
          return response.json();
        });
 
+       //TODO: verbeteren?
+       this.makeRemoteRequest()
+
     }
   
  

@@ -17,11 +17,10 @@ export default class AddFriends extends React.Component {
     seed: 1,
     error: null,
     query: '',
-    fullData: [],
-    friendlist:[]
+    fullData: []
   }
 
-  _friendlist:[];
+ 
 
   componentDidMount() {
     this.makeRemoteRequest()

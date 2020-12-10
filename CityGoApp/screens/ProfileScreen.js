@@ -16,7 +16,68 @@ export default class ProfileScreen extends React.Component {
     city:null,
     country: null,
     errorMessage: null,
+    
   };
+
+
+  state = {
+    name: [],
+    balls: [],
+    result: null
+  }
+  async componentDidMount() {
+    const { page, seed } = this.state
+    //const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
+    const url = 'https://citygo5.azurewebsites.net/Users'
+    this.setState({ loading: true })
+    const racesResponse = await fetch(RACES).then(res => res.json())
+    .then(res => {
+      this.setState({
+        data: page === 1 ? res.userFriends : [...this.state.data, ...res.userFriends],
+        error: res.error || null,
+        loading: false,
+        fullData: res.userFriends
+      })
+    })
+    
+  }
+
+  contains = ({ name, balls, userId }, query) => {
+    if (name.includes(query) ||
+       balls.includes(query) ||
+      userId.includes(query)
+    ) {
+      return true
+    }
+    return false
+  
+  
+   }
+
+  getAllUsers = () => {
+    const { page, seed } = this.state
+    //const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
+    const url = 'https://citygo5.azurewebsites.net/Users'
+    this.setState({ loading: true })
+
+
+    fetch(url)
+    .then(res => res.json())
+    .then(res => {
+      this.setState({
+        data: page === 1 ? res.userFriends : [...this.state.data, ...res.userFriends],
+        error: res.error || null,
+        loading: false,
+        fullData: res.userFriends
+      })
+    })
+  }
+
+ 
+
+
+
+
 
   componentWillMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
@@ -57,43 +118,7 @@ export default class ProfileScreen extends React.Component {
     }
   };
 
-  /*
-   /////////////////////////////////API CALL//////////////////////////////////////////////////////////////
-    constructor(){
-      super();
-      this.state={
-        data:[]
-      }
-    }
   
-    
-    componentDidMount(){
-      this.apiCall();
-  
-    }
-  
-    async apiCall(){
-      let resp= await fetch('https://citygo.azurewebsites.net/users')
-      let respJson=await resp.json();
-      this.setState({data:respJson.users})
-    }
-  
-    ///render///
-     <View style={styles.container}>
-                    <Text style={styles.header}>COMPLETED SIGHTS</Text>
-                    <FlatList
-                    data={this.state.data}
-                    renderItem={({item})=>
-                    <Text style={styles.item}>  {item.name}</Text>
-                      }  
-                    keyExtractor={(item,index) => index.toString()}
-                    />
-                  </View>
-                  ////
-     /////////////////////////////////API CALL//////////////////////////////////////////////////////////////
-     */
-
-     ///deze binnekort van API trekken 
   state = {
     names: [
       {
@@ -121,6 +146,7 @@ export default class ProfileScreen extends React.Component {
       }
     ]
   }
+  
   alertItemName = (item) => {
     alert(item.name)
   }
