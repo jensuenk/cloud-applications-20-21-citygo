@@ -58,16 +58,21 @@ namespace CleanTesting.Application.IntegrationTests
             using var scope = _scopeFactory.CreateScope();
 
             var context = scope.ServiceProvider.GetService<DBContext>();
-
-            //context.Database.EnsureCreated();
-            //context.SaveChanges();
-
+            
             context.Database.Migrate();
         }
 
         public static async Task ResetState()
         {
-            await _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
+            using var scope = _scopeFactory.CreateScope();
+
+            var context = scope.ServiceProvider.GetService<DBContext>();
+
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+            context.SaveChanges();
+
+            //await _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
         }
 
         public static async Task<TEntity> FindAsync<TEntity>(int id)
