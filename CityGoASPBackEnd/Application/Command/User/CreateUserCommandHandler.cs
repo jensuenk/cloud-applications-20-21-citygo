@@ -41,24 +41,26 @@ namespace Application.Command
 
 
             // Link existing useritems to a user trough the body
-            List<Domain.UsersItems> newUserItems;
+            List<Domain.UsersItems> newUserItems = new List<Domain.UsersItems>(); ;
             try
             {
-                newUserItems = new List<Domain.UsersItems>();
-                foreach (var usersItem in request.UserVM.Items)
+                if (request.UserVM.Items != null)
                 {
-                    // Check if item exists, if so, create a new userItem and add it to a list to asign later
-                    var foundItem = _context.Items.Find(usersItem.ItemId);
-                    if (foundItem != null)
+                    foreach (var usersItem in request.UserVM.Items)
                     {
-                        UsersItems usersItems = new UsersItems()
+                        // Check if item exists, if so, create a new userItem and add it to a list to asign later
+                        var foundItem = _context.Items.Find(usersItem.ItemId);
+                        if (foundItem != null)
                         {
-                            User = newUser,
-                            UserId = newUser.UserId,
-                            Item = foundItem,
-                            ItemId = foundItem.ItemId
-                        };
-                        newUserItems.Add(usersItems);
+                            UsersItems usersItems = new UsersItems()
+                            {
+                                User = newUser,
+                                UserId = newUser.UserId,
+                                Item = foundItem,
+                                ItemId = foundItem.ItemId
+                            };
+                            newUserItems.Add(usersItems);
+                        }
                     }
                 }
             }
@@ -73,17 +75,19 @@ namespace Application.Command
 
 
             // Link existing challenges to a user trough the body
-            List<Domain.Challenge> newChallenges;
+            List<Domain.Challenge> newChallenges = new List<Domain.Challenge>(); ;
             try
             {
-                newChallenges = new List<Domain.Challenge>();
-                foreach (var challenge in request.UserVM.Challenges)
+                if (request.UserVM.Challenges != null)
                 {
-                    // Check if challenge exists, if so, add it to a list to asign later
-                    var foundChallenge = _context.Challenges.Find(challenge.ChallengeId);
-                    if (foundChallenge != null)
+                    foreach (var challenge in request.UserVM.Challenges)
                     {
-                        newChallenges.Add(foundChallenge);
+                        // Check if challenge exists, if so, add it to a list to asign later
+                        var foundChallenge = _context.Challenges.Find(challenge.ChallengeId);
+                        if (foundChallenge != null)
+                        {
+                            newChallenges.Add(foundChallenge);
+                        }
                     }
                 }
             }
