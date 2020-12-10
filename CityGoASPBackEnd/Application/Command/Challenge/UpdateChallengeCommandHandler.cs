@@ -24,14 +24,21 @@ namespace Application.Command.Challenge
             Domain.Challenge newChallenge;
             try
             {
-                newChallenge = new Domain.Challenge()
+                if (request.ChallengeVM.Name != null && request.ChallengeVM.Task != null && request.ChallengeVM.Answer != null && request.ChallengeVM.QuestionChallenge != null)
                 {
-                    ChallengeId = request.ChallengeVM.ChallengeId,
-                    Name = request.ChallengeVM.Name,
-                    Task = request.ChallengeVM.Task,
-                    Answer = request.ChallengeVM.Answer,
-                    QuestionChallenge = request.ChallengeVM.QuestionChallenge
-                };
+                    newChallenge = new Domain.Challenge()
+                    {
+                        ChallengeId = request.ChallengeVM.ChallengeId,
+                        Name = request.ChallengeVM.Name,
+                        Task = request.ChallengeVM.Task,
+                        Answer = request.ChallengeVM.Answer,
+                        QuestionChallenge = request.ChallengeVM.QuestionChallenge
+                    };
+                }
+                else
+                {
+                    return 4001;
+                }
             }
             catch (Exception)
             {

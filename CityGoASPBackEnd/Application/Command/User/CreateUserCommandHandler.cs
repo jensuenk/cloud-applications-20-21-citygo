@@ -24,14 +24,21 @@ namespace Application.Command
             Domain.User newUser;
             try
             {
-                newUser = new Domain.User()
+                if (request.UserVM.Name != null && request.UserVM.Username != null && request.UserVM.Email != null && request.UserVM.Balls !=  null)
                 {
-                    UserId = request.UserVM.UserId,
-                    Name = request.UserVM.Name,
-                    Username = request.UserVM.Username,
-                    Email = request.UserVM.Email,
-                    Balls = request.UserVM.Balls
-                };
+                    newUser = new Domain.User()
+                    {
+                        UserId = request.UserVM.UserId,
+                        Name = request.UserVM.Name,
+                        Username = request.UserVM.Username,
+                        Email = request.UserVM.Email,
+                        Balls = request.UserVM.Balls
+                    };
+                }
+                else
+                {
+                    return 4001;
+                }
             }
             catch (Exception)
             {

@@ -24,15 +24,22 @@ namespace Application.Command.Sight
             Domain.Sight newSight;
             try
             {
-                newSight = new Domain.Sight()
+                if (request.SightVM.Info != null && request.SightVM.Monument != null && request.SightVM.Name != null && request.SightVM.Stop != null)
                 {
-                    SightId = request.SightVM.SightId,
-                    Info = request.SightVM.Info,
-                    Monument = request.SightVM.Monument,
-                    Name = request.SightVM.Name,
-                    Stop = request.SightVM.Stop,
-                    Coordinates = request.SightVM.Coordinates,
-                };
+                    newSight = new Domain.Sight()
+                    {
+                        SightId = request.SightVM.SightId,
+                        Info = request.SightVM.Info,
+                        Monument = request.SightVM.Monument,
+                        Name = request.SightVM.Name,
+                        Stop = request.SightVM.Stop,
+                        Coordinates = request.SightVM.Coordinates,
+                    };
+                }
+                else
+                {
+                    return 4001;
+                }
             }
             catch (Exception)
             {
