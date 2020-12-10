@@ -27,7 +27,8 @@ export default class ProfileScreen extends React.Component {
     error: null,
     query: '',
     fullData: [],
-    isLoading: true
+    isLoading: true,
+    FriendsList:[]
     
   };
 
@@ -52,14 +53,25 @@ export default class ProfileScreen extends React.Component {
   */
 
   componentDidMount() {
-   this.apiCall();
+   this.apiCallFriends();
+   this.apiCallUser();
   }
-  async apiCall() {
+  async apiCallFriends() {
     const { page, seed } = this.state
     let resp = await fetch('https://citygo5.azurewebsites.net/Users/1')
     let respJson = await resp.json();
    // console.log(respJson)
-    this.setState({ data: page === 1 ? respJson.userFriends : [...this.state.data, ...respJson.userFriends] })
+    this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
+    console.log(this.state.FriendsList)
+    // TODO: order friends
+  }
+
+  async apiCallUser() {
+    const { page, seed } = this.state
+    let resp = await fetch('https://citygo5.azurewebsites.net/Users/1')
+    let respJson = await resp.json();
+   // console.log(respJson)
+    this.setState({ data: page === 1 ? respJson : [...this.state.data, ...respJson] })
     console.log(this.state.data)
     // TODO: order friends
   }
@@ -131,16 +143,20 @@ export default class ProfileScreen extends React.Component {
     let text = 'Waiting..';
     let stad = this.state.city;
     let land = this.state.country;
+    let naam = this.state.data.name
+    let balls = this.state.data.balls
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
     } else if (this.state.location) {
       text = JSON.stringify(this.state.location);
       stad = stad;
       land = land;
+      naam = naam;
+      balls = balls;
     }
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}  data = {this.state.data}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.titleBar}>
             <TouchableOpacity>
@@ -159,7 +175,7 @@ export default class ProfileScreen extends React.Component {
           </View>
 
           <View style={styles.infoContainer}>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Philip</Text>
+            <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{naam}</Text>
           <Text style={[styles.text, { fontWeight: "200", fontSize: 20 }]}>{land}, {stad}</Text>
             
           </View>
@@ -174,11 +190,11 @@ export default class ProfileScreen extends React.Component {
               <Text style={[styles.text, styles.subText]}>challanges</Text>
             </View>
             <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-              <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
+              <Text style={[styles.text, { fontSize: 24 }]}>{balls}</Text>
               <Text style={[styles.text, styles.subText]}>balls</Text>
             </View>
             <View style={styles.statsBox}>
-              <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
+              <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendsList.length}</Text>
               <Text  onPress={() => this.goToFriends()} style={[styles.text, styles.subText]}>friends</Text>
             </View>
 
@@ -210,7 +226,7 @@ export default class ProfileScreen extends React.Component {
           </View>
           <View style={{ flex: 1, padding: 24 }}>
           <FlatList 
-        data={this.state.data}
+        data={this.state.FriendsList}
         renderItem={ 
           ({ item }) =>  {
             if(item.userId != 1){
