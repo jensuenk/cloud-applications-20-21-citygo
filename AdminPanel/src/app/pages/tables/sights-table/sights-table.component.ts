@@ -130,7 +130,7 @@ export class SightsTableComponent implements OnInit {
         this.showSuccess("Successfully updated the sight!");
       },
       error => {
-        this.showError("Could not create a new sight!", this.getVilidationErrors(error));
+        this.showError("Could not update sight!", this.getVilidationErrors(error));
       }
     );
   }
@@ -161,11 +161,9 @@ export class SightsTableComponent implements OnInit {
 
   getVilidationErrors(error): string[] {
     let errors: string[] = []
-    if (error.status == 400) {
-      const validationErrors = error.error;
-      Object.keys(validationErrors).forEach(prop => {
-        errors.push(validationErrors[prop])
-      });
+    if (error.status == 400 || error.status == 404) {
+      console.log(error)
+      errors.push(error.error + "")
     }
     return errors;
   }

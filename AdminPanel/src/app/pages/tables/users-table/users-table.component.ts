@@ -123,7 +123,7 @@ export class UsersTableComponent implements OnInit {
         this.showSuccess("Successfully updated the user!");
       },
       error => {
-        this.showError("Could not create a new user!", this.getVilidationErrors(error));
+        this.showError("Could not update user!", this.getVilidationErrors(error));
       }
     );
   }
@@ -154,11 +154,9 @@ export class UsersTableComponent implements OnInit {
 
   getVilidationErrors(error): string[] {
     let errors: string[] = []
-    if (error.status == 400) {
-      const validationErrors = error.error;
-      Object.keys(validationErrors).forEach(prop => {
-        errors.push(validationErrors[prop])
-      });
+    if (error.status == 400 || error.status == 404) {
+      console.log(error)
+      errors.push(error.error + "")
     }
     return errors;
   }

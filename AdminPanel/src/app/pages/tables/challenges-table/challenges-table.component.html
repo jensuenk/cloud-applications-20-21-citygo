@@ -77,8 +77,4 @@
 </nb-card>
 <nb-alert *ngIf="errorMessage" status="danger">{{errorMessage}}</nb-alert>
 <nb-alert *ngIf="successMessage" status="success">{{successMessage}}</nb-alert>
-<nb-alert status="danger" *ngIf="errors.length > 0">
-    <div *ngFor="let error of errors">
-        <p-message severity="error" text="{{ error }}"></p-message>
-    </div>
-</nb-alert>
+<nb-alert *ngIf="errors.length > 0" status="danger">{{errors}}</nb-alert>
