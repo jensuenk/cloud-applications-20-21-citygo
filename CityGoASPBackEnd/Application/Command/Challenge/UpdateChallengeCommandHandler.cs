@@ -38,18 +38,22 @@ namespace Application.Command.Challenge
                 ChallengeVM vm1 = new ChallengeVM() { Error = "BadRequest_Challenge" };
                 return 4001;
             }
+
+
             // Link existing Items to a challenge trough the body
-            List<Domain.Item> newItems;
+            List<Domain.Item> newItems = new List<Domain.Item>(); ;
             try
             {
-                newItems = new List<Domain.Item>();
-                foreach (var item in request.ChallengeVM.Items)
+                if (request.ChallengeVM.Items != null)
                 {
-                    // Check if Items exists, if so, add it to a list to asign later
-                    var foundItem = _context.Items.Find(item.ItemId);
-                    if (foundItem != null)
+                    foreach (var item in request.ChallengeVM.Items)
                     {
-                        newItems.Add(foundItem);
+                        // Check if Items exists, if so, add it to a list to asign later
+                        var foundItem = _context.Items.Find(item.ItemId);
+                        if (foundItem != null)
+                        {
+                            newItems.Add(foundItem);
+                        }
                     }
                 }
             }
@@ -61,16 +65,18 @@ namespace Application.Command.Challenge
 
 
             // Link existing User to a challenge trough the body
-            Domain.User newUser;
+            Domain.User newUser = new Domain.User(); ;
             try
             {
-                newUser = new Domain.User();
-                var user = request.ChallengeVM.User;
-                // Check if Items exists, if so, add it to a list to asign later
-                var foundUser = _context.Users.Find(user.UserId);
-                if (foundUser != null)
+                if (request.ChallengeVM.User != null)
                 {
-                    newUser = foundUser;
+                    var user = request.ChallengeVM.User;
+                    // Check if Items exists, if so, add it to a list to asign later
+                    var foundUser = _context.Users.Find(user.UserId);
+                    if (foundUser != null)
+                    {
+                        newUser = foundUser;
+                    }
                 }
             }
             catch (Exception)
