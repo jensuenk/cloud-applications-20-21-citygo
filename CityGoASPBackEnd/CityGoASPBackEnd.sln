@@ -5,11 +5,15 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityGoASPBackEnd", "CityGoASPBackEnd\CityGoASPBackEnd.csproj", "{483AC507-820A-461E-85E6-AA204E8146AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{6F0DB11B-9528-48A8-B9E1-576720E5EA75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{6F0DB11B-9528-48A8-B9E1-576720E5EA75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{BC7070A8-0274-4CD3-8684-187BC635D91F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{BC7070A8-0274-4CD3-8684-187BC635D91F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastucture", "Infrastucture\Infrastucture.csproj", "{86969E64-2D08-43AF-8243-5CD6A1E5A7A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastucture", "Infrastucture\Infrastucture.csproj", "{86969E64-2D08-43AF-8243-5CD6A1E5A7A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D04E5551-8A20-47DB-83EB-3F215B01EF89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanTesting.Application.IntegrationTests", "Tests\CleanTesting.Application.IntegrationTests\CleanTesting.Application.IntegrationTests.csproj", "{BFC2D18D-9F1E-4217-88D1-8270B8DC3A52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,16 @@ Global
 		{86969E64-2D08-43AF-8243-5CD6A1E5A7A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86969E64-2D08-43AF-8243-5CD6A1E5A7A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86969E64-2D08-43AF-8243-5CD6A1E5A7A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFC2D18D-9F1E-4217-88D1-8270B8DC3A52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFC2D18D-9F1E-4217-88D1-8270B8DC3A52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFC2D18D-9F1E-4217-88D1-8270B8DC3A52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFC2D18D-9F1E-4217-88D1-8270B8DC3A52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BFC2D18D-9F1E-4217-88D1-8270B8DC3A52} = {D04E5551-8A20-47DB-83EB-3F215B01EF89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BEE97F1-4907-4FB9-BEF1-DA70E3C276C8}

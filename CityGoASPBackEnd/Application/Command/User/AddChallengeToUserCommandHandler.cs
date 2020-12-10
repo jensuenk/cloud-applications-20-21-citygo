@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.ViewModel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,8 +21,27 @@ namespace Application.Command.User
 
         public async Task<int> Handle(AddChallengeToUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
-            var challenge = await _context.Challenges.Where(u => u.ChallengeId == request.ChallengeId).SingleAsync();
+            Domain.User user;
+            Domain.Challenge challenge;
+            try
+            {
+                user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
+            }
+            catch (Exception)
+            {
+                UserVM vm1 = new UserVM() { Error = "NotFound_User" };
+                return 4041;
+            }
+
+            try
+            {
+                challenge = await _context.Challenges.Where(u => u.ChallengeId == request.ChallengeId).SingleAsync();
+            }
+            catch (Exception)
+            {
+                UserVM vm1 = new UserVM() { Error = "NotFound_Challenge" };
+                return 4042;
+            }
 
             challenge.User = user;
 

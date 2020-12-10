@@ -4,7 +4,7 @@
   "parameters": {
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "citygo2",
+      "defaultValue": "CityGo5",
       "metadata": {
         "_parameterType": "resourceGroup",
         "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
@@ -12,7 +12,7 @@
     },
     "resourceGroupLocation": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "westeurope",
       "metadata": {
         "_parameterType": "location",
         "description": "Location of the resource group. Resource groups could have different location than resources."
@@ -36,7 +36,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('citygo_db', subscription().subscriptionId)))]",
+      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('City-Go-5', subscription().subscriptionId)))]",
       "resourceGroup": "[parameters('resourceGroupName')]",
       "apiVersion": "2019-10-01",
       "dependsOn": [
@@ -51,7 +51,7 @@
             {
               "kind": "v12.0",
               "location": "[parameters('resourceLocation')]",
-              "name": "citygo-dbserver2",
+              "name": "citygoserver5",
               "type": "Microsoft.Sql/servers",
               "apiVersion": "2017-10-01-preview"
             },
@@ -63,11 +63,11 @@
               },
               "kind": "v12.0,user",
               "location": "[parameters('resourceLocation')]",
-              "name": "citygo-dbserver2/citygo_db",
+              "name": "citygoserver5/City-Go-5",
               "type": "Microsoft.Sql/servers/databases",
               "apiVersion": "2017-10-01-preview",
               "dependsOn": [
-                "citygo-dbserver2"
+                "citygoserver5"
               ]
             }
           ]

@@ -21,20 +21,54 @@ namespace Application.Command.User
 
         public async Task<int> Handle(AddFriendCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
-            var friend = await _context.Users.Where(u => u.UserId == request.FriendId).SingleAsync();
+            Domain.User user = new Domain.User();
+            Domain.User friend;
+            try
+            {
+                user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
+
+            }
+            catch (Exception)
+            {
+                UserVM vm1 = new UserVM() { Error = "NotFound_User" };
+                return 4041;
+            }
+            try
+            {
+                friend = await _context.Users.Where(u => u.UserId == request.FriendId).SingleAsync();
+
+            }
+            catch (Exception)
+            {
+                UserVM vm1 = new UserVM() { Error = "NotFound_Friend" };
+                return 4042;
+            }
 
             List<Domain.Friends> Friends = new List<Domain.Friends>();
-
-            Domain.Friends Friend = new Domain.Friends()
+            Domain.Friends Friend;
+            if (user.Friends == null)
             {
-                User = user,
-                UserId = user.UserId,
-                FriendId = request.FriendId
-            };
+               Friend = new Domain.Friends()
+               {
+                    User = user,
+                    UserId = user.UserId,
+                    FriendId = request.FriendId
+               };
 
-            Friends.Add(Friend);
-            user.Friends = Friends;
+                Friends.Add(Friend);
+                user.Friends = Friends;
+            }
+            else
+            {
+                Friend = new Domain.Friends()
+                {
+                    User = user,
+                    UserId = user.UserId,
+                    FriendId = request.FriendId
+                };
+                user.Friends.Add(Friend);
+            }
+  
             var query1 = _context.Users.Update(user);
             var query2 = _context.Friends.Add(Friend);
             return await _context.SaveAsync(cancellationToken);

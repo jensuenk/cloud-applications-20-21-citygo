@@ -21,25 +21,37 @@ namespace Application.Query.User
 
         public async Task<UserVM> Handle(ShowUserWithAllFriendsQuery request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Where(u => u.UserId == request.UserId)
-                .Include(i => i.Friends)
-                .SingleAsync();
-            List<Domain.User> tussen = new List<Domain.User>();
-            foreach (var item in user.Friends)
+            try
             {
-                var friend = await _context.Users.Where(u => u.UserId == item.FriendId).SingleAsync();
-                tussen.Add(friend);
+                var user = await _context.Users.Where(u => u.UserId == request.UserId)
+                    .Include(i => i.Friends)
+                    .SingleAsync();
+                List<Domain.User> tussen = new List<Domain.User>();
+                foreach (var item in user.Friends)
+                {
+                    var friend = await _context.Users.Where(u => u.UserId == item.FriendId).SingleAsync();
+                    tussen.Add(friend);
+                }
+                UserVM vm = new UserVM()
+                {
+                    UserId = user.UserId,
+                    Name = user.Name,
+                    Username = user.Username,
+                    Email = user.Email,
+                    Balls = user.Balls,
+                    UserFriends = tussen
+                };
+                return vm;
             }
-            UserVM vm = new UserVM()
+            catch (Exception)
             {
-                UserId = user.UserId,
-                Name = user.Name,
-                Username = user.Username,
-                Email = user.Email,
-                Balls = user.Balls,
-                UserFriends = tussen
-            };
-            return vm;
+                UserVM vm = new UserVM()
+                {
+                    Error = "NotFound"
+                };
+                return vm;
+            }
+           
         }
     }
 }

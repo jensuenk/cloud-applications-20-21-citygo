@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.ViewModel.Challenge;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,8 +21,29 @@ namespace Application.Command.Challenge
 
         public async Task<int> Handle(AddSightToChallengeCommand request, CancellationToken cancellationToken)
         {
-            var challenge = await _context.Challenges.Where(u => u.ChallengeId == request.ChallengeId).SingleAsync();
-            var sight = await _context.Sights.Where(i => i.SightId == request.SightId).SingleAsync();
+            Domain.Challenge challenge;
+            Domain.Sight sight;
+
+            try
+            {
+                challenge = await _context.Challenges.Where(u => u.ChallengeId == request.ChallengeId).SingleAsync();
+            }
+            catch (Exception)
+            {
+                ChallengeVM vm1 = new ChallengeVM(){ Error = "NotFound_Challenge" };
+                return 4041;
+            }
+
+            try
+            {
+                sight = await _context.Sights.Where(i => i.SightId == request.SightId).SingleAsync();
+            }
+            catch (Exception)
+            {
+                ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_Sight" };
+                return 4042;
+            }
+
 
             challenge.Sight = sight;
 

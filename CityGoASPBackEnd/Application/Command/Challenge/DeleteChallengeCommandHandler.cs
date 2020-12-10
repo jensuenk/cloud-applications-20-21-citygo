@@ -21,7 +21,17 @@ namespace Application.Command.Challenge
 
         public async Task<int> Handle(DeleteChallengeCommand request, CancellationToken cancellationToken)
         {
-            var challenge = await _context.Challenges.Where(c => c.ChallengeId == request.ChallengeId).SingleAsync();
+            Domain.Challenge challenge;
+            try
+            {
+                challenge = await _context.Challenges.Where(c => c.ChallengeId == request.ChallengeId).SingleAsync();
+            }
+            catch (Exception)
+            {
+                ChallengeVM vm1 = new ChallengeVM() { Error = "NotFound" };
+                return 4041;
+            }
+           
             var query = _context.Challenges.Remove(challenge);
             return await _context.SaveAsync(cancellationToken);
         }

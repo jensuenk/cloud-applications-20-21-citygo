@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.ViewModel.Challenge;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;

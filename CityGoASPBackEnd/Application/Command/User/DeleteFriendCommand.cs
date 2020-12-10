@@ -6,14 +6,14 @@ using System.Text;
 
 namespace Application.Command.User
 {
-    public class AddChallengeToUserCommand : IRequest<int>
+    public class DeleteFriendCommand : IRequest<int>
     {
         public int UserId { get; set; }
-        public int ChallengeId { get; set; }
-        public AddChallengeToUserCommand(int uid, int cid)
+        public int FriendId { get; set; }
+        public DeleteFriendCommand(int uid, int fid)
         {
             this.UserId = uid;
-            this.ChallengeId = cid;
+            this.FriendId = fid;
         }
     }
 }

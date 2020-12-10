@@ -1,4 +1,7 @@
-﻿using Domain;
+﻿using Application.ViewModel;
+using Application.ViewModel.Challenge;
+using Application.ViewModel.Item;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

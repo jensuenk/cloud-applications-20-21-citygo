@@ -1,4 +1,7 @@
 ﻿using Application.Interfaces;
+using Application.ViewModel;
+using Application.ViewModel.Challenge;
+using Application.ViewModel.Item;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +14,15 @@ namespace Infrastucture.Persistence
 {
     public class DBContext: DbContext, IDBContext
     {
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CityGoDB", builder =>
+        //    {
+        //        builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+        //    });
+        //    base.OnConfiguring(optionsBuilder);
+        //}
+
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
             
@@ -27,6 +39,7 @@ namespace Infrastucture.Persistence
         {
             return base.SaveChangesAsync(cancellationToken);
         }
+
         protected override void OnModelCreating(ModelBuilder modelbuilder) 
         {
             modelbuilder.Entity<UsersItems>()
@@ -66,7 +79,7 @@ namespace Infrastucture.Persistence
             modelbuilder.Entity<User>()
                 .HasMany(u=>u.Friends)
                 .WithOne(f=>f.User)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

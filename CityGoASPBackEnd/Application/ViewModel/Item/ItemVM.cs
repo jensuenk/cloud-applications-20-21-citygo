@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,5 +23,8 @@ namespace Application.ViewModel
         public List<Domain.UsersItems> UsersItems { get; set; }
 
         public Domain.Challenge Challenge { get; set; }
+
+        [JsonIgnore]
+        public string Error { get; set; }
     }
 }

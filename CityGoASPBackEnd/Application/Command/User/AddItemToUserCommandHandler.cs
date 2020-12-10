@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.ViewModel;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -21,8 +22,28 @@ namespace Application.Command.User
 
         public async Task<int> Handle(AddItemToUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
-            var item = await _context.Items.Where(i => i.ItemId == request.ItemId).SingleAsync();
+            Domain.User user;
+            Domain.Item item;
+            try
+            {
+                user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
+
+            }
+            catch (Exception)
+            {
+                UserVM vm1 = new UserVM() { Error = "NotFound_User" };
+                return 4041;
+            }
+            try
+            {
+                item = await _context.Items.Where(i => i.ItemId == request.ItemId).SingleAsync();
+
+            }
+            catch (Exception)
+            {
+                UserVM vm1 = new UserVM() { Error = "NotFound_Item" };
+                return 4042;
+            }
             UsersItems usersItems = new UsersItems() 
             { 
                 User = user, 

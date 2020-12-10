@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.ViewModel.Item;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,7 +21,16 @@ namespace Application.Command.Sight
 
         public async Task<int> Handle(DeleteSightCommand request, CancellationToken cancellationToken)
         {
-            var sight = await _context.Sights.Where(c => c.SightId == request.SightId).SingleAsync();
+            Domain.Sight sight;
+            try
+            {
+                sight = await _context.Sights.Where(c => c.SightId == request.SightId).SingleAsync();
+            }
+            catch (Exception)
+            {
+                SightVM vm1 = new SightVM() { Error = "NotFound_Sight" };
+                return 4041;
+            }
             var query = _context.Sights.Remove(sight);
             return await _context.SaveAsync(cancellationToken);
         }

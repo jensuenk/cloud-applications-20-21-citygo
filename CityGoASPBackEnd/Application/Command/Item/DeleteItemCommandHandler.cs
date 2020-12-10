@@ -20,7 +20,16 @@ namespace Application.Command.Item
 
         public async Task<int> Handle(DeleteItemCommand request, CancellationToken cancellationToken)
         {
-            var item = await _context.Items.Where(c => c.ItemId == request.ItemId).SingleAsync();
+            Domain.Item item;
+            try
+            {
+                item = await _context.Items.Where(c => c.ItemId == request.ItemId).SingleAsync();
+            }
+            catch (Exception)
+            {
+
+                return 4041;
+            }
             var query = _context.Items.Remove(item);
             return await _context.SaveAsync(cancellationToken);
         }

@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.ViewModel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,7 +21,18 @@ namespace Application.Command.User
 
         public async Task<int> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Where(c => c.UserId == request.UserId).SingleAsync();
+            Domain.User user;
+            try
+            {
+                user = await _context.Users.Where(c => c.UserId == request.UserId).SingleAsync();
+
+            }
+            catch (Exception)
+            {
+                UserVM vm1 = new UserVM() { Error = "NotFound_User" };
+                return 4041;
+            }
+
             var query = _context.Users.Remove(user);
             return await _context.SaveAsync(cancellationToken);
         }

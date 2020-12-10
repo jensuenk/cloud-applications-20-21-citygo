@@ -20,17 +20,35 @@ namespace Application.Command.Item
         }
         public async Task<int> Handle(UpdateItemCommand request, CancellationToken cancellationToken)
         {
-            Domain.Item newItem = new Domain.Item() 
-            { 
-                ItemId = request.ItemVM.ItemId, 
-                Name = request.ItemVM.Name, 
-                Location = request.ItemVM.Location, 
-                Picture = request.ItemVM.Picture, 
-                Rarity = request.ItemVM.Rarity, 
-                UsersItems = request.ItemVM.UsersItems 
-            };
+            Domain.Item newItem;
+            try
+            {
+                newItem = new Domain.Item()
+                {
+                    ItemId = request.ItemVM.ItemId,
+                    Name = request.ItemVM.Name,
+                    Location = request.ItemVM.Location,
+                    Picture = request.ItemVM.Picture,
+                    Rarity = request.ItemVM.Rarity,
+                    UsersItems = request.ItemVM.UsersItems
+                };
+            }
+            catch (Exception)
+            {
 
-            var oldItem = await _context.Items.Where(u => u.ItemId == newItem.ItemId).SingleAsync();
+                return 4001;
+            }
+
+            Domain.Item oldItem;
+            try
+            {
+                oldItem = await _context.Items.Where(u => u.ItemId == newItem.ItemId).SingleAsync();
+
+            }
+            catch (Exception)
+            {
+                return 4041;
+            }
             oldItem.Name = newItem.Name;
             oldItem.Location = newItem.Location;
             oldItem.Picture = newItem.Picture;
