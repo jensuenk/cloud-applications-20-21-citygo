@@ -145,6 +145,7 @@ export default class ProfileScreen extends React.Component {
     let land = this.state.country;
     let naam = this.state.data.name
     let balls = this.state.data.balls
+    let teller = -2
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
     } else if (this.state.location) {
@@ -234,8 +235,11 @@ export default class ProfileScreen extends React.Component {
                 style={{
                   flexDirection: 'row',
                   padding: 16,
-                  alignItems: 'center'
-                }}>   
+                  alignItems: 'center',
+                  alignSelf: "center",
+                  fontWeight: "200",
+                }}>
+                  <Text>{teller = teller+1}. </Text> 
                 <Text
                   category='s1'
                   style={{
