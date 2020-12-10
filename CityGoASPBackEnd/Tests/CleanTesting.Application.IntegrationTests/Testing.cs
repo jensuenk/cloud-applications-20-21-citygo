@@ -2,7 +2,6 @@
 using Infrastucture.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +9,6 @@ using Moq;
 using NUnit.Framework;
 using Respawn;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -36,10 +34,12 @@ namespace CleanTesting.Application.IntegrationTests
             var services = new ServiceCollection();
 
             services.AddSingleton(Mock.Of<IWebHostEnvironment>(w =>
-                w.EnvironmentName == "Development" &&
-                w.ApplicationName == "CleanTesting.WebUI"));
+                w.EnvironmentName == "Development"));
 
             var startup = new Startup(_configuration);
+
+            services.AddDbContext<DBContext>(options =>
+                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
             startup.ConfigureServices(services);
 
@@ -59,6 +59,9 @@ namespace CleanTesting.Application.IntegrationTests
 
             var context = scope.ServiceProvider.GetService<DBContext>();
 
+            //context.Database.EnsureCreated();
+            //context.SaveChanges();
+
             context.Database.Migrate();
         }
 
@@ -73,7 +76,7 @@ namespace CleanTesting.Application.IntegrationTests
             using var scope = _scopeFactory.CreateScope();
 
             var context = scope.ServiceProvider.GetService<DBContext>();
-
+           
             return await context.FindAsync<TEntity>(id);
         }
 
@@ -88,28 +91,6 @@ namespace CleanTesting.Application.IntegrationTests
 
             await context.SaveChangesAsync();
         }
-
-        /*
-        public static async Task<string> RunAsDefaultUserAsync()
-        {
-            return await RunAsUserAsync("test@local", "Testing1234!");
-        }
-
-        public static async Task<string> RunAsUserAsync(string userName, string password)
-        {
-            using var scope = _scopeFactory.CreateScope();
-
-            var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
-
-            var user = new ApplicationUser { UserName = userName, Email = userName };
-
-            var result = await userManager.CreateAsync(user, password);
-
-            _currentUserId = user.Id;
-
-            return _currentUserId;
-        }
-        */
 
         public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
         {
