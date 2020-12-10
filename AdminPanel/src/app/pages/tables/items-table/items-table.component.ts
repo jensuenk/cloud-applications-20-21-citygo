@@ -129,8 +129,18 @@ export class ItemsTableComponent implements OnInit {
   getVilidationErrors(error): string[] {
     let errors: string[] = []
     if (error.status == 400 || error.status == 404) {
-      console.log(error)
-      errors.push(error.error + "")
+      if (typeof error.error === 'object' && error.error !== null) {
+        const validationErrors = error.error;
+        console.log(validationErrors)
+        Object.keys(validationErrors).forEach(err => {
+          if (err === 'title') {
+            errors.push(validationErrors[err])
+          }
+        });
+      }
+      else {
+        errors.push(error.error);
+      }
     }
     return errors;
   }
