@@ -42,17 +42,19 @@ namespace Application.Command.Sight
 
 
             // Link existing challenges to a sight trough the body
-            List<Domain.Challenge> newChallenges;
+            List<Domain.Challenge> newChallenges = new List<Domain.Challenge>(); ;
             try
             {
-                newChallenges = new List<Domain.Challenge>();
-                foreach (var challenge in request.SightVM.Challenges)
+                if (request.SightVM.Challenges != null)
                 {
-                    // Check if challenge exists, if so, add it to a list to asign later
-                    var foundChallenge = _context.Challenges.Find(challenge.ChallengeId);
-                    if (foundChallenge != null)
+                    foreach (var challenge in request.SightVM.Challenges)
                     {
-                        newChallenges.Add(foundChallenge);
+                        // Check if challenge exists, if so, add it to a list to asign later
+                        var foundChallenge = _context.Challenges.Find(challenge.ChallengeId);
+                        if (foundChallenge != null)
+                        {
+                            newChallenges.Add(foundChallenge);
+                        }
                     }
                 }
             }
@@ -61,7 +63,6 @@ namespace Application.Command.Sight
                 SightVM vm1 = new SightVM() { Error = "NotFound_Challenge" };
                 return 4041;
             }
-
             // Assign the list to the sight's challenges
             newSight.Challenges = newChallenges;
 
