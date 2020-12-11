@@ -81,11 +81,6 @@ export default class Mapke extends React.Component {
               }
             }
 
-            // even hardcoded erin voor testing
-            this.AlertChallenge();
-
-
-
           })
 
         }
