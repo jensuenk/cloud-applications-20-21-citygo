@@ -10,12 +10,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
 
+
 export default class Mapke extends React.Component {
-  
+
   AlertChallenge() {
     Alert.alert(
       "ALERT",
-      "You are nearby " + this.state.huidigeSightNaam +", do you want to do a challenge?",
+      "You are nearby " + this.state.huidigeSightNaam + ", do you want to do a challenge?",
       [
         {
           text: "Cancel",
@@ -44,11 +45,40 @@ export default class Mapke extends React.Component {
       },
       sights: [],
       huidigeSightNaam: "(Naam van plaats)",
+      markers: [{
+        title: "test",
+        coordinates: {
+          latitude: 3.148561,
+          longitude: 101.652778
+        },
+      }]
     }
 
     this.locationWatcher = null
     this.spawnInterval = null
 
+  }
+
+  // Om middelpunt van polygon te krijgen
+  coordinate(sight) {
+    let x = sight.coordinates.map(c => c.latitude)
+    let y = sight.coordinates.map(c => c.longitude)
+
+    let minX = Math.min.apply(null, x)
+    let maxX = Math.max.apply(null, x)
+
+    let minY = Math.min.apply(null, y)
+    let maxY = Math.max.apply(null, y)
+
+    const _coordinates = this.state.markers
+    _coordinates.push({
+      coordinates: {
+        latitude: (minX + maxX) / 2,
+        longitude: (minY + maxY) / 2,
+      },
+      title: sight.name
+    })
+    this.setState({ markers: _coordinates })
   }
 
   componentDidMount() {
@@ -73,24 +103,30 @@ export default class Mapke extends React.Component {
             })
 
             for (let element of this.state.sights) {
-              if(this._isInPolygon(this.state.coordinaten,element.coordinates))
-              {
+
+              if (this._isInPolygon(this.state.coordinaten, element.coordinates)) {
                 this.setState({ huidigeSightNaam: element.name })
                 this.setState({ huidigeSightId: element.sightId })
                 this.AlertChallenge();
               }
+
             }
 
+            this.state.sights.forEach(sight => {
+              this.coordinate(sight)
+            });
+
+            console.log(this.state.markers)
           })
 
         }
       })
 
-      this.apiCallSights();
+    this.apiCallSights();
   }
 
   async apiCallSights() {
-    let resp2 = await fetch('https://citygoaspbackend20201120025600.azurewebsites.net/sights')
+    let resp2 = await fetch('https://citygo5.azurewebsites.net/sights')
     let respJson2 = await resp2.json();
     this.setState({ sights: respJson2.sights })
 
@@ -113,7 +149,7 @@ export default class Mapke extends React.Component {
       if (intersect) inside = !inside
     }
     return inside
-  } 
+  }
 
   render() {
     return (
@@ -131,11 +167,15 @@ export default class Mapke extends React.Component {
           customMapStyle={mapStyle}
           showsPointsOfInterest={false}
         >
-          <Marker //de prof
-            coordinate={{
-              latitude: 51.22369444,
-              longitude: 4.41138889,
-            }} />
+          {this.state.markers.map((marker) => (
+            <MapView.Marker
+              title={marker.title}
+              coordinate={{
+                latitude: marker.coordinates.latitude,
+                longitude: marker.coordinates.longitude,
+              }}
+            />
+          ))}
 
         </MapView>
       </View>
