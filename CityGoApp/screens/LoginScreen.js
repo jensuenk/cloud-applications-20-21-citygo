@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert, Animatable } from 'react-native';
 import StandardButton from '../components/StandardButton';
 import InputField from '../components/InputField';
 import Firebase from '../config/Firebase';
@@ -15,17 +15,20 @@ class LoginScreen extends React.Component {
         this.state = {
             email: '', 
             password:'',
+            isValidEmail:false,
+            isValidPassword:false,
         };
         global.Myuser=false;
     }
 
     handleLogin = () => {
-        console.log("voor functie",global.Myuser)
         Firebase.auth()
             .signInWithEmailAndPassword(this.state.email,this.state.password)
-            .then(global.Myuser = true, console.log("tijdens", global.Myuser), this.props.navigation.navigate("MainScreen"))                       
+            .then(global.Myuser = true, this.props.navigation.navigate("MainScreen"))                       
             .catch(error=> console(error))  
     }
+
+    
 
     render() {
         return (
@@ -43,6 +46,10 @@ class LoginScreen extends React.Component {
                     keyboardType="email-address"
                     autoCapitalize="none"
                 />
+                { this.state.isValidEmail ? null :
+                <Text style={styles.errorMessage}>The email needs to look like xxx@domain</Text>
+                }
+
                 <InputField
                     labelValue={this.state.password}
                     onChangeText={(password) => this.setState({ password })}
@@ -50,6 +57,11 @@ class LoginScreen extends React.Component {
                     iconType="lock"
                     secureTextEntry={true}
                 />
+                { this.state.isValidPassword ? null :
+                <Text style={styles.errorMessage}>The password needs to be 6 characters long</Text>
+                }
+
+
                 <StandardButton
                     buttonTitle="Log In"
                     onPress={() => { this.handleLogin() }}
@@ -97,4 +109,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#2e64e5',
     },
+    errorMessage:{
+        color: '#FE0000',
+    }
 });
