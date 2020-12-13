@@ -15,10 +15,22 @@ class LoginScreen extends React.Component {
         this.state = {
             email: '', 
             password:'',
-            isValidEmail:false,
-            isValidPassword:false,
+            isValidEmail:true,
+            isValidPassword:true,
         };
         global.Myuser=false;
+    }
+
+    handleValidPassword = (val) => {
+        console.log(val);
+        if(val.trim().length >= 6){
+            this.state.isValidPassword = true;
+            console.log("Door true gegaan", this.state.isValidPassword)
+        }
+        else{
+            this.state.isValidPassword = false;
+            console.log("Door false gegaan",this.state.isValidPassword)
+        }
     }
 
     handleLogin = () => {
@@ -52,7 +64,7 @@ class LoginScreen extends React.Component {
 
                 <InputField
                     labelValue={this.state.password}
-                    onChangeText={(password) => this.setState({ password })}
+                    onChangeText={(password) => this.setState({ password }, (password) => this.handleValidPassword(this.state.password))}
                     placeholderText="Password"
                     iconType="lock"
                     secureTextEntry={true}
