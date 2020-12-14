@@ -18,6 +18,8 @@ namespace Application.ViewModel
 
         public int Balls { get; set; }
 
+        public int Score { get; set; }
+
         public int[] FriendIds {get; set; }
 
         public List<Domain.Item> Items { get; set; }

@@ -17,6 +17,8 @@ namespace Application.ViewModel.Challenge
 
         public string Answer { get; set; }
 
+        public int Score { get; set; }
+
         public Domain.Sight Sight { get; set; }
 
         public Domain.User User { get; set; }

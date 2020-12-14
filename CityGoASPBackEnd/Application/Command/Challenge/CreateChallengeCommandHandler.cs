@@ -32,7 +32,8 @@ namespace Application.Command.Challenge
                         Name = request.ChallengeVM.Name,
                         Task = request.ChallengeVM.Task,
                         Answer = request.ChallengeVM.Answer,
-                        QuestionChallenge = request.ChallengeVM.QuestionChallenge
+                        QuestionChallenge = request.ChallengeVM.QuestionChallenge,
+                        Score = request.ChallengeVM.Score
                     };
                 }
                 else

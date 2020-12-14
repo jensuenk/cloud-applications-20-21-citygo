@@ -34,6 +34,7 @@ namespace Application.Query.Challenge
                     QuestionChallenge = challenge.QuestionChallenge,
                     Task = challenge.Task,
                     Items = challenge.Items,
+                    Score = challenge.Score,
                     Sight = challenge.Sight
                 };
 
