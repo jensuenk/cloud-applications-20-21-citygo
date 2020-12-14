@@ -27,15 +27,6 @@ namespace Application.Query
                .Include(c => c.Challenges)
                .Include(i => i.Friends)
                .SingleAsync();
-                int localScore = 0;
-                if (user.Challenges != null)
-                {
-                    foreach (var chal in user.Challenges)
-                    {
-                        localScore += chal.Score;
-                    }
-                }
-                user.Score = localScore;
 
                 List<Domain.User> tussen = new List<Domain.User>();
                 foreach (var item in user.Friends)
