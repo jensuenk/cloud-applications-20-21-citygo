@@ -32,7 +32,8 @@ namespace Application.Command
                         Name = request.UserVM.Name,
                         Username = request.UserVM.Username,
                         Email = request.UserVM.Email,
-                        Balls = request.UserVM.Balls
+                        Balls = request.UserVM.Balls,
+                        Score = request.UserVM.Score
                     };
                 }
                 else
@@ -106,20 +107,19 @@ namespace Application.Command
             
             // Assign the list to the user's challenges
             newUser.Challenges = newChallenges;
-            
+
+
+            int localScore = 0;
+            if (newChallenges != null)
+            {
+                foreach (var chal in newChallenges)
+                {
+                    localScore += chal.Score;
+                }
+            }
+            newUser.Score = localScore;
 
             var query = _context.Users.Add(newUser);
-            UserVM vm3 = new UserVM()
-            {
-                UserId = newUser.UserId,
-                Name = newUser.Name,
-                Balls = newUser.Balls,
-                Challenges = newUser.Challenges,
-                Email = newUser.Email,
-                Username = newUser.Username,
-                UsersItems = newUser.UsersItems,
-                Error = "OK",
-            };
             return await _context.SaveAsync(cancellationToken);
         }
     }

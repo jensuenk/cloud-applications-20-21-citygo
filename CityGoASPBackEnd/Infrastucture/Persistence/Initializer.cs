@@ -29,21 +29,24 @@ namespace Infrastucture.Persistence
                     Name = "Jhon Doe",
                     Username = "Jh0nD03",
                     Email = "jhon.doe@gmail.com",
-                    Balls = 1
+                    Balls = 1,
+                    Score = 0
                 },
                 new Domain.User()
                 {
                    Name = "Jhon Doe2",
                    Username = "Jh0nD032",
                    Email = "jhon.doe2@gmail.com",
-                   Balls = 3
+                   Balls = 3,
+                   Score = 0
                 },
                 new Domain.User()
                 {
                    Name = "Jhon Doe3",
                    Username = "Jh0nD033",
                    Email = "jhon.doe3@gmail.com",
-                   Balls = 3
+                   Balls = 3,
+                   Score = 0
                 }
             };
             List<Domain.Challenge> challengesL = new List<Domain.Challenge>()
@@ -53,7 +56,8 @@ namespace Infrastucture.Persistence
                     Name = "Chal1",
                     Answer = "antwoord",
                     QuestionChallenge = "vraag",
-                    Task = "een vraag"
+                    Task = "een vraag",
+                    Score = 100
                 }
             };
 

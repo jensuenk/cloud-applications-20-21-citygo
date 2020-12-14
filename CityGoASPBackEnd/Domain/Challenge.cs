@@ -25,6 +25,8 @@ namespace Domain
         [Required]
         public string Answer { get; set; }
 
+        public int Score { get; set; }
+
         [JsonIgnore]
         public Sight Sight { get; set; }
 

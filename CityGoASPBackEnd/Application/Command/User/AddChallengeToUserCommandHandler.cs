@@ -43,6 +43,17 @@ namespace Application.Command.User
                 return 4042;
             }
 
+            int localScore = 0;
+            if (user.Challenges != null)
+            {
+                foreach (var chal in user.Challenges)
+                {
+                    localScore += chal.Score;
+                }
+            }
+            user.Score += challenge.Score;
+            user.Score += localScore;
+
             challenge.User = user;
 
             var query1 = _context.Challenges.Update(challenge);

@@ -42,6 +42,7 @@ namespace Application.Query.User
                     Username = user.Username,
                     Balls = user.Balls,
                     Email = user.Email,
+                    Score = user.Score,
                     UserFriends = tussen
                 });
             }

@@ -30,7 +30,8 @@ namespace Application.Command
                     Name = request.UserVM.Name,
                     Username = request.UserVM.Username,
                     Email = request.UserVM.Email,
-                    Balls = request.UserVM.Balls
+                    Balls = request.UserVM.Balls,
+                    Score = request.UserVM.Score
                 };
             }
             catch (Exception)
@@ -101,6 +102,17 @@ namespace Application.Command
             // Assign the list to the user's challenges
             newUser.Challenges = newChallenges;
 
+            int localScore = 0;
+            if (newChallenges != null)
+            {
+                foreach (var chal in newChallenges)
+                {
+                    localScore += chal.Score;
+                }
+            }
+            newUser.Score = localScore;
+
+
             var olduser = await _context.Users.Where(u => u.UserId == newUser.UserId)
                 .Include(c => c.Challenges)
                 .Include(i => i.UsersItems)
@@ -111,6 +123,7 @@ namespace Application.Command
             olduser.Balls = newUser.Balls;
             olduser.Challenges = newChallenges;
             olduser.UsersItems = newUserItems;
+            olduser.Score = newUser.Score;
             var query = _context.Users.Update(olduser);
             return await _context.SaveAsync(cancellationToken);
         }     

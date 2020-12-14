@@ -35,6 +35,7 @@ namespace Application.Query
                     Username = user.Username,
                     Balls = user.Balls, 
                     Email = user.Email,
+                    Score = user.Score,
                     Challenges = user.Challenges,
                     UsersItems = user.UsersItems
                 });

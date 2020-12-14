@@ -23,6 +23,8 @@ namespace Domain
 
         public int Balls { get; set; }
 
+        public int Score { get; set; }
+
         [JsonIgnore]
         public List<UsersItems> UsersItems { get; set; }
 

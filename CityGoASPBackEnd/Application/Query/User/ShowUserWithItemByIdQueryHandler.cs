@@ -40,6 +40,7 @@ namespace Application.Query.User
                     Username = user.Username,
                     Email = user.Email,
                     Balls = user.Balls,
+                    Score = user.Score,
                     UsersItems = usersItems
                 };
 
