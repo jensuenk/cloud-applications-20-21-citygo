@@ -48,7 +48,8 @@ namespace Application.Command.User
             { 
                 User = user, 
                 UserId = user.UserId, 
-                Item = item, ItemId = item.ItemId
+                Item = item,
+                ItemId = item.ItemId
             };
             if (user.UsersItems == null)
             {

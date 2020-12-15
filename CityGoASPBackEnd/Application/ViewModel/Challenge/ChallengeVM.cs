@@ -21,7 +21,7 @@ namespace Application.ViewModel.Challenge
 
         public Domain.Sight Sight { get; set; }
 
-        public Domain.User User { get; set; }
+        public List<Domain.UsersChallenges> UsersChallenges { get; set; }
 
         public List<Domain.Item> Items { get; set; }
 

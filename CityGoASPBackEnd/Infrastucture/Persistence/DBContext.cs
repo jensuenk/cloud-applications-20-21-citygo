@@ -14,14 +14,14 @@ namespace Infrastucture.Persistence
 {
     public class DBContext: DbContext, IDBContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CityGoDB", builder =>
-            {
-                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-            });
-            base.OnConfiguring(optionsBuilder);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CityGoDB", builder =>
+        //    {
+        //        builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+        //    });
+        //    base.OnConfiguring(optionsBuilder);
+        //}
 
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
@@ -32,6 +32,7 @@ namespace Infrastucture.Persistence
         public DbSet<Sight> Sights { get; set; }
         public DbSet<Challenge> Challenges { get; set; }
         public DbSet<UsersItems> UsersItems { get; set; }
+        public DbSet<UsersChallenges> UsersChallenges { get; set; }
         public DbSet<Coordinate> Coordinates { get; set; }
         public DbSet<Friends> Friends { get; set; }
 
@@ -56,6 +57,21 @@ namespace Infrastucture.Persistence
                 .HasForeignKey(u => u.ItemId);
             });
 
+
+            modelbuilder.Entity<UsersChallenges>()
+                .HasKey(uc => new { uc.UserId, uc.ChallengeId });
+
+
+            modelbuilder.Entity<UsersChallenges>(b =>
+            {
+                b.HasOne(c => c.User)
+                .WithMany(u => u.UsersChallenges)
+                .HasForeignKey(c => c.UserId);
+                b.HasOne(u => u.Challenge)
+                .WithMany(c => c.UsersChallenges)
+                .HasForeignKey(u => u.ChallengeId);
+            });
+
             modelbuilder.Entity<Challenge>()
                 .HasMany(c=>c.Items)
                 .WithOne(i=>i.Challenge)
@@ -69,11 +85,6 @@ namespace Infrastucture.Persistence
             modelbuilder.Entity<Sight>()
                 .HasMany(s => s.Coordinates)
                 .WithOne(c => c.Sight)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            modelbuilder.Entity<User>()
-                .HasMany(u => u.Challenges)
-                .WithOne(c => c.User)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelbuilder.Entity<User>()

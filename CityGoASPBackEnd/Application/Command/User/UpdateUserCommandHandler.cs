@@ -76,18 +76,24 @@ namespace Application.Command
 
 
             // Link existing challenges to a user trough the body
-            List<Domain.Challenge> newChallenges = new List<Domain.Challenge>(); ;
+            List<Domain.UsersChallenges> newChallenges = new List<Domain.UsersChallenges>(); ;
             try
             {
-                if (request.UserVM.Challenges != null)
+                if (request.UserVM.UsersChallenges != null)
                 {
-                    foreach (var challenge in request.UserVM.Challenges)
+                    foreach (var challenge in request.UserVM.UsersChallenges)
                     {
                         // Check if challenge exists, if so, add it to a list to asign later
                         var foundChallenge = _context.Challenges.Find(challenge.ChallengeId);
                         if (foundChallenge != null)
                         {
-                            newChallenges.Add(foundChallenge);
+                            UsersChallenges usersChallenges = new UsersChallenges()
+                            {
+                                User = newUser,
+                                UserId = newUser.UserId,
+                                Challenge = foundChallenge,
+                                ChallengeId = foundChallenge.ChallengeId
+                            };
                         }
                     }
                 }
@@ -99,29 +105,31 @@ namespace Application.Command
             }
 
 
+
             // Assign the list to the user's challenges
-            newUser.Challenges = newChallenges;
+            newUser.UsersChallenges = newChallenges;
 
             int localScore = 0;
             if (newChallenges != null)
             {
-                foreach (var chal in newChallenges)
+                foreach (var chal in newUser.UsersChallenges)
                 {
-                    localScore += chal.Score;
+                    var foundChallenge = _context.Challenges.Find(chal.ChallengeId);
+                    localScore += foundChallenge.Score;
                 }
             }
             newUser.Score = localScore;
 
 
             var olduser = await _context.Users.Where(u => u.UserId == newUser.UserId)
-                .Include(c => c.Challenges)
+                .Include(c => c.UsersChallenges)
                 .Include(i => i.UsersItems)
                 .SingleAsync();
             olduser.Name = newUser.Name;
             olduser.Username = newUser.Username;
             olduser.Email = newUser.Email;
             olduser.Balls = newUser.Balls;
-            olduser.Challenges = newChallenges;
+            olduser.UsersChallenges = newChallenges;
             olduser.UsersItems = newUserItems;
             olduser.Score = newUser.Score;
             var query = _context.Users.Update(olduser);

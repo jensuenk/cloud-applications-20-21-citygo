@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.ViewModel.Challenge;
+using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -72,37 +73,46 @@ namespace Application.Command.Challenge
             }
 
 
-            // Link existing User to a challenge trough the body
-            Domain.User newUser = new Domain.User(); ;
+
+            // Link existing challenges to a user trough the body
+            List<Domain.UsersChallenges> newUser = new List<Domain.UsersChallenges>(); ;
             try
             {
-                if (request.ChallengeVM.User != null)
+                if (request.ChallengeVM.UsersChallenges != null)
                 {
-                    var user = request.ChallengeVM.User;
-                    // Check if Items exists, if so, add it to a list to asign later
-                    var foundUser = _context.Users.Find(user.UserId);
-                    if (foundUser != null)
+                    foreach (var user in request.ChallengeVM.UsersChallenges)
                     {
-                        newUser = foundUser;
+                        // Check if challenge exists, if so, add it to a list to asign later
+                        var foundUser = _context.Users.Find(user.UserId);
+                        if (foundUser != null)
+                        {
+                            UsersChallenges usersChallenges = new UsersChallenges()
+                            {
+                                User = foundUser,
+                                UserId = foundUser.UserId,
+                                Challenge = newChallenge,
+                                ChallengeId = newChallenge.ChallengeId
+                            };
+                        }
                     }
                 }
             }
             catch (Exception)
             {
-                ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_User" };
+                ChallengeVM vm3 = new ChallengeVM() { Error = "NotFound_User" };
                 return 4042;
             }
 
             var oldChallenge = await _context.Challenges.Where(c => c.ChallengeId == newChallenge.ChallengeId)
                 .Include(i => i.Items)
-                .Include(u=>u.User)
+                .Include(u=>u.UsersChallenges)
                 .SingleAsync();
             oldChallenge.Name = newChallenge.Name;
             oldChallenge.Task = newChallenge.Task;
             oldChallenge.Answer = newChallenge.Answer;
             oldChallenge.QuestionChallenge = newChallenge.QuestionChallenge;
             oldChallenge.Items = newItems;
-
+            oldChallenge.UsersChallenges = newUser;
             var query = _context.Challenges.Update(oldChallenge);
             return await _context.SaveAsync(cancellationToken);
         }

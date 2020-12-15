@@ -20,6 +20,16 @@ namespace Infrastucture.Persistence
                     },
                     Rarity = "rare",
                     Picture = "nice"
+                },
+                 new Domain.Item()
+                {
+                    Name = "test2",
+                    Location = new Domain.Coordinate() {
+                        Latitude = 0,
+                        Longitude = 0
+                    },
+                    Rarity = "rare",
+                    Picture = "nice"
                 }
             };
             List<Domain.User> usersL = new List<Domain.User>()
@@ -58,6 +68,13 @@ namespace Infrastucture.Persistence
                     QuestionChallenge = "vraag",
                     Task = "een vraag",
                     Score = 100
+                }, new Domain.Challenge()
+                {
+                    Name = "Chal2",
+                    Answer = "antwoord",
+                    QuestionChallenge = "vraag",
+                    Task = "een vraag",
+                    Score = 100
                 }
             };
 
@@ -74,7 +91,7 @@ namespace Infrastucture.Persistence
             };
 
 
-            //context.Database.EnsureDeleted();
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             
             if (!context.Users.Any())
