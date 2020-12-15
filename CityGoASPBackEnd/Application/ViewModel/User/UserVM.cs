@@ -26,7 +26,7 @@ namespace Application.ViewModel
 
         public List<Domain.UsersItems> UsersItems { get; set; }
 
-        public List<Domain.Challenge> Challenges { get; set; }
+        public List<Domain.UsersChallenges> UsersChallenges { get; set; }
 
         public List<Domain.Friends> Friends { get; set; }
 

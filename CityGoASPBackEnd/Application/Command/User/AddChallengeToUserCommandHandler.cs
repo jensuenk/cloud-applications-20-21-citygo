@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.ViewModel;
+using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,7 +26,9 @@ namespace Application.Command.User
             Domain.Challenge challenge;
             try
             {
-                user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
+                user = await _context.Users.Where(u => u.UserId == request.UserId)
+                    .Include(uc =>uc.UsersChallenges)
+                    .SingleAsync();
             }
             catch (Exception)
             {
@@ -35,7 +38,9 @@ namespace Application.Command.User
 
             try
             {
-                challenge = await _context.Challenges.Where(u => u.ChallengeId == request.ChallengeId).SingleAsync();
+                challenge = await _context.Challenges.Where(u => u.ChallengeId == request.ChallengeId)
+                     .Include(uc => uc.UsersChallenges)
+                     .SingleAsync();
             }
             catch (Exception)
             {
@@ -43,21 +48,48 @@ namespace Application.Command.User
                 return 4042;
             }
 
-            int localScore = 0;
-            if (user.Challenges != null)
+            UsersChallenges usersChallenges = new UsersChallenges()
             {
-                foreach (var chal in user.Challenges)
+                Challenge = challenge,
+                ChallengeId = challenge.ChallengeId,
+                User = user,
+                UserId = user.UserId
+            };
+            if (user.UsersChallenges == null)
+            {
+                List<Domain.UsersChallenges> tussen = new List<Domain.UsersChallenges>();
+                tussen.Add(usersChallenges);
+                user.UsersChallenges = tussen;
+            }
+            else
+            {
+                user.UsersChallenges.Add(usersChallenges);
+            }
+
+            if (challenge.UsersChallenges == null)
+            {
+                List<Domain.UsersChallenges> tussen = new List<Domain.UsersChallenges>();
+                tussen.Add(usersChallenges);
+                challenge.UsersChallenges = tussen;
+            }
+            else
+            {
+                challenge.UsersChallenges.Add(usersChallenges);
+            }
+            int localScore = 0;
+            if (user.UsersChallenges != null)
+            {
+                foreach (var chal in user.UsersChallenges)
                 {
-                    localScore += chal.Score;
+                    var foundChallenge = _context.Challenges.Find(chal.ChallengeId);
+                    localScore += foundChallenge.Score;
                 }
             }
-            user.Score += challenge.Score;
             user.Score += localScore;
-
-            challenge.User = user;
 
             var query1 = _context.Challenges.Update(challenge);
             var query2 = _context.Users.Update(user);
+            var query3 = _context.UsersChallenges.Add(usersChallenges);
             return await _context.SaveAsync(cancellationToken);
         }
     }

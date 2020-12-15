@@ -34,7 +34,7 @@ namespace Domain
         public List<Item> Items { get; set; }
 
         [JsonIgnore]
-        public User User { get; set; }
+        public List<UsersChallenges> UsersChallenges { get; set; }
 
     }
 }

@@ -21,7 +21,7 @@ namespace Application.Query
         {
             var allUsers = await _context.Users
                 .Include(i => i.UsersItems)
-                .Include(c => c.Challenges)
+                .Include(c => c.UsersChallenges)
                 .ToListAsync();
 
 
@@ -36,7 +36,7 @@ namespace Application.Query
                     Balls = user.Balls, 
                     Email = user.Email,
                     Score = user.Score,
-                    Challenges = user.Challenges,
+                    UsersChallenges = user.UsersChallenges,
                     UsersItems = user.UsersItems
                 });
             }

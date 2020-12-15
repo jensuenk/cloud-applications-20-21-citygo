@@ -20,6 +20,7 @@ namespace Application.Interfaces
         public DbSet<UsersItems> UsersItems { get; set; }
         public DbSet<Coordinate> Coordinates { get; set; }
         public DbSet<Friends> Friends { get; set; }
+        public DbSet<UsersChallenges> UsersChallenges { get; set; }
         Task<int> SaveAsync(CancellationToken cancellationToken);
     }
 }

@@ -24,7 +24,7 @@ namespace Application.Query
             {
                 var user = await _context.Users.Where(u => u.UserId == request.UserId)
                .Include(i => i.UsersItems)
-               .Include(c => c.Challenges)
+               .Include(c => c.UsersChallenges)
                .Include(i => i.Friends)
                .SingleAsync();
 
@@ -39,6 +39,11 @@ namespace Application.Query
                    .Where(u => u.UserId == request.UserId)
                    .ToListAsync();
 
+
+                var usersChallenges = await _context.UsersChallenges
+                   .Include(i => i.Challenge)
+                   .Where(u => u.UserId == user.UserId)
+                   .ToListAsync();
                 UserVM vm = new UserVM()
                 {
                     UserId = user.UserId,
@@ -48,7 +53,7 @@ namespace Application.Query
                     Balls = user.Balls,
                     Score = user.Score,
                     UserFriends = tussen,
-                    Challenges = user.Challenges,
+                    UsersChallenges = usersChallenges,
                     UsersItems = usersItems
                 };
                 return vm;

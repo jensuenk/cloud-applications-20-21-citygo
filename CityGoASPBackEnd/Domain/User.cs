@@ -29,7 +29,7 @@ namespace Domain
         public List<UsersItems> UsersItems { get; set; }
 
         [JsonIgnore]
-        public List<Challenge> Challenges { get; set; }
+        public List<UsersChallenges> UsersChallenges { get; set; }
 
         [JsonIgnore]
         public List<Friends> Friends { get; set; }
