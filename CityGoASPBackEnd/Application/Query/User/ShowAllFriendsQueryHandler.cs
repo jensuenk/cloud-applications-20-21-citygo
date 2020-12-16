@@ -32,7 +32,7 @@ namespace Application.Query.User
                 foreach (var item in user.Friends)
                 {
                     var friend = await _context.Users.Where(u => u.UserId == item.FriendId).SingleAsync();
-                    item.Friend = friend;
+                    //item.Friend = friend;
                     Friends.Add(item);
                 }
                 vm.Users.Add(new UserVM()

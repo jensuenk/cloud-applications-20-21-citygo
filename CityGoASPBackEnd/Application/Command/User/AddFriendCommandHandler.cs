@@ -54,7 +54,7 @@ namespace Application.Command.User
             {
                 Friend = new Domain.Friends()
                 {
-                    Friend = friend,
+                    //Friend = friend,
                     UserId = request.UserId,
                     User = user,
                     AcceptedUser1 = true,
@@ -69,7 +69,7 @@ namespace Application.Command.User
             {
                 Friend = new Domain.Friends()
                 {
-                    Friend = friend,
+                    //Friend = friend,
                     UserId = request.UserId,
                     User = user,
                     AcceptedUser1 = true,
@@ -88,7 +88,7 @@ namespace Application.Command.User
                     UserId = request.FriendId,
                     AcceptedUser1 = false,
                     User = friend,
-                    Friend = user,
+                    //Friend = user,
                     FriendId = request.UserId,
                     AcceptedUser2 = true
                 };
@@ -103,7 +103,7 @@ namespace Application.Command.User
                     UserId = request.FriendId,
                     AcceptedUser1 = false,
                     User = friend,
-                    Friend = user,
+                    //Friend = user,
                     FriendId = request.UserId,
                     AcceptedUser2 = true
                 };

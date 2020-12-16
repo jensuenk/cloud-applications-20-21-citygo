@@ -26,11 +26,13 @@ namespace Application.Query.User
                 var user = await _context.Users.Where(u => u.UserId == request.UserId)
                     .Include(i => i.Friends)
                     .SingleAsync();
+                List<Domain.User> userFriends = new List<Domain.User>();
                 List<Domain.Friends> Friends = new List<Domain.Friends>();
                 foreach (var item in user.Friends)
                 {
                     var friend = await _context.Users.Where(u => u.UserId == item.FriendId).SingleAsync();
-                    item.Friend = friend;
+                    //item.Friend = friend;
+                    userFriends.Add(friend);
                     Friends.Add(item);
                 }
                 UserVM vm = new UserVM()
@@ -41,7 +43,8 @@ namespace Application.Query.User
                     Email = user.Email,
                     Balls = user.Balls,
                     Score = user.Score,
-                    Friends = Friends
+                    Friends = Friends,
+                    UserFriends = userFriends
                 };
                 return vm;
             }
