@@ -50,7 +50,7 @@ namespace Application.Command.User
 
             Domain.Friends fr = new Domain.Friends()
             {
-                User = user,
+                Friend = user,
                 UserId = user.UserId,
                 FriendId = friend.UserId
             };

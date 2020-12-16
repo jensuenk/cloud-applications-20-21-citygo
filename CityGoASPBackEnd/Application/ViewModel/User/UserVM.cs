@@ -30,8 +30,6 @@ namespace Application.ViewModel
 
         public List<Domain.Friends> Friends { get; set; }
 
-        public List<Domain.User> UserFriends { get; set; }
-
         [JsonIgnore]
         public string Error { get; set; }
     }

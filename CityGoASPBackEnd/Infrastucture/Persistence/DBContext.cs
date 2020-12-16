@@ -14,14 +14,14 @@ namespace Infrastucture.Persistence
 {
     public class DBContext: DbContext, IDBContext
     {
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CityGoDB", builder =>
-        //    {
-        //        builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-        //    });
-        //    base.OnConfiguring(optionsBuilder);
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CityGoDB", builder =>
+            {
+                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            });
+            base.OnConfiguring(optionsBuilder);
+        }
 
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
@@ -87,10 +87,24 @@ namespace Infrastucture.Persistence
                 .WithOne(c => c.Sight)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelbuilder.Entity<User>()
-                .HasMany(u=>u.Friends)
-                .WithOne(f=>f.User)
+            modelbuilder.Entity<Friends>()
+                //.HasKey(f=>new{f.UserId, f.FriendId});
+                .HasKey(f => f.ID);
+
+            modelbuilder.Entity<Friends>(f =>
+            {
+                f.HasOne(f => f.User)
+                .WithMany(u => u.Friends)
+                .HasForeignKey(f => f.FriendId)
                 .OnDelete(DeleteBehavior.Cascade);
+            });
+
+
+
+                //modelbuilder.Entity<User>()
+                //.HasMany(u => u.Friends)
+                //.WithOne(f => f.US)
+                //.OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
