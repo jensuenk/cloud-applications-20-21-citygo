@@ -88,8 +88,8 @@ namespace Infrastucture.Persistence
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelbuilder.Entity<Friends>()
-                //.HasKey(f=>new{f.UserId, f.FriendId});
-                .HasKey(f => f.ID);
+                .HasKey(f=>new{f.UserId, f.FriendId});
+                
 
             modelbuilder.Entity<Friends>(f =>
             {
@@ -99,12 +99,11 @@ namespace Infrastucture.Persistence
                 .OnDelete(DeleteBehavior.Cascade);
             });
 
-
-
-                //modelbuilder.Entity<User>()
-                //.HasMany(u => u.Friends)
-                //.WithOne(f => f.US)
-                //.OnDelete(DeleteBehavior.Cascade);
+            //modelbuilder.Entity<User>()
+            //.HasMany(u => u.Friends)
+            //.WithOne(f => f.User)
+            //.HasForeignKey(u=>u.FriendId)
+            //.OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

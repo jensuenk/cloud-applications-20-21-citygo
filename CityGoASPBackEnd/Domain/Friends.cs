@@ -8,14 +8,12 @@ namespace Domain
 {
     public class Friends
     {
-        [Key]
-        public int ID { get; set; }
-
+        [JsonIgnore]
         public int UserId { get; set; }
         public bool AcceptedUser1 { get; set; }
         public User User { get; set; }
 
-
+        [JsonIgnore]
         public int FriendId { get; set; }
         public bool AcceptedUser2 { get; set; }
         public User Friend { get; set; }

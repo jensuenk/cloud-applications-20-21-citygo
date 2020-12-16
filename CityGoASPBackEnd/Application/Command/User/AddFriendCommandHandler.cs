@@ -25,7 +25,9 @@ namespace Application.Command.User
             Domain.User friend;
             try
             {
-                user = await _context.Users.Where(u => u.UserId == request.UserId).SingleAsync();
+                user = await _context.Users.Where(u => u.UserId == request.UserId)
+                    .Include(u=>u.Friends)
+                    .SingleAsync();
 
             }
             catch (Exception)
@@ -35,7 +37,9 @@ namespace Application.Command.User
             }
             try
             {
-                friend = await _context.Users.Where(u => u.UserId == request.FriendId).SingleAsync();
+                friend = await _context.Users.Where(u => u.UserId == request.FriendId)
+                    .Include(u => u.Friends)
+                    .SingleAsync();
 
             }
             catch (Exception)
@@ -51,10 +55,10 @@ namespace Application.Command.User
                 Friend = new Domain.Friends()
                 {
                     Friend = friend,
-                    UserId = user.UserId,
+                    UserId = request.UserId,
                     User = user,
                     AcceptedUser1 = true,
-                    FriendId = friend.UserId,
+                    FriendId = request.FriendId,
                     AcceptedUser2 = false
                };
 
@@ -66,10 +70,10 @@ namespace Application.Command.User
                 Friend = new Domain.Friends()
                 {
                     Friend = friend,
-                    UserId = user.UserId,
+                    UserId = request.UserId,
                     User = user,
                     AcceptedUser1 = true,
-                    FriendId = friend.UserId,
+                    FriendId = request.FriendId,
                     AcceptedUser2 = false
                 };
                 user.Friends.Add(Friend);
@@ -81,11 +85,11 @@ namespace Application.Command.User
             {
                 Friend2 = new Domain.Friends()
                 {
-                    UserId = friend.UserId,
+                    UserId = request.FriendId,
                     AcceptedUser1 = false,
                     User = friend,
                     Friend = user,
-                    FriendId = user.UserId,
+                    FriendId = request.UserId,
                     AcceptedUser2 = true
                 };
 
@@ -96,11 +100,11 @@ namespace Application.Command.User
             {
                 Friend2 = new Domain.Friends()
                 {
-                    UserId = friend.UserId,
+                    UserId = request.FriendId,
                     AcceptedUser1 = false,
-                     User = friend,
+                    User = friend,
                     Friend = user,
-                    FriendId = user.UserId,
+                    FriendId = request.UserId,
                     AcceptedUser2 = true
                 };
                 friend.Friends.Add(Friend2);

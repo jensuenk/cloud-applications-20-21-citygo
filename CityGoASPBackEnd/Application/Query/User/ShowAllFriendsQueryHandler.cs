@@ -28,12 +28,13 @@ namespace Application.Query.User
             ListUserVM vm = new ListUserVM();
             foreach (var user in allUsers)
             {
-                //List<Domain.Friends> Friends = new List<Domain.Friends>();
-                //foreach (var item in user.Friends)
-                //{
-                //    var friend = await _context.Users.Where(u => u.UserId == item.FriendId).SingleAsync();
-                //    Friends.Add(item);
-                //}
+                List<Domain.Friends> Friends = new List<Domain.Friends>();
+                foreach (var item in user.Friends)
+                {
+                    var friend = await _context.Users.Where(u => u.UserId == item.FriendId).SingleAsync();
+                    item.Friend = friend;
+                    Friends.Add(item);
+                }
                 vm.Users.Add(new UserVM()
                 {
                     UserId = user.UserId,
@@ -42,7 +43,7 @@ namespace Application.Query.User
                     Balls = user.Balls,
                     Email = user.Email,
                     Score = user.Score,
-                    Friends = user.Friends
+                    Friends = Friends
                 });
             }
             return vm;
