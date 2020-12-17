@@ -18,7 +18,7 @@ namespace Application.Query.User
         {
             _context = context;
         }
-
+        
         public async Task<UserVM> Handle(ShowUserWithAllFriendsQuery request, CancellationToken cancellationToken)
         {
             try

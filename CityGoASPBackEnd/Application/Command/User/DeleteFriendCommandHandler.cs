@@ -61,7 +61,15 @@ namespace Application.Command.User
             var itemToRemove = Friends.FirstOrDefault(r => r.FriendId == friend.UserId);
             Friends.Remove(itemToRemove);
             user.Friends = Friends;
-            var query2 = _context.Users.Update(user);
+
+            List<Domain.Friends> Friends2 = new List<Domain.Friends>();
+            Friends = user.Friends;
+            var itemToRemove2 = Friends.FirstOrDefault(r => r.FriendId == user.UserId);
+            Friends2.Remove(itemToRemove);
+            friend.Friends = Friends;
+
+            var query1 = _context.Users.Update(user);
+            var query2 = _context.Users.Update(friend);
             //var query1 = _context.Friends.Remove(fr);
             return await _context.SaveAsync(cancellationToken);
         }

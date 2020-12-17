@@ -192,6 +192,26 @@ namespace CityGoASPBackEnd.Controllers
             }
         }
 
+        [Route("{uid}/FriendRequest/{fid}")]
+        [HttpPut]
+        public async Task<IActionResult> AcceptFriendRequest(int uid, int fid)
+        {
+            var command = new AcceptFriendRequestCommand(uid, fid);
+            var result = await _mediator.Send(command);
+            if (result == 4041)
+            {
+                return NotFound("Invalid id given for User, try using an exsisting id");
+            }
+            else if (result == 4042)
+            {
+                return NotFound("Invalid id given for Friend, try using an exsisting id");
+            }
+            else
+            {
+                return Created("Command succesfull", result);
+            }
+        }
+
         [Route("{uid}/Friends/{fid}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteFriendFromUser(int uid, int fid)

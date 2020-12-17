@@ -12,8 +12,6 @@ namespace Domain
         [JsonIgnore]
         public int Id { get; set; }
 
-        //[Key]
-        //public int ID { get; set; }
         public int UserId { get; set; }
         public bool AcceptedUser1 { get; set; }
         [JsonIgnore]
