@@ -256,5 +256,21 @@ namespace CityGoASPBackEnd.Controllers
                 return Ok(result);
             }
         }
+
+        [Route("{id}/FriendRequests")]
+        [HttpGet]
+        public async Task<IActionResult> ShowFriendRequestsFromUser(int id)
+        {
+            var command = new ShowAllFriendRequestsQuery(id);
+            var result = await _mediator.Send(command);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
     }
 }
