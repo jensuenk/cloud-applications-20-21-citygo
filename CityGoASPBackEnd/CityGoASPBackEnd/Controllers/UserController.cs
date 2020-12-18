@@ -19,7 +19,7 @@ namespace CityGoASPBackEnd.Controllers
     public class UserController : Controller
     {
         IMediator _mediator;
-
+        ValidationController ValidationController;
         public UserController(IMediator mediator)
         {
             _mediator = mediator;
@@ -36,15 +36,17 @@ namespace CityGoASPBackEnd.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserById(int id)
         {
+            ValidationController = new ValidationController();
             var query = new ShowUserByIdQuery(id);
             var result = await _mediator.Send(query);
-            if (result.Error == "NotFound")
+            var valResult = ValidationController.HandleValidation(result);
+            if (valResult.Error == "OK")
             {
-                return NotFound("Invalid id given, try using an exsisting id");
+                return Ok(valResult);
             }
             else
             {
-                return Ok(result);
+                return NotFound(valResult.Error);
             }
         }
 
