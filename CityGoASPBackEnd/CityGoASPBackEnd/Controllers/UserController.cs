@@ -19,7 +19,7 @@ namespace CityGoASPBackEnd.Controllers
     public class UserController : Controller
     {
         IMediator _mediator;
-
+        ValidationController ValidationController;
         public UserController(IMediator mediator)
         {
             _mediator = mediator;
@@ -36,15 +36,17 @@ namespace CityGoASPBackEnd.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserById(int id)
         {
+            ValidationController = new ValidationController();
             var query = new ShowUserByIdQuery(id);
             var result = await _mediator.Send(query);
-            if (result.Error == "NotFound")
+            var valResult = ValidationController.HandleValidation(result);
+            if (valResult.Error == "OK")
             {
-                return NotFound("Invalid id given, try using an exsisting id");
+                return Ok(valResult);
             }
             else
             {
-                return Ok(result);
+                return NotFound(valResult.Error);
             }
         }
 
@@ -192,6 +194,30 @@ namespace CityGoASPBackEnd.Controllers
             }
         }
 
+        [Route("{uid}/FriendRequests/{fid}")]
+        [HttpPut]
+        public async Task<IActionResult> AcceptFriendRequest(int uid, int fid)
+        {
+            var command = new AcceptFriendRequestCommand(uid, fid);
+            var result = await _mediator.Send(command);
+            if (result == 4041)
+            {
+                return NotFound("Invalid id given for User, try using an exsisting id");
+            }
+            else if (result == 4042)
+            {
+                return NotFound("Invalid id given for Friend, try using an exsisting id");
+            }
+            else if (result == 4001)
+            {
+                return BadRequest("There was no friend request");
+            }
+            else
+            {
+                return Created("Command succesfull", result);
+            }
+        }
+
         [Route("{uid}/Friends/{fid}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteFriendFromUser(int uid, int fid)
@@ -226,6 +252,22 @@ namespace CityGoASPBackEnd.Controllers
         public async Task<IActionResult> ShowFriendsFromUser(int id)
         {
             var command = new ShowUserWithAllFriendsQuery(id);
+            var result = await _mediator.Send(command);
+            if (result.Error == "NotFound")
+            {
+                return NotFound("Invalid id given, try using an exsisting id");
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
+
+        [Route("{id}/FriendRequests")]
+        [HttpGet]
+        public async Task<IActionResult> ShowFriendRequestsFromUser(int id)
+        {
+            var command = new ShowAllFriendRequestsQuery(id);
             var result = await _mediator.Send(command);
             if (result.Error == "NotFound")
             {

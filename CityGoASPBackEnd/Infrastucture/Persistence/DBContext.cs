@@ -87,9 +87,21 @@ namespace Infrastucture.Persistence
                 .WithOne(c => c.Sight)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            //modelbuilder.Entity<Friends>()
+            //    .HasKey(f=>new{f.UserId, f.FriendId});
+                
+
+            //modelbuilder.Entity<Friends>(f =>
+            //{
+            //    f.HasOne(f => f.User)
+            //    .WithMany(u => u.Friends)
+            //    .HasForeignKey(f => f.FriendId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+            //});
+
             modelbuilder.Entity<User>()
-                .HasMany(u=>u.Friends)
-                .WithOne(f=>f.User)
+                .HasMany(u => u.Friends)
+                .WithOne(f => f.User)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

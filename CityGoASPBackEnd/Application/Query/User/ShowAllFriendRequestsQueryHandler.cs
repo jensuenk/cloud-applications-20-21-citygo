@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace Application.Query.User
 {
-    public class ShowUserWithAllFriendsQueryHandler : IRequestHandler<ShowUserWithAllFriendsQuery, UserVM>
+    public class ShowAllFriendRequestsQueryHandler : IRequestHandler<ShowAllFriendRequestsQuery, UserVM>
     {
         IDBContext _context;
-        public ShowUserWithAllFriendsQueryHandler(IDBContext context)
+        public ShowAllFriendRequestsQueryHandler(IDBContext context)
         {
             _context = context;
         }
-        
-        public async Task<UserVM> Handle(ShowUserWithAllFriendsQuery request, CancellationToken cancellationToken)
+
+        public async Task<UserVM> Handle(ShowAllFriendRequestsQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -32,21 +32,18 @@ namespace Application.Query.User
                 {
                     var friend = await _context.Users.Where(u => u.UserId == item.FriendId)
                         .SingleAsync();
-                    if (item.AcceptedUser1 == true)
+                    if (item.AcceptedUser1 == false )
                     {
                         userFriends.Add(friend);
                         Friends.Add(item);
                     }
-
+                  
                 }
                 UserVM vm = new UserVM()
                 {
                     UserId = user.UserId,
                     Name = user.Name,
                     Username = user.Username,
-                    Email = user.Email,
-                    Balls = user.Balls,
-                    Score = user.Score,
                     Friends = Friends,
                     UserFriends = userFriends
                 };
@@ -60,7 +57,6 @@ namespace Application.Query.User
                 };
                 return vm;
             }
-           
         }
     }
 }

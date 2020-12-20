@@ -28,12 +28,12 @@ namespace Application.Query
                .Include(i => i.Friends)
                .SingleAsync();
 
-                List<Domain.User> tussen = new List<Domain.User>();
-                foreach (var item in user.Friends)
-                {
-                    var friend = await _context.Users.Where(u => u.UserId == item.FriendId).SingleAsync();
-                    tussen.Add(friend);
-                }
+                //List<Domain.User> tussen = new List<Domain.User>();
+                //foreach (var item in user.Friends)
+                //{
+                //    var friend = await _context.Users.Where(u => u.UserId == item.FriendId).SingleAsync();
+                //    tussen.Add(friend);
+                //}
                 var usersItems = await _context.UsersItems
                    .Include(i => i.Item)
                    .Where(u => u.UserId == request.UserId)
@@ -52,9 +52,9 @@ namespace Application.Query
                     Email = user.Email,
                     Balls = user.Balls,
                     Score = user.Score,
-                    UserFriends = tussen,
                     UsersChallenges = usersChallenges,
-                    UsersItems = usersItems
+                    UsersItems = usersItems,
+                    Friends = user.Friends
                 };
                 return vm;
             }
