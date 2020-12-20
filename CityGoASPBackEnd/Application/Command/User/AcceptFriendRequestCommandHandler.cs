@@ -48,39 +48,50 @@ namespace Application.Command.User
                 return 4042;
             }
 
-            List<Domain.Friends> fr1 = new List<Domain.Friends>();
-            foreach (var friend in User.Friends)
+            try
             {
-                if (friend.UserId == User.UserId && friend.FriendId == Friend.UserId )
+                List<Domain.Friends> fr1 = new List<Domain.Friends>();
+                foreach (var friend in User.Friends)
                 {
-                    friend.AcceptedUser1 = true;
-                    friend.AcceptedUser2 = true;
-                    var query = _context.Friends.Update(friend);
-                    fr1.Add(friend);
+                    if (friend.UserId == User.UserId && friend.FriendId == Friend.UserId)
+                    {
+                        friend.AcceptedUser1 = true;
+                        friend.AcceptedUser2 = true;
+                        var query = _context.Friends.Update(friend);
+                        fr1.Add(friend);
+                    }
+                    else
+                    {
+                        fr1.Add(friend);
+                    }
                 }
-                else
+                List<Domain.Friends> fr2 = new List<Domain.Friends>();
+                foreach (var friend in Friend.Friends)
                 {
-                    fr1.Add(friend);
+                    if (friend.UserId == Friend.UserId && friend.FriendId == User.UserId)
+                    {
+                        friend.AcceptedUser1 = true;
+                        friend.AcceptedUser2 = true;
+                        var query = _context.Friends.Update(friend);
+                        fr2.Add(friend);
+                    }
+                    else
+                    {
+                        fr2.Add(friend);
+                    }
                 }
+                User.Friends = fr1;
+                Friend.Friends = fr2;
             }
-            List<Domain.Friends> fr2 = new List<Domain.Friends>();
-            foreach (var friend in Friend.Friends)
+            catch (Exception)
             {
-                if (friend.UserId == Friend.UserId && friend.FriendId == User.UserId)
-                {
-                    friend.AcceptedUser1 = true;
-                    friend.AcceptedUser2 = true;
-                    var query = _context.Friends.Update(friend);
-                    fr2.Add(friend);
-                }
-                else
-                {
-                    fr2.Add(friend);
-                }
-            }
 
-            User.Friends = fr1;
-            Friend.Friends = fr2;
+                UserVM vm3 = new UserVM() { Error = "BadRequest_FriendRequest" };
+                return 4001;
+            }
+            
+
+          
             var query1 = _context.Users.Update(User);
             var query2 = _context.Users.Update(Friend);
 

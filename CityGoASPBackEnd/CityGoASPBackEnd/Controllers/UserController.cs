@@ -194,7 +194,7 @@ namespace CityGoASPBackEnd.Controllers
             }
         }
 
-        [Route("{uid}/FriendRequest/{fid}")]
+        [Route("{uid}/FriendRequests/{fid}")]
         [HttpPut]
         public async Task<IActionResult> AcceptFriendRequest(int uid, int fid)
         {
@@ -207,6 +207,10 @@ namespace CityGoASPBackEnd.Controllers
             else if (result == 4042)
             {
                 return NotFound("Invalid id given for Friend, try using an exsisting id");
+            }
+            else if (result == 4001)
+            {
+                return BadRequest("There was no friend request");
             }
             else
             {
