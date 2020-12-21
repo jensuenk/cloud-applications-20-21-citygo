@@ -11,7 +11,6 @@ import Routes from './navigation/Routes';
 export default class App extends React.Component {
 
   render() {
-    console.log("testje")
     return (
       <NavigationContainer>
         {global.Myuser ? <ApplicationNavigator /> : <AuthNavigator />}

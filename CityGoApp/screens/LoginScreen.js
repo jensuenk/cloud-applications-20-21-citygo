@@ -17,30 +17,45 @@ class LoginScreen extends React.Component {
             password:'',
             isValidEmail:true,
             isValidPassword:true,
+            isValidLogin:true,
         };
         global.Myuser=false;
     }
 
     handleValidPassword = (val) => {
-        console.log(val);
         if(val.trim().length >= 6){
             this.state.isValidPassword = true;
-            console.log("Door true gegaan", this.state.isValidPassword)
         }
         else{
             this.state.isValidPassword = false;
-            console.log("Door false gegaan",this.state.isValidPassword)
         }
+    }
+
+    handleValidEmail = (val) => {
+        var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (val.trim().length >= 5) {
+            if(regEmail.test(val)){
+                this.state.isValidEmail = true;
+            }
+            else{
+                this.state.isValidEmail = false;
+            }
+        }
+        else {
+            this.state.isValidEmail = false;
+        }
+    }
+
+    handleInvalidUserInput = () => {
+        this.state.isValidLogin = false;
     }
 
     handleLogin = () => {
         Firebase.auth()
             .signInWithEmailAndPassword(this.state.email,this.state.password)
             .then(global.Myuser = true, this.props.navigation.navigate("MainScreen"))                       
-            .catch(error=> console(error))  
+            .catch(error=> console(error), this.handleInvalidUserInput())  
     }
-
-    
 
     render() {
         return (
@@ -51,7 +66,7 @@ class LoginScreen extends React.Component {
                 />
                 <InputField
                     labelValue={this.state.email}
-                    onChangeText={(email) => this.setState({ email })}
+                    onChangeText={(email) => this.setState({ email },(email) => this.handleValidEmail(this.state.email))}
                     placeholderText="Email"
                     iconType="user"
                     secureTextEntry={false}
@@ -59,7 +74,7 @@ class LoginScreen extends React.Component {
                     autoCapitalize="none"
                 />
                 { this.state.isValidEmail ? null :
-                <Text style={styles.errorMessage}>The email needs to look like xxx@domain</Text>
+                <Text style={styles.errorMessage}>The email needs to look like xxx@domain.</Text>
                 }
 
                 <InputField
@@ -70,7 +85,7 @@ class LoginScreen extends React.Component {
                     secureTextEntry={true}
                 />
                 { this.state.isValidPassword ? null :
-                <Text style={styles.errorMessage}>The password needs to be 6 characters long</Text>
+                <Text style={styles.errorMessage}>The password needs to be 6 characters long.</Text>
                 }
 
 
@@ -78,6 +93,9 @@ class LoginScreen extends React.Component {
                     buttonTitle="Log In"
                     onPress={() => { this.handleLogin() }}
                 />
+                { this.state.isValidLogin ? null :
+                    <Text style={styles.errorMessage}>The combination of email and password is incorrect.</Text>
+                }
 
                 <TouchableOpacity style={styles.forgotButton} onPress={() => this.props.navigation.navigate('RegisterScreen')}>
                     <Text style={styles.navButtonText} >Not registered yet? Register here</Text>
