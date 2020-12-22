@@ -54,7 +54,9 @@ namespace Application.Query
                     Score = user.Score,
                     UsersChallenges = usersChallenges,
                     UsersItems = usersItems,
-                    Friends = user.Friends
+                    Friends = user.Friends,
+                    PicrtureURL = user.PicrtureURL
+
                 };
                 return vm;
             }

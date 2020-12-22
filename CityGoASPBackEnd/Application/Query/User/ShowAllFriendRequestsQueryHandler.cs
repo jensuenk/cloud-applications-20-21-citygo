@@ -45,7 +45,8 @@ namespace Application.Query.User
                     Name = user.Name,
                     Username = user.Username,
                     Friends = Friends,
-                    UserFriends = userFriends
+                    UserFriends = userFriends,
+                    PicrtureURL = user.PicrtureURL
                 };
                 return vm;
             }

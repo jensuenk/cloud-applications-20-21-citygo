@@ -25,6 +25,8 @@ namespace Domain
 
         public int Score { get; set; }
 
+        public string PicrtureURL { get; set; }
+
         [JsonIgnore]
         public List<UsersItems> UsersItems { get; set; }
 
