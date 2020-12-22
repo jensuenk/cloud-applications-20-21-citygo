@@ -17,6 +17,7 @@ class RegisterScreen extends React.Component {
             isValidEmail: true,
             isValidPassword: true,
             isInvalidInput:true,
+            isvalidUsername:true,
         };
     }
 
