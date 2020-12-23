@@ -41,7 +41,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_Sight" };
-                return 4042;
+                return 4045;
             }
 
 

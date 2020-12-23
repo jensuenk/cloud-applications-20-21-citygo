@@ -33,7 +33,7 @@ namespace Application.Command.User
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_User" };
-                return 4041;
+                return 4043;
             }
             try
             {
@@ -45,7 +45,7 @@ namespace Application.Command.User
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_Friend" };
-                return 4042;
+                return 4044;
             }
 
             try
@@ -87,7 +87,7 @@ namespace Application.Command.User
             {
 
                 UserVM vm3 = new UserVM() { Error = "BadRequest_FriendRequest" };
-                return 4001;
+                return 4002;
             }
             
 

@@ -33,7 +33,7 @@ namespace Application.Command.User
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_User" };
-                return 4041;
+                return 4043;
             }
             try
             {
@@ -45,7 +45,7 @@ namespace Application.Command.User
             catch (Exception)
             {
                 UserVM vm1 = new UserVM() { Error = "NotFound_Friend" };
-                return 4042;
+                return 4044;
             }
 
             List<Domain.Friends> Friends = new List<Domain.Friends>();

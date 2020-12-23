@@ -47,7 +47,7 @@ namespace Application.Command.Item
             }
             catch (Exception)
             {
-                return 4041;
+                return 4042;
             }
             oldItem.Name = newItem.Name;
             oldItem.Location = newItem.Location;

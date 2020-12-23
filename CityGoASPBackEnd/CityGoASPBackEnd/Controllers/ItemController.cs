@@ -17,6 +17,8 @@ namespace CityGoASPBackEnd.Controllers
     {
 
         IMediator _mediator;
+        ValidationController ValidationController = new ValidationController();
+
 
         public ItemController(IMediator mediator)
         {
@@ -36,14 +38,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowItemByIdQuery(id);
             var result = await _mediator.Send(query);
-            if (result.Error == "NotFound")
-            {
-                return NotFound("Invalid id given, try using an exsisting id");
-            }
-            else
-            {
-                return Ok(result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
 
         [HttpPost]
@@ -51,14 +47,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new CreateItemCommand(newItem);
             var result = await _mediator.Send(command);
-            if (result == 4001)
-            {
-                return BadRequest("The data in your body does not match with the data from the database");
-            }
-            else
-            {
-                return Created("Command succesfull", result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
 
         [HttpPut]
@@ -66,18 +56,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new UpdateItemCommand(newItem);
             var result = await _mediator.Send(command);
-            if (result == 4001)
-            {
-                return BadRequest("The data in your body does not match with the data from the database");
-            }
-            else if (result == 4041)
-            {
-                return NotFound("Invalid id given for Item, try using an exsisting id");
-            }
-            else
-            {
-                return Created("Command succesfull", result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
         [Route("{id}")]
         [HttpDelete]
@@ -85,14 +65,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new DeleteItemCommand(id);
             var result = await _mediator.Send(command);
-            if (result == 4041)
-            {
-                return NotFound("Invalid id given for Item, try using an exsisting id");
-            }
-            else
-            {
-                return Ok(result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
     }
 }

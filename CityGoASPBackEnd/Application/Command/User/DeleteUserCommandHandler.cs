@@ -25,12 +25,11 @@ namespace Application.Command.User
             try
             {
                 user = await _context.Users.Where(c => c.UserId == request.UserId).SingleAsync();
-
             }
             catch (Exception)
             {
-                UserVM vm1 = new UserVM() { Error = "NotFound_User" };
-                return 4041;
+                UserVM vm1 = new UserVM() { Error = "NotFound" };
+                return 4043;
             }
 
             var query = _context.Users.Remove(user);
