@@ -19,10 +19,11 @@ namespace CityGoASPBackEnd.Controllers
     public class UserController : ControllerBase
     {
         IMediator _mediator;
-        ValidationController ValidationController = new ValidationController();
+        ValidationController ValidationController;
 
         public UserController(IMediator mediator)
         {
+            ValidationController = new ValidationController();
             _mediator = mediator;
         }
 

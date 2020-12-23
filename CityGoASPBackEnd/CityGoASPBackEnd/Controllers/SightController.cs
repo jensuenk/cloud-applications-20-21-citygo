@@ -16,12 +16,13 @@ namespace CityGoASPBackEnd.Controllers
     public class SightController : ControllerBase
     {
         IMediator _mediator;
-        ValidationController ValidationController = new ValidationController();
+        ValidationController ValidationController;
 
 
         public SightController(IMediator mediator)
         {
             _mediator = mediator;
+            ValidationController = new ValidationController();
         }
 
         [HttpGet]

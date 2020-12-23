@@ -17,12 +17,13 @@ namespace CityGoASPBackEnd.Controllers
     {
 
         IMediator _mediator;
-        ValidationController ValidationController = new ValidationController();
+        ValidationController ValidationController;
 
 
         public ItemController(IMediator mediator)
         {
             _mediator = mediator;
+            ValidationController = new ValidationController();
         }
 
         [HttpGet]
