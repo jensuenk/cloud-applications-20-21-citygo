@@ -69,7 +69,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm2 = new ChallengeVM() { Error = "NotFound_Item" };
-                return 4041;
+                return 4042;
             }
 
 
@@ -99,7 +99,7 @@ namespace Application.Command.Challenge
             catch (Exception)
             {
                 ChallengeVM vm3 = new ChallengeVM() { Error = "NotFound_User" };
-                return 4042;
+                return 4043;
             }
 
             // Assign the list to the challenge's items

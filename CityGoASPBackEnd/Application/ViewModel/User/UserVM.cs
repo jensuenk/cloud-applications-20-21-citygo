@@ -20,6 +20,8 @@ namespace Application.ViewModel
 
         public int Score { get; set; }
 
+        public string PicrtureURL { get; set; }
+
         public int[] FriendIds {get; set; }
 
         public List<Domain.Item> Items { get; set; }

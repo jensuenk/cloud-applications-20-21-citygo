@@ -84,7 +84,7 @@ namespace Application.Command.Sight
             catch (Exception)
             {
                 SightVM vm1 = new SightVM() { Error = "NotFound_Sight" };
-                return 4042;
+                return 4045;
             }
             
             oldSight.Name = newSight.Name;

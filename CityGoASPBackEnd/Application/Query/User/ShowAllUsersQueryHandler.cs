@@ -37,7 +37,9 @@ namespace Application.Query
                     Email = user.Email,
                     Score = user.Score,
                     UsersChallenges = user.UsersChallenges,
-                    UsersItems = user.UsersItems
+                    UsersItems = user.UsersItems,
+                    PicrtureURL = user.PicrtureURL
+
                 });
             }
             return vm;

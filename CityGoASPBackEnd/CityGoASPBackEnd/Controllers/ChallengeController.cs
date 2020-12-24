@@ -16,42 +16,31 @@ namespace CityGoASPBackEnd.Controllers
     public class ChallengeController : ControllerBase
     {
         IMediator _mediator;
+        ValidationController ValidationController;
+
 
         public ChallengeController(IMediator mediator)
         {
             _mediator = mediator;
+            ValidationController = new ValidationController();
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllChallenges()
         {
-            try
-            {
-                var query = new ShowAllChallengesQuery();
-                var result = await _mediator.Send(query);
-                return Ok(result);
-            }
-            catch (Exception)
-            {
-
-                return BadRequest();
-            }
-           
+            var query = new ShowAllChallengesQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
+
         [Route("{id}")]
         [HttpGet]
         public async Task<IActionResult> GetChallengeById(int id)
         {
             var query = new ShowChallengeByIdQuery(id);
             var result = await _mediator.Send(query);
-            if (result.Error == "NotFound")
-            {
-                return NotFound("Invalid id given, try using an exsisting id");
-            }
-            else
-            {
-                return Ok(result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
 
         [HttpPost]
@@ -59,22 +48,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new CreateChallengeCommand(newChallenge);
             var result = await _mediator.Send(command);
-            if (result == 4001)
-            {
-                return BadRequest("The data in your body does not match with the data from the database");
-            }
-            else if (result == 4041)
-            {
-                return NotFound("Invalid id given for Item, try using an exsisting id");
-            }
-            else if(result == 4042)
-            {
-                return NotFound("Invalid id given for User, try using an exsisting id");
-            }
-            else
-            {
-                return Created("Command succesfull", result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
 
         [HttpPut]
@@ -82,22 +57,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new UpdateChallengeCommand(newChallenge);
             var result = await _mediator.Send(command);
-            if (result == 4001)
-            {
-                return BadRequest("The data in your body does not match with the data from the database");
-            }
-            else if (result == 4041)
-            {
-                return NotFound("Invalid id given for Item, try using an exsisting id");
-            }
-            else if (result == 4042)
-            {
-                return NotFound("Invalid id given for User, try using an exsisting id");
-            }
-            else
-            {
-                return Created("Command succesfull", result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
         [Route("{id}")]
         [HttpDelete]
@@ -105,14 +66,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new DeleteChallengeCommand(id);
             var result = await _mediator.Send(command);
-            if (result == 4041)
-            {
-                return NotFound("Invalid id given, try using an exsisting id");
-            }
-            else
-            {
-                return Ok(result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
         [Route("{cid}/Items/{iid}")]
         [HttpPut]
@@ -120,18 +75,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddItemToChallengeCommand(cid, iid);
             var result = await _mediator.Send(command);
-            if (result == 4041)
-            {
-                return NotFound("Invalid id given for Challenge, try using an exsisting id");
-            }
-            else if (result == 4042)
-            {
-                return NotFound("Invalid id given for Item, try using an exsisting id");
-            }
-            else
-            {
-                return Created("Command succesfull", result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
         [Route("{cid}/Sights/{sid}")]
         [HttpPut]
@@ -139,18 +84,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var command = new AddSightToChallengeCommand(cid, sid);
             var result = await _mediator.Send(command);
-            if (result == 4041)
-            {
-                return NotFound("Invalid id given for Challenge, try using an exsisting id");
-            }
-            else if (result == 4042)
-            {
-                return NotFound("Invalid id given for Sight, try using an exsisting id");
-            }
-            else 
-            {
-                return Created("Command succesfull", result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
         [Route("{id}/Items")]
         [HttpGet]
@@ -158,14 +93,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowChallengeWithItemByIdQuery(id);
             var result = await _mediator.Send(query);
-            if (result.Error == "NotFound")
-            {
-                return NotFound("Invalid id given, try using an exsisting id");
-            }
-            else
-            {
-                return Ok(result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
         [Route("{id}/Sights")]
         [HttpGet]
@@ -173,16 +102,8 @@ namespace CityGoASPBackEnd.Controllers
         {
             var query = new ShowChallengeWithSightByIdQuery(id);
             var result = await _mediator.Send(query);
-            if (result.Error == "NotFound")
-            {
-                return NotFound("Invalid id given, try using an exsisting id");
-            }
-            else
-            {
-                return Ok(result);
-            }
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
         }
-
-       
     }
 }

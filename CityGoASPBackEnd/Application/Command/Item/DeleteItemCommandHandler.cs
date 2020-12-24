@@ -28,7 +28,7 @@ namespace Application.Command.Item
             catch (Exception)
             {
 
-                return 4041;
+                return 4042;
             }
             var query = _context.Items.Remove(item);
             return await _context.SaveAsync(cancellationToken);

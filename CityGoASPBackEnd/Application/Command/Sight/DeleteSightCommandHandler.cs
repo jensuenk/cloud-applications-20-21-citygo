@@ -29,7 +29,7 @@ namespace Application.Command.Sight
             catch (Exception)
             {
                 SightVM vm1 = new SightVM() { Error = "NotFound_Sight" };
-                return 4041;
+                return 4045;
             }
             var query = _context.Sights.Remove(sight);
             return await _context.SaveAsync(cancellationToken);

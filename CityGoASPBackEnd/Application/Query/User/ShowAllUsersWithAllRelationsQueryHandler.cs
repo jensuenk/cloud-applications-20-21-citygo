@@ -51,7 +51,9 @@ namespace Application.Query.User
                     Email = user.Email,
                     Score = user.Score,
                     UsersItems = usersItems,
-                    UsersChallenges = usersChallenges
+                    UsersChallenges = usersChallenges,
+                    PicrtureURL = user.PicrtureURL
+
                 });
             }
             return vm;
