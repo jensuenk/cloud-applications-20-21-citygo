@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {  StyleSheet, Text, TextInput, View, Button, TouchableHighlight, Alert} from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
-import filter from 'lodash.filter';
-import Svg, { Circle, Rect } from 'react-native-svg';
+import Svg, { Circle, Rect,Line } from 'react-native-svg';
 
 //DONE:
 // - TEKENEN VAN DE GALG
 // - PLAATSEN VAN HET TOESTENBORD
 // - VALIDEREN VAN DE OP GEDRUKTE LETTER
-// - ZETTEN 
+// - PLAATSEN VAN DE GALG 
 // - 
 
 //TODO: 
-// - TEKENEN VAN HET MANNETJE
-// - URL VAN DE API HALEN
+// - TEKENEN VAN HET MANNETJE --> doen door de waarde van wrond te checken --> if wrong 1: teken hoofd blablabla
+// - foto url van de api verkrijgen 
+// - antwoorden  van de api verkrijgen 
+// - 
 
 
 export default class Hangman extends React.Component {
@@ -100,7 +97,7 @@ export default class Hangman extends React.Component {
     });
   }
 
-
+  // tekenen van een keyboard
   renderKeyBoard(){
     const keysRows = [
       ["Q","W","E","R","T","Y","U","I","O","P"],
@@ -147,12 +144,14 @@ export default class Hangman extends React.Component {
 
 
  render() {
+   let rope = <Line x1="250" y1 = "0" x2="250" y2 = "120" stroke="#895917" strokeWidth="5" id="rope"/>;
   return (
     <View style={styles.container}>
     <Svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet" class="svg-content" width="200" height="250">
     <Rect fill="#053544" width="10" height="400" x="20" y="0" />
     <Rect fill="#053544" width="300" height="10" x="20" y="0" />
     <Rect fill="#053544" width="300" height="10" x="0" y="400" />
+    {this.state.wrong>0?rope:null}
     </Svg>
     {this.renderDashes()}
     <View style={styles.hintContainer}><Text style={styles.hintText}>Hint : {this.state.hint}</Text></View>
