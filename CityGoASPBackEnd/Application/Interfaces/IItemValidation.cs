@@ -10,7 +10,7 @@ namespace Application.Interfaces
     public interface IItemValidation
     {
         public Task<IActionResult> HandleValidation(ItemVM item);
-        public Task<IActionResult> HandleValidation(ListItemVM listItem);
+        //public Task<IActionResult> HandleValidation(ListItemVM listItem);
         public Task<IActionResult> HandleValidation(int errorCode);
     }
 }

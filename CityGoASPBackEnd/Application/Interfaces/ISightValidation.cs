@@ -11,7 +11,7 @@ namespace Application.Interfaces
     public interface ISightValidation
     {
         public Task<IActionResult> HandleValidation(SightVM sight);
-        public Task<IActionResult> HandleValidation(ListSightVM listSight);
+        //public Task<IActionResult> HandleValidation(ListSightVM listSight);
         public Task<IActionResult> HandleValidation(int errorCode);
     }
 }

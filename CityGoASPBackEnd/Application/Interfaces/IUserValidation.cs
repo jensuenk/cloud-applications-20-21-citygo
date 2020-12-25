@@ -13,7 +13,7 @@ namespace Application.Interfaces
     public interface IUserValidation
     {
         public Task<IActionResult> HandleValidation(UserVM user);
-        public Task<IActionResult> HandleValidation(ListUserVM listUser);
+        //public Task<IActionResult> HandleValidation(ListUserVM listUser);
         public Task<IActionResult> HandleValidation(int errorCode);
     }
 }

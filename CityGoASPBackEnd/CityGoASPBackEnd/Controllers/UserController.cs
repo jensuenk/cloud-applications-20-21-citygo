@@ -168,5 +168,15 @@ namespace CityGoASPBackEnd.Controllers
             var valResult = ValidationController.HandleValidation(result);
             return await valResult;
         }
+
+        [Route("{email}/Email")]
+        [HttpGet]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var query = new ShowUserByEmailQuery(email);
+            var result = await _mediator.Send(query);
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
+        }
     }
 }

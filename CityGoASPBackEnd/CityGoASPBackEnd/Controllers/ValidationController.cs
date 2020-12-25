@@ -59,6 +59,11 @@ namespace CityGoASPBackEnd.Controllers
                 user.Error = "Invalid id given, try using an exsisting id";
                 return NotFound(user.Error);
             }
+            else if (user.Error == "NotFound_Mail")
+            {
+                user.Error = "Invalid email given, try using an exsisting email";
+                return NotFound(user.Error);
+            }
             else
             {
                 user.Error = "OK";
@@ -106,25 +111,6 @@ namespace CityGoASPBackEnd.Controllers
                 challenge.Error = "OK";
                 return Ok(challenge);
             }
-        }
-
-
-        public async Task<IActionResult> HandleValidation(ListUserVM listUser)
-        {
-            throw new NotImplementedException();
-        }
-        public async Task<IActionResult> HandleValidation(ListItemVM listItem)
-        {
-            throw new NotImplementedException();
-        }
-        public async Task<IActionResult> HandleValidation(ListSightVM listSight)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IActionResult> HandleValidation(ListChallengeVM listChallenge)
-        {
-            throw new NotImplementedException();
         }
     }
 }
