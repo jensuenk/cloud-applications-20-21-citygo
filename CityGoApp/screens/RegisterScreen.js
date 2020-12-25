@@ -194,12 +194,6 @@ class RegisterScreen extends React.Component {
         }
     }
 
-    /*{
-    this.state.isvalidUsername ? null :
-        <Text style={styles.errorMessage}>The username has already been taken. Try another username</Text>
-    }*/
-
-
     render() {
         return (
             <View style={styles.container}>
