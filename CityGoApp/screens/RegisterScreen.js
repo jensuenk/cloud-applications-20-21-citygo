@@ -63,22 +63,24 @@ class RegisterScreen extends React.Component {
         };
         await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/', PostRequest)
             .then(response => response.json())
-            .then(data => console.log(data)) // Kijken wat de teruggekregen data is, evt analyseren
-            .catch(err => console.log(err)) // De error opvangen, evt gebruiken
+            //.then(data => console.log(data)) // Kijken wat de teruggekregen data is, evt analyseren
+            //.catch(err => console.log(err)) // De error opvangen, evt gebruiken
     }
 
+    //Bij laden van het scherm, wordt de API gelezen. Dit wordt enkel herhaald bij het herladen van het scherm.
     componentDidMount = () => {
         this.apiCallUsers();
     }
 
     handleSignUp = () => {
-        this.apiPostNewUser();
-        Firebase.auth()
+        this.apiPostNewUser();  //bij het aanmaken van de user, wordt de POST request naar de API gestuurd met de input van de velden
+        Firebase.auth()         //User wordt aangemaakt in FireBase -> voor authenticatie (veiliger dan wanneer we deze info in de API zouden bewaren)
             .createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(() => this.props.navigation.navigate('LoginScreen'))
             .catch(error => console.log(error))
     }
 
+    //Het wachtwoord moet langer dan 5 tekens zijn
     handleValidPassword = (val) => {
         if (val.trim().length >= 5) {
             this.state.isValidPassword = true;
@@ -88,7 +90,7 @@ class RegisterScreen extends React.Component {
         }
     }
 
-    //moet langer zijn dan 1 teken, dus niet nul en moet bestaan uit tekens, geen letters
+    //De opgegeven naam moet langer zijn dan 1 teken, dus niet nul en moet bestaan uit tekens, geen letters
     handleValidName = (val) => {
         if (val.trim().length >= 1 && isNaN(val)) {
             this.state.isValidName = true;
@@ -102,7 +104,7 @@ class RegisterScreen extends React.Component {
         }
     }
 
-    //moet voldoen aan de regex van een email "XX@domain.com" Een doorsnee email is ook langer dan 5 tekens
+    //De Email moet voldoen aan de regex van een email "XX@domain.com" Een doorsnee email is ook langer dan 5 tekens
     handleValidEmail = (val) => {
         var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (val.trim().length >= 5) {
