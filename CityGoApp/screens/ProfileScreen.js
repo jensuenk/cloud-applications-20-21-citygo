@@ -42,6 +42,8 @@ export default class ProfileScreen extends React.Component {
    this.apiCallFriends();
    this.apiCallUser();
   }
+
+  // nog een check doen voor als hij geen vrienden heeft
   async apiCallFriends() {
     const { page, seed } = this.state
     let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/Friends')
@@ -117,7 +119,7 @@ export default class ProfileScreen extends React.Component {
       .then(() => this.props.navigation.navigate('LoginScreen'))
       .catch(error => console.log(error))
   }
-  
+
   goToFriends = () => {
     this.props.changeComponent('Three')
   }
