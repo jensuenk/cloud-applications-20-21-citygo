@@ -6,6 +6,7 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import filter from 'lodash.filter';
+import Svg, { Circle, Rect } from 'react-native-svg';
 
 
 
