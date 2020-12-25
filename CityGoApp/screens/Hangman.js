@@ -8,6 +8,16 @@ import Constants from 'expo-constants';
 import filter from 'lodash.filter';
 import Svg, { Circle, Rect } from 'react-native-svg';
 
+//DONE:
+// - TEKENEN VAN DE GALG
+// - PLAATSEN VAN HET TOESTENBORD
+// - VALIDEREN VAN DE OP GEDRUKTE LETTER
+// - ZETTEN 
+// - 
+
+//TODO: 
+// - TEKENEN VAN HET MANNETJE
+// - URL VAN DE API HALEN
 
 
 export default class Hangman extends React.Component {
@@ -21,7 +31,6 @@ export default class Hangman extends React.Component {
           "usedLetters":[],
           "lettersLeft":[],
           "input":"",
-          "score":0
         }
  
       } 
@@ -33,7 +42,7 @@ export default class Hangman extends React.Component {
   }
 
  
-
+  // wanneer we op een letter duwen moet deze gevalideerd worden
   onKeyPress(letter){
     let usedLetters = this.state.usedLetters;
     if(usedLetters.indexOf(letter)==-1){
@@ -44,40 +53,39 @@ export default class Hangman extends React.Component {
   }
  
   validate(usedLetters,letter){
+    // aangeklikte letters moeten worden bijgehouden
     usedLetters.push(letter);
-    let correct = this.state.correct,
+      let correct = this.state.correct,
       wrong = this.state.wrong,
       answer = this.state.answer,
-      lettersLeft = this.state.lettersLeft,
-      score = this.state.score;
+      lettersLeft = this.state.lettersLeft;
     if(answer.toUpperCase().indexOf(letter)==-1){
       wrong++;
-      if(score>0){
-        score --;
-      }
-    } else{
+     } else{
       answer.toUpperCase().split("").map((value,index)=>{
         if(value==letter){
           lettersLeft[index] = letter;
           correct ++;
-          score++;
         }
       });
     }
+    //kijgen of de antwoorden overeekomen --> alles naar hoofdletters zetten voor de zekerheid
     if(lettersLeft.join("").replace(/\*/g," ").toUpperCase() == answer.toUpperCase()){
       Alert.alert(
-        'You win',
-        'You have gussed the correct answer',
+        'Proficiat',
+        'Je hebt het juiste antwoord geraden',
         [
           {text: 'OK', onPress: () => this.init()},
         ],
         { cancelable: false }
       )
     }
+    // je mag maximaal 5x verkeerd antwoorden, wanneer dit gebeurd krijg je een alert dat je verloren bent
+    // alert moet nog aangepast worden
     if(wrong>4){
       Alert.alert(
-        'You Lost',
-        'Answer: '+answer.toUpperCase() +" "+this.state.hint,
+        'Verloren...',
+        'Try again later',
         [
           {text: 'OK', onPress: () => this.init()},
         ],
@@ -89,7 +97,6 @@ export default class Hangman extends React.Component {
       correct:correct,
       wrong:wrong,
       lettersLeft:lettersLeft,
-      score:score
     });
   }
 
@@ -139,10 +146,9 @@ export default class Hangman extends React.Component {
 
 
 
-render() {
+ render() {
   return (
     <View style={styles.container}>
-    <Text style={styles.scoreText}>Score: {this.state.score}</Text>
     <Svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet" class="svg-content" width="200" height="250">
     <Rect fill="#053544" width="10" height="400" x="20" y="0" />
     <Rect fill="#053544" width="300" height="10" x="20" y="0" />
@@ -164,7 +170,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-   },
+  },
   image: {
     flex: 1,
     height: undefined,
@@ -353,13 +359,6 @@ const styles = StyleSheet.create({
   hintText:{
     fontSize:18,
     fontWeight:"500",
-  },
-  scoreText:{
-    fontSize:13,
-    textAlign:"right",
-    fontWeight:"500",
-    justifyContent:"flex-end",
-    width:"100%"
   }
 
 });
