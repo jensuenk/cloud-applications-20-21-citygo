@@ -21,6 +21,7 @@ namespace CityGoASPBackEnd.Controllers
         IMediator _mediator;
         ValidationController ValidationController;
 
+        // Constructor
         public UserController(IMediator mediator)
         {
             ValidationController = new ValidationController();
@@ -38,9 +39,13 @@ namespace CityGoASPBackEnd.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserById(int id)
         {
+            //Search the user by id via the query
             var query = new ShowUserByIdQuery(id);
+            //await the result from the handler
             var result = await _mediator.Send(query);
+            // send the result for validation
             var valResult = ValidationController.HandleValidation(result);
+            // return the result of the valdiation to the user
             return await valResult;
         }
 
