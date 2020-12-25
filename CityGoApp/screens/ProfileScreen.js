@@ -120,6 +120,10 @@ export default class ProfileScreen extends React.Component {
       .catch(error => console.log(error))
   }
 
+  goToHangman = () => {
+    this.props.changeComponent('Four')
+  }
+
   goToFriends = () => {
     this.props.changeComponent('Three')
   }
@@ -155,7 +159,7 @@ export default class ProfileScreen extends React.Component {
       <SafeAreaView style={styles.container}  data = {this.state.data}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.titleBar}>
-            <TouchableOpacity>
+            <TouchableOpacity  onPress={() => { this.signOut() }}>
               <Ionicons name="md-log-out" size={24} color="#52575D"></Ionicons>
             </TouchableOpacity>
           </View>
@@ -261,9 +265,10 @@ export default class ProfileScreen extends React.Component {
               <Text style={styles.appButtonText} >ADD FRIENDS</Text>
             </TouchableOpacity>
           </View>
-          <StandardButton
-            buttonTitle="Log Out"
-            onPress={() => { this.signOut() }}
+
+                <StandardButton
+            buttonTitle="Hangman"
+            onPress={() => { this.goToHangman() }}
           />
 
 
