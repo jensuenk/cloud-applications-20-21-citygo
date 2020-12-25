@@ -44,7 +44,7 @@ export default class ProfileScreen extends React.Component {
   }
   async apiCallFriends() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1')
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/Friends')
     let respJson = await resp.json();
    // console.log(respJson)
     this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
@@ -117,6 +117,7 @@ export default class ProfileScreen extends React.Component {
       .then(() => this.props.navigation.navigate('LoginScreen'))
       .catch(error => console.log(error))
   }
+  
   goToFriends = () => {
     this.props.changeComponent('Three')
   }
