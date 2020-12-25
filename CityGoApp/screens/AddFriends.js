@@ -32,7 +32,7 @@ export default class AddFriends extends React.Component {
   makeRemoteRequest = () => {
     const { page, seed } = this.state
     //const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
-    const url = 'https://citygo5.azurewebsites.net/Users'
+    const url = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users'
     this.setState({ loading: true })
 
 
@@ -68,7 +68,7 @@ export default class AddFriends extends React.Component {
  // versturen van een verzoek zal nu hardcoded zijn vanuit het standpunt van user1
   
   sendFriendRequest = (fid, uid = '1' ) => {
-    const urlFriendRequest = 'https://citygo5.azurewebsites.net/Users/'+uid+'/Friends/'+fid
+    const urlFriendRequest = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/'+uid+'/Friends/'+fid
     console.log(urlFriendRequest)
     const putMethod = {
       method: 'PUT',
@@ -87,7 +87,7 @@ export default class AddFriends extends React.Component {
 
 
         //moet op beide plaatsen aangemaakt worden
-       const urlFriendRequest2 = 'https://citygo5.azurewebsites.net/Users/'+fid+'/Friends/'+uid
+       const urlFriendRequest2 = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/'+fid+'/Friends/'+uid
        console.log(urlFriendRequest)
        const putMethod2 = {
          method: 'PUT',
