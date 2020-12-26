@@ -53,7 +53,11 @@ export default class Mapke extends React.Component {
     let token = await Notifications.getExpoPushTokenAsync();
     console.log("Push token: ",token);
 
-    
+    //De unieke token toevoegen aan de Firebase
+    let uid = Firebase.auth().currentUser.uid;
+    Firebase.database().ref("users").child(uid).update({
+      expoPushToken: token
+    });
   }
 
   constructor(props) {
