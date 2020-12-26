@@ -48,6 +48,12 @@ export default class Mapke extends React.Component {
       //functie stoppen => return
       return;
     }
+
+    //Om push notificaties te sturen => PUSH NOTIFICATION TOKEN nodig!
+    let token = await Notifications.getExpoPushTokenAsync();
+    console.log("Push token: ",token);
+
+    
   }
 
   constructor(props) {
@@ -102,6 +108,7 @@ export default class Mapke extends React.Component {
   }
 
   componentDidMount() {
+    this.registerForPushNotifications();
     Permissions.askAsync(Permissions.LOCATION)
       .then(permission => {
         if (permission.status === 'granted') {
