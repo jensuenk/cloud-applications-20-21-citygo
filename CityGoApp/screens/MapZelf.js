@@ -6,6 +6,8 @@ import MapView, { PROVIDER_GOOGLE, Marker, Polyline, Polygon } from 'react-nativ
 import { mapStyle } from './mapStyle';
 import GeoFencing from 'react-native-geo-fencing';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Permissions, Notifications } from 'expo';
+import Firebase from '../config/Firebase';
 
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
@@ -28,6 +30,24 @@ export default class Mapke extends React.Component {
       ],
       { cancelable: false }
     );
+  }
+
+  registerForPushNotifications = async () =>{
+    //Nagaan of de persmissions al toegekend waren
+    const {status} = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    let EindStatus = status;
+
+    //Als er nog geen permissie gegeven is voor notificaties -> user vragen voor permissions
+    if(status !== 'granted'){
+      const {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      EindStatus = status;
+    }
+
+    //Als er geen permissie gegeven wordt => de user heeft geen permissie gegeven om notificaties te sturen, dus de functie moet stoppen
+    if(EindStatus !== 'granted'){
+      //functie stoppen => return
+      return;
+    }
   }
 
   constructor(props) {
