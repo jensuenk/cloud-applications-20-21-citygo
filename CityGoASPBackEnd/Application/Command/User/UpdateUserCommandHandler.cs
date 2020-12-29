@@ -31,7 +31,9 @@ namespace Application.Command
                     Username = request.UserVM.Username,
                     Email = request.UserVM.Email,
                     Balls = request.UserVM.Balls,
-                    Score = request.UserVM.Score
+                    Score = request.UserVM.Score,
+                    Online = request.UserVM.Online,
+                    Location = request.UserVM.Location
                 };
             }
             catch (Exception)
@@ -132,6 +134,8 @@ namespace Application.Command
             olduser.UsersChallenges = newChallenges;
             olduser.UsersItems = newUserItems;
             olduser.Score = newUser.Score;
+            olduser.Location = newUser.Location;
+            olduser.Online = newUser.Online;
             var query = _context.Users.Update(olduser);
             return await _context.SaveAsync(cancellationToken);
         }     

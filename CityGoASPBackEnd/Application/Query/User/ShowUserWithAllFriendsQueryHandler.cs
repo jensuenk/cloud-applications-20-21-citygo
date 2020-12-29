@@ -49,8 +49,9 @@ namespace Application.Query.User
                     Score = user.Score,
                     Friends = Friends,
                     UserFriends = userFriends,
-                    PicrtureURL = user.PicrtureURL
-
+                    PicrtureURL = user.PicrtureURL,
+                    Online = user.Online,
+                    Location = user.Location
                 };
                 return vm;
             }

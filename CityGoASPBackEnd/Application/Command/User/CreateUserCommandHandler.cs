@@ -33,7 +33,9 @@ namespace Application.Command
                         Username = request.UserVM.Username,
                         Email = request.UserVM.Email,
                         Balls = request.UserVM.Balls,
-                        Score = request.UserVM.Score
+                        Score = request.UserVM.Score,
+                        Online = request.UserVM.Online,
+                        Location = request.UserVM.Location
                     };
                 }
                 else

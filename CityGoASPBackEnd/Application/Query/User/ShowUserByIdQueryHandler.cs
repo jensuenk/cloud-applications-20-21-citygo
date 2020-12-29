@@ -26,6 +26,7 @@ namespace Application.Query
                .Include(i => i.UsersItems)
                .Include(c => c.UsersChallenges)
                .Include(i => i.Friends)
+               .Include(l => l.Location)
                .SingleAsync();
 
                 var usersItems = await _context.UsersItems
@@ -49,8 +50,9 @@ namespace Application.Query
                     UsersChallenges = usersChallenges,
                     UsersItems = usersItems,
                     Friends = user.Friends,
-                    PicrtureURL = user.PicrtureURL
-
+                    PicrtureURL = user.PicrtureURL,
+                    Online = user.Online,
+                    Location = user.Location
                 };
                 return vm;
             }
