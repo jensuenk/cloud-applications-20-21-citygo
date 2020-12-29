@@ -7,7 +7,6 @@ namespace Application.ViewModel
 {
     public class UserVM
     {
-       
         public int UserId { get; set; }
 
         public string Name { get; set; }
@@ -36,5 +35,9 @@ namespace Application.ViewModel
 
         [JsonIgnore]
         public string Error { get; set; }
+
+        public Domain.Coordinate Location { get; set; }
+
+        public bool Online { get; set; }
     }
 }
