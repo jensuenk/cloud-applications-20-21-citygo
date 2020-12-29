@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Challenge } from '../challenges-table/challenge.service';
 import { Item } from '../items-table/item.service';
+import { Coordinate } from '../sights-table/sight.service';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +60,8 @@ export interface User {
   challenges: Challenge[];
   friends?: any;
   score: number;
+  online: boolean;
+  location: Coordinate;
 }
 
 export interface RootObject {
