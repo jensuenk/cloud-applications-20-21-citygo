@@ -8,7 +8,7 @@ import { Item } from '../items-table/item.service';
   providedIn: 'root'
 })
 export class UserService {
-  private url = "https://citygo5.azurewebsites.net/Users";
+  private url = "https://citygoaspbackend20201224141859.azurewebsites.net/Users";
 
   constructor(private http: HttpClient) { }
 
