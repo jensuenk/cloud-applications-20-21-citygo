@@ -59,6 +59,7 @@ export interface Challenge {
   answer: string;
   sight?: any;
   items?: any;
+  score: number;
 }
 
 export interface RootObject {
