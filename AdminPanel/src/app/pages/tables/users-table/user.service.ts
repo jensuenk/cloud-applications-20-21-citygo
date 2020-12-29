@@ -58,6 +58,7 @@ export interface User {
   usersItems: Item[];
   challenges: Challenge[];
   friends?: any;
+  score: number;
 }
 
 export interface RootObject {

@@ -90,7 +90,7 @@ export class UsersTableComponent implements OnInit {
     );
   }
 
-  createUser(name, username, email, balls) {
+  createUser(name, username, email, balls, score) {
     let newUser: User = {
       userId: 0,
       name: name,
@@ -100,7 +100,8 @@ export class UsersTableComponent implements OnInit {
       items: this.items,
       usersItems: null,
       challenges: this.challenges,
-      friends: null
+      friends: null,
+      score: score
     };
 
     this.userService.createUser(newUser).subscribe(

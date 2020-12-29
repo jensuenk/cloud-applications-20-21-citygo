@@ -17,6 +17,7 @@
                     <td><label class="label">Username</label></td>
                     <td><label class="label">Email</label></td>
                     <td><label class="label">Balls</label></td>
+                    <td><label class="label">Score</label></td>
                     <td><label class="label">Items</label></td>
                     <td><label class="label">Challenges</label></td>
                     <td></td>
@@ -33,6 +34,8 @@
                     <td><input nbInput fullWidth type="text" name="email" value={{user.email}}
                             [(ngModel)]="user.email"></td>
                     <td><input nbInput fullWidth type="number" name="balls" value={{user.balls}} [(ngModel)]="user.balls">
+                    </td>
+                    <td><input nbInput fullWidth type="number" name="score" value={{user.score}} [(ngModel)]="user.score">
                     </td>
                     <td><button nbButton fullWidth outline (click)="openItemSelector(user.usersItems)">Edit</button>
                     </td>
@@ -62,6 +65,7 @@
                     <td><label class="label">Username</label></td>
                     <td><label class="label">Email</label></td>
                     <td><label class="label">Balls</label></td>
+                    <td><label class="label">Score</label></td>
                     <td><label class="label">Items</label></td>
                     <td><label class="label">Challenges</label></td>
                     <td></td>
@@ -73,10 +77,11 @@
                 <td><input nbInput fullWidth type="text" name="username" [(ngModel)]="username"></td>
                 <td><input nbInput fullWidth type="text" name="email" [(ngModel)]="email"></td>
                 <td><input nbInput fullWidth type="number" name="balls" [(ngModel)]="balls"></td>
+                <td><input nbInput fullWidth type="number" name="score" [(ngModel)]="score"></td>
                 <td><button nbButton fullWidth outline (click)="openItemSelector()">Add</button></td>
                 <td><button nbButton fullWidth outline (click)="openChallengeSelector()">Add</button></td>
                 <td><button nbButton outline status="success"
-                        (click)="createUser(name, username, email, balls)">Create</button>
+                        (click)="createUser(name, username, email, balls, score)">Create</button>
                 </td>
             </tbody>
         </table>
