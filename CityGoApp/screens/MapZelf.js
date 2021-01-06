@@ -128,7 +128,7 @@ export default class Mapke extends React.Component {
     this.getAllUsersLocations();
 
 
-    this.timer = setInterval(()=> this.getAllUsersLocations(), 10000)
+    this.timer = setInterval(() => this.getAllUsersLocations(), 10000)
   }
 
   async apiCallSights() {
@@ -138,18 +138,41 @@ export default class Mapke extends React.Component {
 
 
   }
-  
+
   async getAllUsersLocations() {
-    let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users')
-    let respJson2 = await resp2.json();
-    
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users')
+    let respJson = await resp.json();
+
     let userLocations = [];
-    respJson2.users.forEach(user => {
+    respJson.users.forEach(user => {
       if (user.email != "jens.uenk@icloud.com" && user.location != null && user.online) {
         userLocations.push(user);
       }
     })
     this.setState({ userLocations: userLocations });
+    this.updatePositionAPI();
+  }
+
+  async updatePositionAPI() {
+    const request = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: 1,
+        location: {
+          latitude: this.state.locatie.latitude,
+          longitude: this.state.locatie.longitude
+        },
+        online: true
+      })
+    };
+    await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/', request)
+    .then(function(response){
+      return response.json();
+    })
+    .catch(function(error) {
+      console.log("Update location error", error)
+    })
   }
 
   _isInPolygon = (point, polygonArray) => {
@@ -195,15 +218,15 @@ export default class Mapke extends React.Component {
               }}
             />
           )),
-          this.state.userLocations.map((user) => (
-            <MapView.Marker
-              title={user.name}
-              coordinate={{
-                latitude: user.location.latitude,
-                longitude: user.location.longitude,
-              }}
-            />
-          ))}
+            this.state.userLocations.map((user) => (
+              <MapView.Marker
+                title={user.name}
+                coordinate={{
+                  latitude: user.location.latitude,
+                  longitude: user.location.longitude,
+                }}
+              />
+            ))}
         </MapView>
       </View>
     );
