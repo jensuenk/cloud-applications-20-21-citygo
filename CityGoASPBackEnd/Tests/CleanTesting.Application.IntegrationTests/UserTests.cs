@@ -81,9 +81,9 @@ namespace CleanTesting.Application.IntegrationTests
 
             var command = new DeleteUserCommand(createdUser.UserId);
 
-            var id = await SendAsync(command);
+            var cancelationToken2 = await SendAsync(command);
 
-            var user = await FindAsync<User>(id);
+            var user = await FindAsync<User>(createdUser.UserId);
 
             user.Should().BeNull();
         }
@@ -127,7 +127,7 @@ namespace CleanTesting.Application.IntegrationTests
 
 
         [Test]
-        public async Task ShouldUpdateUsesWrong()
+        public async Task ShouldUpdateUserWrong()
         {
             var oldUser = new UserVM()
             {
