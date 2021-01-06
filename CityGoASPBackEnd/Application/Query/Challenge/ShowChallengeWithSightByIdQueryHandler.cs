@@ -25,6 +25,7 @@ namespace Application.Query.Challenge
             {
                 var challenge = await _context.Challenges.Include(c => c.Sight)
                                    .Where(c => c.ChallengeId == request.ChallengeId)
+                                   .Include(s=>s.Sight)
                                    .SingleAsync();
                 ChallengeVM vm = new ChallengeVM()
                 {

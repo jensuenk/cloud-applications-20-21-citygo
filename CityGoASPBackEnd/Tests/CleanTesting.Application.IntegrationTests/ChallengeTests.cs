@@ -2,6 +2,7 @@
 using Application.Command.Challenge;
 using Application.Command.Item;
 using Application.Command.User;
+using Application.Query.Challenge;
 using Application.ViewModel;
 using Application.ViewModel.Challenge;
 using Domain;
@@ -74,6 +75,49 @@ namespace CleanTesting.Application.IntegrationTests
             resultUserChallenges.ChallengeId.Should().Be(challenge.ChallengeId);
             resultUserChallenges.UserId.Should().Be(user.UserId);
         }
+
+        [Test]
+        public async Task ShouldAddItemToChallenge()
+        {
+            var newChallenge = new ChallengeVM()
+            {
+                Name = "TestChal",
+                QuestionChallenge = "Vraag",
+                Answer = "Antwoord",
+                Score = 10,
+                Task = "Taak"
+            };
+
+            var command1 = new CreateChallengeCommand(newChallenge);
+            var cancelationToken1 = await SendAsync(command1);
+            var challenge = await FindAsync<Challenge>(1);
+
+            challenge.UsersChallenges.Should().BeNull();
+
+            var newItem = new ItemVM()
+            {
+                Name = "testitem",
+                Picture = "test",
+                Rarity = "rare",
+            };
+
+            var command2 = new CreateItemCommand(newItem);
+            var cancelationToken2 = await SendAsync(command2);
+            var item = await FindAsync<Item>(1);
+
+            item.Name.Should().Be("testitem");
+
+            var command3 = new AddItemToChallengeCommand(challenge.ChallengeId, item.ItemId);
+            var cancelationToken3 = await SendAsync(command3);
+
+            var command4 = new ShowChallengeWithItemByIdQuery(challenge.ChallengeId);
+            var result = await SendAsync(command4);
+
+            result.ChallengeId.Should().Be(challenge.ChallengeId);
+            result.Items.Should().NotBeNull();
+            result.Items[0].ItemId.Should().Be(item.ItemId);
+        }
+
 
         [Test]
         public async Task ShouldDeleteChallengeWithRelation()
