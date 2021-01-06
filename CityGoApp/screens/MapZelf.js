@@ -114,6 +114,8 @@ export default class Mapke extends React.Component {
     this.setState({ markers: _coordinates })
   }
 
+  ///Push Notifications in de call van 6/01/2021 gecanceld -> fout was totaal niet duidelijk en het was een nice to have
+  /*
   //voor dat de render functie wordt uitgevoerd, gebeurd deze functie -> check of het een fysiek device is en of het OS android is
   //als het fysiek is en draait android -> getnotificationasync aangeroepen
   componentWillMount() {
@@ -152,7 +154,7 @@ export default class Mapke extends React.Component {
       vibrationPattern: [0, 250, 250, 250],
       lightColor: '#FF231F7C',
     });
-  }
+  }*/
 
   componentDidMount() {
     Permissions.askAsync(Permissions.LOCATION)
@@ -206,8 +208,6 @@ export default class Mapke extends React.Component {
     let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/sights')
     let respJson2 = await resp2.json();
     this.setState({ sights: respJson2.sights })
-    */
-
   }
 
   async getAllUsersLocations() {
