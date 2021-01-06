@@ -1,4 +1,5 @@
 using Application.Command;
+using Application.Command.Item;
 using Application.Command.User;
 using Application.ViewModel;
 using Domain;
@@ -232,6 +233,41 @@ namespace CleanTesting.Application.IntegrationTests
 
 
             cancelationToken3.Should().Be(4002);
+        }
+
+        [Test]
+        public async Task ShouldAddItemToUser()
+        {
+            var newUser = new UserVM()
+            {
+                Name = "Jhon Doe",
+                Username = "Jh0nD03",
+                Email = "jhon.doe@gmail.com",
+                Balls = 1
+            };
+
+            var command = new CreateUserCommand(newUser);
+            var cancelationToken = await SendAsync(command);
+            var user = await FindAsync<User>(1);
+
+            var newItem = new ItemVM()
+            {
+                Name = "testitem",
+                Picture="test",
+                Rarity = "rare",
+            };
+
+            var command2 = new CreateItemCommand(newItem);
+            var cancelationToken2 = await SendAsync(command2);
+            var item = await FindAsync<Item>(1);
+
+            var command3 = new AddItemToUserCommand(user.UserId, item.ItemId);
+            var cancelationToken3 = await SendAsync(command3);
+
+            var resultUserItems = await FindAsyncComposite<UsersItems>(1,1);
+
+            resultUserItems.ItemId.Should().Be(item.ItemId);
+            resultUserItems.UserId.Should().Be(user.UserId);
         }
     }
 }
