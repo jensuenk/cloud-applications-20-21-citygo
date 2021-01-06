@@ -33,7 +33,8 @@ namespace Application.Command
                     Balls = request.UserVM.Balls,
                     Score = request.UserVM.Score,
                     Online = request.UserVM.Online,
-                    Location = request.UserVM.Location
+                    Location = request.UserVM.Location,
+                    PicrtureURL = request.UserVM.PicrtureURL
                 };
             }
             catch (Exception)
