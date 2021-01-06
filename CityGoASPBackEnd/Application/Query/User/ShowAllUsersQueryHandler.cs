@@ -22,6 +22,7 @@ namespace Application.Query
             var allUsers = await _context.Users
                 .Include(i => i.UsersItems)
                 .Include(c => c.UsersChallenges)
+                .Include(l => l.Location)
                 .ToListAsync();
 
 
@@ -38,8 +39,9 @@ namespace Application.Query
                     Score = user.Score,
                     UsersChallenges = user.UsersChallenges,
                     UsersItems = user.UsersItems,
-                    PicrtureURL = user.PicrtureURL
-
+                    PicrtureURL = user.PicrtureURL,
+                    Online = user.Online,
+                    Location = user.Location
                 });
             }
             return vm;

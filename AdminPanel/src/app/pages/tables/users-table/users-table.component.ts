@@ -5,6 +5,8 @@ import { ItemsDialogComponentComponent } from '../challenges-table/items-dialog-
 import { Item, ItemService } from '../items-table/item.service';
 import { ChallengesDialogComponentComponent } from '../sights-table/challenges-dialog-component/challenges-dialog-component.component';
 import { User, UserService } from './user.service';
+import { LocationDialogComponentComponent } from '../items-table/location-dialog-component/location-dialog-component.component';
+import { Coordinate } from '../sights-table/sight.service';
 
 @Component({
   selector: 'ngx-users-table',
@@ -20,11 +22,47 @@ export class UsersTableComponent implements OnInit {
   user: User;
   challenges: Challenge[];
   items: Item[];
+  
+  coordinate: Coordinate;
 
   constructor(private dialogService: NbDialogService, private userService: UserService, private challengeService: ChallengeService, private itemsService: ItemService) { }
 
   ngOnInit() {
     this.getUsers();
+  }
+
+  // Open dialog popup with a ui to edit the location coordinates
+  openEditLocationDialog(user: User) {
+    this.dialogService.open(LocationDialogComponentComponent, {
+      context: {
+        coordinate: user.location,
+      },
+    }).onClose.subscribe(res => {
+      if (res != null) {
+        user.location = res;
+        console.log(user.location);
+      }
+    })
+  }
+
+  // Open dialog popup with a ui to create new location coordinates
+  openNewLocationDialog() {
+    if (this.coordinate == null) {
+      this.coordinate = {
+        latitude: 51.2194475,
+        longitude: 4.4024643
+      };
+    }
+    this.dialogService.open(LocationDialogComponentComponent, {
+      context: {
+        coordinate: this.coordinate,
+      },
+    }).onClose.subscribe(res => {
+      if (res != null) {
+        this.coordinate = res;
+        console.log(this.coordinate);
+      }
+    })
   }
 
   // Open dialog popup with a ui to select challenges
@@ -90,7 +128,7 @@ export class UsersTableComponent implements OnInit {
     );
   }
 
-  createUser(name, username, email, balls) {
+  createUser(name, username, email, balls, score, online) {
     let newUser: User = {
       userId: 0,
       name: name,
@@ -100,7 +138,10 @@ export class UsersTableComponent implements OnInit {
       items: this.items,
       usersItems: null,
       challenges: this.challenges,
-      friends: null
+      friends: null,
+      score: score,
+      online: online,
+      location: this.coordinate
     };
 
     this.userService.createUser(newUser).subscribe(

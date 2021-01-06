@@ -51,7 +51,8 @@ export default class Mapke extends React.Component {
           latitude: 3.148561,
           longitude: 101.652778
         },
-      }]
+      }],
+      userLocations: []
     }
 
     this.locationWatcher = null
@@ -123,14 +124,71 @@ export default class Mapke extends React.Component {
       })
 
     this.apiCallSights();
+    this.getAllUsersLocations();
+
+
+    this.timer = setInterval(() => this.getAllUsersLocations(), 10000)
   }
 
   async apiCallSights() {
-    let resp2 = await fetch('https://citygo5.azurewebsites.net/sights')
+    let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/sights')
     let respJson2 = await resp2.json();
     this.setState({ sights: respJson2.sights })
 
 
+  }
+
+  async getAllUsersLocations() {
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users')
+    let respJson = await resp.json();
+
+    let userLocations = [];
+    respJson.users.forEach(user => {
+      // TODO: Replace with current user
+      if (user.userId != 4 && user.location != null && user.online) {
+        userLocations.push(user);
+      }
+    })
+    this.setState({ userLocations: userLocations });
+    this.updatePositionAPI();
+  }
+
+  async updatePositionAPI() {
+    // TODO: Replace with current user
+    let user = {
+      userId: 1,
+        name: "Testje",
+        username: "Test Tester",
+        email: "jens.uenk@iclou.com",
+        picrtureURL: "url",
+        score: 122,
+        balls: 10,
+    }
+    const request = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: user.userId,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        picrtureURL: user.picrtureURL,
+        score: user.score,
+        balls: user.balls,
+        location: {
+          latitude: this.state.locatie.latitude,
+          longitude: this.state.locatie.longitude
+        },
+        online: true
+      })
+    };
+    await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/', request)
+    .then(function(response){
+      return response.json();
+    })
+    .catch(function(error) {
+      //console.log("Update location error", error)
+    })
   }
 
   _isInPolygon = (point, polygonArray) => {
@@ -175,8 +233,18 @@ export default class Mapke extends React.Component {
                 longitude: marker.coordinates.longitude,
               }}
             />
-          ))}
-
+          )),
+            this.state.userLocations.map((user) => (
+              <MapView.Marker
+                title={user.username}
+                description={user.name}
+                coordinate={{
+                  latitude: user.location.latitude,
+                  longitude: user.location.longitude,
+                }}
+                image={require('../assets/user-icon.png')}
+              />
+            ))}
         </MapView>
       </View>
     );

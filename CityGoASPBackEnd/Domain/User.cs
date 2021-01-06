@@ -36,5 +36,9 @@ namespace Domain
         [JsonIgnore]
         public List<Friends> Friends { get; set; }
 
+        [JsonIgnore]
+        public Coordinate Location { get; set; }
+        public bool Online { get; set; }
+
     }
 }

@@ -47,8 +47,9 @@ namespace Application.Query.User
                     Score = user.Score,
                     UsersChallenges = usersChallenges,
                     UsersItems = usersItems,
-                    PicrtureURL = user.PicrtureURL
-
+                    PicrtureURL = user.PicrtureURL,
+                    Online = user.Online,
+                    Location = user.Location
                 });
             }
             return vm;

@@ -40,7 +40,12 @@ namespace Infrastucture.Persistence
                     Username = "Jh0nD03",
                     Email = "jhon.doe@gmail.com",
                     Balls = 1,
-                    Score = 0
+                    Score = 0,
+                    Online = false,
+                    Location = new Domain.Coordinate() {
+                        Latitude = 0,
+                        Longitude = 0
+                    }
                 },
                 new Domain.User()
                 {
@@ -48,7 +53,12 @@ namespace Infrastucture.Persistence
                    Username = "Jh0nD032",
                    Email = "jhon.doe2@gmail.com",
                    Balls = 3,
-                   Score = 0
+                   Score = 0,
+                    Online = false,
+                    Location = new Domain.Coordinate() {
+                        Latitude = 1,
+                        Longitude = 1
+                    }
                 },
                 new Domain.User()
                 {
@@ -56,7 +66,12 @@ namespace Infrastucture.Persistence
                    Username = "Jh0nD033",
                    Email = "jhon.doe3@gmail.com",
                    Balls = 3,
-                   Score = 0
+                   Score = 0,
+                    Online = false,
+                    Location = new Domain.Coordinate() {
+                        Latitude = 2,
+                        Longitude = 2
+                    }
                 }
             };
             List<Domain.Challenge> challengesL = new List<Domain.Challenge>()

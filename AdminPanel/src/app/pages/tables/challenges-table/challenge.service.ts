@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class ChallengeService {
 
-  private url = "https://citygo5.azurewebsites.net/Challenges";
+  private url = "https://citygoaspbackend20201224141859.azurewebsites.net/Challenges";
 
   constructor(private http: HttpClient) { }
 
@@ -59,6 +59,7 @@ export interface Challenge {
   answer: string;
   sight?: any;
   items?: any;
+  score: number;
 }
 
 export interface RootObject {

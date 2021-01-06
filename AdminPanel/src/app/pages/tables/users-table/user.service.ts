@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Challenge } from '../challenges-table/challenge.service';
 import { Item } from '../items-table/item.service';
+import { Coordinate } from '../sights-table/sight.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private url = "https://citygo5.azurewebsites.net/Users";
+  private url = "https://citygoaspbackend20201224141859.azurewebsites.net/Users";
 
   constructor(private http: HttpClient) { }
 
@@ -58,6 +59,9 @@ export interface User {
   usersItems: Item[];
   challenges: Challenge[];
   friends?: any;
+  score: number;
+  online: boolean;
+  location: Coordinate;
 }
 
 export interface RootObject {
