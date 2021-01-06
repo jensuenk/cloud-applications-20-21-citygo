@@ -14,7 +14,7 @@ namespace CleanTesting.Application.IntegrationTests
     public class ItemTests : TestBase
     {
         [Test]
-        public async Task ShouldCreateUser()
+        public async Task ShouldCreateItem()
         {
             var newItem = new ItemVM()
             {
@@ -52,7 +52,7 @@ namespace CleanTesting.Application.IntegrationTests
         }
 
         [Test]
-        public async Task ShouldUpdateUser()
+        public async Task ShouldUpdateItem()
         {
             var newItem = new ItemVM()
             {
