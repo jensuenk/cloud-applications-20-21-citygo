@@ -6,7 +6,6 @@ import MapView, { PROVIDER_GOOGLE, Marker, Polyline, Polygon } from 'react-nativ
 import { mapStyle } from './mapStyle';
 import GeoFencing from 'react-native-geo-fencing';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { List } from 'native-base';
 
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
@@ -145,6 +144,7 @@ export default class Mapke extends React.Component {
 
     let userLocations = [];
     respJson.users.forEach(user => {
+      // TODO: Replace with current user
       if (user.userId != 4 && user.location != null && user.online) {
         userLocations.push(user);
       }
@@ -154,6 +154,7 @@ export default class Mapke extends React.Component {
   }
 
   async updatePositionAPI() {
+    // TODO: Replace with current user
     let user = {
       userId: 1,
         name: "Testje",
@@ -186,7 +187,7 @@ export default class Mapke extends React.Component {
       return response.json();
     })
     .catch(function(error) {
-      console.log("Update location error", error)
+      //console.log("Update location error", error)
     })
   }
 
