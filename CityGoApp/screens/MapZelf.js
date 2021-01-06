@@ -6,6 +6,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, Polyline, Polygon } from 'react-nativ
 import { mapStyle } from './mapStyle';
 import GeoFencing from 'react-native-geo-fencing';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { List } from 'native-base';
 
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
@@ -51,7 +52,8 @@ export default class Mapke extends React.Component {
           latitude: 3.148561,
           longitude: 101.652778
         },
-      }]
+      }],
+      userLocations: []
     }
 
     this.locationWatcher = null
@@ -123,14 +125,29 @@ export default class Mapke extends React.Component {
       })
 
     this.apiCallSights();
+    this.getAllUsersLocations();
   }
 
   async apiCallSights() {
-    let resp2 = await fetch('https://citygo5.azurewebsites.net/sights')
+    let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/sights')
     let respJson2 = await resp2.json();
     this.setState({ sights: respJson2.sights })
 
 
+  }
+  
+  async getAllUsersLocations() {
+    let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users')
+    let respJson2 = await resp2.json();
+    
+    let userLocations = [];
+    respJson2.users.forEach(user => {
+      if (user.email != "jens.uenk@icloud.com" && user.location != null && user.online) {
+        userLocations.push(user);
+      }
+    })
+    this.setState({ userLocations: userLocations })
+    //console.log("Current location: ", this.state.locatie.latitude, this.state.locatie.longitude);
   }
 
   _isInPolygon = (point, polygonArray) => {
@@ -175,8 +192,16 @@ export default class Mapke extends React.Component {
                 longitude: marker.coordinates.longitude,
               }}
             />
+          )),
+          this.state.userLocations.map((user) => (
+            <MapView.Marker
+              title={user.name}
+              coordinate={{
+                latitude: user.location.latitude,
+                longitude: user.location.longitude,
+              }}
+            />
           ))}
-
         </MapView>
       </View>
     );
