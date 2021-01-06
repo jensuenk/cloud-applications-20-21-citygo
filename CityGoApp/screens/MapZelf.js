@@ -127,14 +127,13 @@ export default class Mapke extends React.Component {
     this.getAllUsersLocations();
 
 
-    this.timer = setInterval(() => this.getAllUsersLocations(), 10000)
+    //this.timer = setInterval(() => this.getAllUsersLocations(), 10000)
   }
 
   async apiCallSights() {
     let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/sights')
     let respJson2 = await resp2.json();
     this.setState({ sights: respJson2.sights })
-
 
   }
 
@@ -146,7 +145,9 @@ export default class Mapke extends React.Component {
     respJson.users.forEach(user => {
       // TODO: Replace with current user
       if (user.userId != 4 && user.location != null && user.online) {
-        userLocations.push(user);
+        if (!(Math.abs(this.state.locatie.latitude - user.location.latitude) > 0.01 || Math.abs(this.state.locatie.longitude - user.location.longitude) > 0.01)) {
+          userLocations.push(user);
+        }
       }
     })
     this.setState({ userLocations: userLocations });
