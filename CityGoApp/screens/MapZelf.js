@@ -126,6 +126,9 @@ export default class Mapke extends React.Component {
 
     this.apiCallSights();
     this.getAllUsersLocations();
+
+
+    this.timer = setInterval(()=> this.getAllUsersLocations(), 10000)
   }
 
   async apiCallSights() {
@@ -146,8 +149,7 @@ export default class Mapke extends React.Component {
         userLocations.push(user);
       }
     })
-    this.setState({ userLocations: userLocations })
-    //console.log("Current location: ", this.state.locatie.latitude, this.state.locatie.longitude);
+    this.setState({ userLocations: userLocations });
   }
 
   _isInPolygon = (point, polygonArray) => {
