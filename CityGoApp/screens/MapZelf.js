@@ -145,7 +145,7 @@ export default class Mapke extends React.Component {
 
     let userLocations = [];
     respJson.users.forEach(user => {
-      if (user.email != "jens.uenk@icloud.com" && user.location != null && user.online) {
+      if (user.userId != 4 && user.location != null && user.online) {
         userLocations.push(user);
       }
     })
@@ -154,11 +154,26 @@ export default class Mapke extends React.Component {
   }
 
   async updatePositionAPI() {
+    let user = {
+      userId: 1,
+        name: "Testje",
+        username: "Test Tester",
+        email: "jens.uenk@iclou.com",
+        picrtureURL: "url",
+        score: 122,
+        balls: 10,
+    }
     const request = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        userId: 1,
+        userId: user.userId,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        picrtureURL: user.picrtureURL,
+        score: user.score,
+        balls: user.balls,
         location: {
           latitude: this.state.locatie.latitude,
           longitude: this.state.locatie.longitude
@@ -220,11 +235,13 @@ export default class Mapke extends React.Component {
           )),
             this.state.userLocations.map((user) => (
               <MapView.Marker
-                title={user.name}
+                title={user.username}
+                description={user.name}
                 coordinate={{
                   latitude: user.location.latitude,
                   longitude: user.location.longitude,
                 }}
+                image={require('../assets/user-icon.png')}
               />
             ))}
         </MapView>
