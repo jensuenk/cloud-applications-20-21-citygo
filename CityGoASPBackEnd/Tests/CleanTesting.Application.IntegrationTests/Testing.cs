@@ -85,6 +85,16 @@ namespace CleanTesting.Application.IntegrationTests
             return await context.FindAsync<TEntity>(id);
         }
 
+        public static async Task<TEntity> FindAsyncComposite<TEntity>(int id, int id2)
+            where TEntity : class
+        {
+            using var scope = _scopeFactory.CreateScope();
+
+            var context = scope.ServiceProvider.GetService<DBContext>();
+
+            return await context.FindAsync<TEntity>(id, id2);
+        }
+
         public static async Task AddAsync<TEntity>(TEntity entity)
             where TEntity : class
         {

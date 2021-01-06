@@ -23,7 +23,7 @@ class LoginScreen extends React.Component {
     }
 
     handleValidPassword = (val) => {
-        if(val.trim().length >= 6){
+        if(val.trim().length >= 5){
             this.state.isValidPassword = true;
         }
         else{
