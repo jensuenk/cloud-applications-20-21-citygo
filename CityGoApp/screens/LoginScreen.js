@@ -32,7 +32,7 @@ class LoginScreen extends React.Component {
     }
 
     handleValidEmail = (val) => {
-        var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (val.trim().length >= 5) {
             if(regEmail.test(val)){
                 this.state.isValidEmail = true;
