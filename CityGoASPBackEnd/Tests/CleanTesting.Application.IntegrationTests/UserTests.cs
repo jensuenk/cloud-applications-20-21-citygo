@@ -112,6 +112,7 @@ namespace CleanTesting.Application.IntegrationTests
             var createCommand2 = new CreateUserCommand(newUser2);
             var id2 = await SendAsync(createCommand2);
             var user2 = await FindAsync<User>(id2);
+            
 
             var addFriendCommand = new AddFriendCommand(id, id2);
             var idResult = await SendAsync(addFriendCommand);
@@ -121,6 +122,43 @@ namespace CleanTesting.Application.IntegrationTests
             friendStaus.AcceptedUser2.Should().Be(false);
             friendStaus.UserId.Should().Be(user.UserId);
             friendStaus.FriendId.Should().Be(user2.UserId);
+        }
+
+
+        [Test]
+        public async Task ShouldUpdateUsesWrong()
+        {
+            var oldUser = new UserVM()
+            {
+                Name = "Test",
+                Username = "Test123",
+                Email = "test@gmail.com",
+                Balls = 10
+            };
+
+            var command = new CreateUserCommand(oldUser);
+            var id = await SendAsync(command);
+            var user = await FindAsync<User>(id);
+
+            var newUser = new UserVM()
+            {
+                UserId = 2,
+                Name = "Test",
+                Username = "Test123",
+                Email = "test@gmail.com",
+                Balls = 10
+            };
+
+            var commandupdate = new UpdateUserCommand(newUser);
+            var id2 = await SendAsync(command);
+            
+
+            user.Should().NotBeNull();
+            user.Username.Should().Be(newUser.Username);
+            user.Email.Should().Be(newUser.Email);
+            user.Balls.Should().Be(newUser.Balls);
+
+            id2.Should().Be(4001);
         }
     }
 }
