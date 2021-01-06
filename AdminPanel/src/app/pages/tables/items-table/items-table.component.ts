@@ -85,6 +85,11 @@ export class ItemsTableComponent implements OnInit {
         this.getItems();
         this.showSuccess("Successfully created a new item!")
       }, error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getItems();
+          this.showSuccess("Successfully created a new item!")
+          return
+        }
         this.showError("Could not create a new sight!", this.getVilidationErrors(error));
       }
     );
@@ -97,6 +102,11 @@ export class ItemsTableComponent implements OnInit {
         this.showSuccess("Successfully updated the item!")
       },
       error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getItems();
+          this.showSuccess("Successfully updated the item!")
+          return
+        }
         this.showError("Could not update sight!", this.getVilidationErrors(error));
       }
     );
@@ -109,6 +119,11 @@ export class ItemsTableComponent implements OnInit {
         this.showSuccess("Successfully deleted the item!")
       },
       error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getItems();
+          this.showSuccess("Successfully deleted the item!")
+          return
+        }
         this.showError(error.message)
       }
     );

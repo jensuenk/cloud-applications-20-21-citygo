@@ -116,6 +116,11 @@ export class SightsTableComponent implements OnInit {
         this.getSights();
         this.showSuccess("Successfully created a new sight!");
       }, error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getSights();
+          this.showSuccess("Successfully created a new sight!");
+          return
+        }
         this.showError("Could not create a new sight!", this.getVilidationErrors(error));
       }
     );
@@ -130,6 +135,11 @@ export class SightsTableComponent implements OnInit {
         this.showSuccess("Successfully updated the sight!");
       },
       error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getSights();
+          this.showSuccess("Successfully updated the sight!");
+          return
+        }
         this.showError("Could not update sight!", this.getVilidationErrors(error));
       }
     );
@@ -142,6 +152,11 @@ export class SightsTableComponent implements OnInit {
         this.showSuccess("Successfully deleted the sight!");
       },
       error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getSights();
+          this.showSuccess("Successfully deleted the sight!");
+          return
+        }
         this.showError(error.message);
       }
     );

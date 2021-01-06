@@ -33,6 +33,12 @@ export class UsersTableComponent implements OnInit {
 
   // Open dialog popup with a ui to edit the location coordinates
   openEditLocationDialog(user: User) {
+    if (user.location == null) {
+      user.location = {
+        latitude: 1.2194475,
+        longitude: 4.4024643
+      };
+    }
     this.dialogService.open(LocationDialogComponentComponent, {
       context: {
         coordinate: user.location,
@@ -149,6 +155,11 @@ export class UsersTableComponent implements OnInit {
         this.getUsers();
         this.showSuccess("Successfully created a new user!");
       }, error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getUsers();
+          this.showSuccess("Successfully created a new user!");
+          return
+        }
         this.showError("Could not create a new user!", this.getVilidationErrors(error));
       }
     );
@@ -164,6 +175,11 @@ export class UsersTableComponent implements OnInit {
         this.showSuccess("Successfully updated the user!");
       },
       error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getUsers();
+          this.showSuccess("Successfully updated the user!");
+          return
+        }
         this.showError("Could not update user!", this.getVilidationErrors(error));
       }
     );
@@ -176,6 +192,11 @@ export class UsersTableComponent implements OnInit {
         this.showSuccess("Successfully deleted the user!");
       },
       error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getUsers();
+          this.showSuccess("Successfully updated the user!");
+          return
+        }
         this.showError(error.message);
       }
     );

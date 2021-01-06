@@ -79,6 +79,11 @@ export class ChallengesTableComponent implements OnInit {
         this.getChallenges();
         this.showSuccess("Successfully created a new challenge!");
       }, error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getChallenges();
+          this.showSuccess("Successfully created a new challenge!");
+          return
+        }
         this.showError("Could not create a new sight!", this.getVilidationErrors(error));
       }
     );
@@ -94,6 +99,11 @@ export class ChallengesTableComponent implements OnInit {
         return true;
       },
       error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getChallenges();
+          this.showSuccess("Successfully updated the challenge!");
+          return
+        }
         this.showError("Could not update sight!", this.getVilidationErrors(error));
       }
     );
@@ -106,6 +116,11 @@ export class ChallengesTableComponent implements OnInit {
         this.showSuccess("Successfully deleted the challenge!");
       },
       error => {
+        if (error.status == 200 || error.status == 201) {
+          this.getChallenges();
+          this.showSuccess("Successfully deleted the challenge!");
+          return
+        }
         this.showError(error.message);
       }
     );
