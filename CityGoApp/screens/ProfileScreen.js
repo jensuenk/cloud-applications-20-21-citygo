@@ -144,6 +144,7 @@ export default class ProfileScreen extends React.Component {
     let land = this.state.country;
     let naam = this.state.data.name
     let balls = this.state.data.balls
+    let score = this.state.data.score
     let teller = -2
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
@@ -153,6 +154,7 @@ export default class ProfileScreen extends React.Component {
       land = land;
       naam = naam;
       balls = balls;
+      score = score;
     }
 
     return (
@@ -182,7 +184,7 @@ export default class ProfileScreen extends React.Component {
 
           <View style={styles.statsContainer}>
           <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-              <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
+              <Text style={[styles.text, { fontSize: 24 }]}>{score}</Text>
               <Text style={[styles.text, styles.subText]}>score</Text>
             </View>
             <View style={styles.statsBox}>
