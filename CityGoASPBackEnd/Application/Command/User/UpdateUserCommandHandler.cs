@@ -22,8 +22,10 @@ namespace Application.Command
         public async Task<int> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             Domain.User newUser;
+            Domain.User olduser;
             try
             {
+               
                 newUser = new Domain.User()
                 {
                     UserId = request.UserVM.UserId,
@@ -36,6 +38,10 @@ namespace Application.Command
                     Location = request.UserVM.Location,
                     PicrtureURL = request.UserVM.PicrtureURL
                 };
+                olduser = await _context.Users.Where(u => u.UserId == newUser.UserId)
+                    .Include(c => c.UsersChallenges)
+                    .Include(i => i.UsersItems)
+                    .SingleAsync();
             }
             catch (Exception)
             {
@@ -124,10 +130,6 @@ namespace Application.Command
             newUser.Score = localScore;
 
 
-            var olduser = await _context.Users.Where(u => u.UserId == newUser.UserId)
-                .Include(c => c.UsersChallenges)
-                .Include(i => i.UsersItems)
-                .SingleAsync();
             olduser.Name = newUser.Name;
             olduser.Username = newUser.Username;
             olduser.Email = newUser.Email;

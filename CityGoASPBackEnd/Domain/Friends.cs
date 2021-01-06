@@ -8,7 +8,6 @@ namespace Domain
 {
     public class Friends
     {
-
         [JsonIgnore]
         public int Id { get; set; }
 

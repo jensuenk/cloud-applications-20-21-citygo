@@ -54,39 +54,47 @@ namespace Application.Command.User
             try
             {
                 List<Domain.Friends> fr1 = new List<Domain.Friends>();
-                foreach (var friend in User.Friends)
+                if (User.Friends.Count != 0)
                 {
-                    // Search for the friend status where userid and friendid are together from the user
-                    if (friend.UserId == User.UserId && friend.FriendId == Friend.UserId)
+                    foreach (var friend in User.Friends)
                     {
-                        friend.AcceptedUser1 = true;
-                        friend.AcceptedUser2 = true;
-                        var query = _context.Friends.Update(friend);
-                        fr1.Add(friend);
+                        // Search for the friend status where userid and friendid are together from the user
+                        if (friend.UserId == User.UserId && friend.FriendId == Friend.UserId)
+                        {
+                            friend.AcceptedUser1 = true;
+                            friend.AcceptedUser2 = true;
+                            var query = _context.Friends.Update(friend);
+                            fr1.Add(friend);
+                        }
+                        else
+                        {
+                            fr1.Add(friend);
+                        }
                     }
-                    else
+                    List<Domain.Friends> fr2 = new List<Domain.Friends>();
+                    foreach (var friend in Friend.Friends)
                     {
-                        fr1.Add(friend);
+                        // Search for the friend status where userid and friendid are together from the friend
+                        if (friend.UserId == Friend.UserId && friend.FriendId == User.UserId)
+                        {
+                            friend.AcceptedUser1 = true;
+                            friend.AcceptedUser2 = true;
+                            var query = _context.Friends.Update(friend);
+                            fr2.Add(friend);
+                        }
+                        else
+                        {
+                            fr2.Add(friend);
+                        }
                     }
+                    User.Friends = fr1;
+                    Friend.Friends = fr2;
                 }
-                List<Domain.Friends> fr2 = new List<Domain.Friends>();
-                foreach (var friend in Friend.Friends)
+                else
                 {
-                    // Search for the friend status where userid and friendid are together from the friend
-                    if (friend.UserId == Friend.UserId && friend.FriendId == User.UserId)
-                    {
-                        friend.AcceptedUser1 = true;
-                        friend.AcceptedUser2 = true;
-                        var query = _context.Friends.Update(friend);
-                        fr2.Add(friend);
-                    }
-                    else
-                    {
-                        fr2.Add(friend);
-                    }
+                    UserVM vm4 = new UserVM() { Error = "BadRequest_FriendRequest" };
+                    return 4002;
                 }
-                User.Friends = fr1;
-                Friend.Friends = fr2;
             }
             catch (Exception)
             {
