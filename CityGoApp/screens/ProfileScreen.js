@@ -111,12 +111,16 @@ export default class ProfileScreen extends React.Component {
       this.props.changeComponent('Two')
   };
 
+  /*
+  //overbodig, philip ging logout doen
   signOut = () => {
     Firebase.auth()
       .signOut()
       .then(() => this.props.navigation.navigate('LoginScreen'))
       .catch(error => console.log(error))
   }
+*/
+  
   goToFriends = () => {
     this.props.changeComponent('Three')
   }
