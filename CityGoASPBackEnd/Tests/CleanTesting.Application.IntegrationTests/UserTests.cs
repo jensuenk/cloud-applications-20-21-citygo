@@ -156,5 +156,46 @@ namespace CleanTesting.Application.IntegrationTests
             user.Should().NotBeNull();
             cancelationToken.Should().Be(4001);
         }
+
+        [Test]
+        public async Task ShouldAcceptFriend()
+        {
+            var newUser = new UserVM()
+            {
+                Name = "Test",
+                Username = "Test123",
+                Email = "test@gmail.com",
+                Balls = 10
+            };
+            var createCommand = new CreateUserCommand(newUser);
+            var id = await SendAsync(createCommand);
+            var user = await FindAsync<User>(id);
+
+
+            var newUser2 = new UserVM()
+            {
+                Name = "Test2",
+                Username = "Test123_2",
+                Email = "test2@gmail.com",
+                Balls = 20
+            };
+            var createCommand2 = new CreateUserCommand(newUser2);
+            var id2 = await SendAsync(createCommand2);
+            var user2 = await FindAsync<User>(id2);
+
+
+            var addFriendCommand = new AddFriendCommand(id, id2);
+            var cancelationToken = await SendAsync(addFriendCommand);
+            var friendStaus = await FindAsync<Friends>(1);
+
+            var acceptFriendCommand = new AcceptFriendRequestCommand(id2, id);
+            var cancelationToken2 = await SendAsync(addFriendCommand);
+            var friendStausAccept = await FindAsync<Friends>(1);
+
+            friendStausAccept.AcceptedUser1.Should().Be(true);
+            friendStausAccept.AcceptedUser2.Should().Be(true);
+            friendStausAccept.UserId.Should().Be(user.UserId);
+            friendStausAccept.FriendId.Should().Be(user2.UserId);
+        }
     }
 }
