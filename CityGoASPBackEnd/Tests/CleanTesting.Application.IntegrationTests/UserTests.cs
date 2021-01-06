@@ -116,7 +116,7 @@ namespace CleanTesting.Application.IntegrationTests
 
             var addFriendCommand = new AddFriendCommand(id, id2);
             var idResult = await SendAsync(addFriendCommand);
-            var friendStaus = await FindAsync<Friends>(idResult);
+            var friendStaus = await FindAsync<Friends>(1);
 
             friendStaus.AcceptedUser1.Should().Be(true);
             friendStaus.AcceptedUser2.Should().Be(false);
@@ -142,23 +142,19 @@ namespace CleanTesting.Application.IntegrationTests
 
             var newUser = new UserVM()
             {
-                UserId = 2,
-                Name = "Test",
-                Username = "Test123",
-                Email = "test@gmail.com",
+                UserId = 500,
+                Name = "Test2",
+                Username = "Test1232",
+                Email = "test2@gmail.com",
                 Balls = 10
             };
 
             var commandupdate = new UpdateUserCommand(newUser);
-            var id2 = await SendAsync(command);
+            var cancelationToken = await SendAsync(commandupdate);
             
 
             user.Should().NotBeNull();
-            user.Username.Should().Be(newUser.Username);
-            user.Email.Should().Be(newUser.Email);
-            user.Balls.Should().Be(newUser.Balls);
-
-            id2.Should().Be(4001);
+            cancelationToken.Should().Be(4001);
         }
     }
 }
