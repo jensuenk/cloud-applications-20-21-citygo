@@ -26,9 +26,9 @@ namespace CleanTesting.Application.IntegrationTests
 
             var command = new CreateUserCommand(newUser);
 
-            var id = await SendAsync(command);
+            var cancelationToken = await SendAsync(command);
 
-            var user = await FindAsync<User>(id);
+            var user = await FindAsync<User>(1);
 
             user.Should().NotBeNull();
             user.Name.Should().Be(newUser.Name);
@@ -47,9 +47,9 @@ namespace CleanTesting.Application.IntegrationTests
 
             var command = new CreateUserCommand(newUser);
 
-            var id = await SendAsync(command);
+            var cancelationToken = await SendAsync(command);
 
-            var user = await FindAsync<User>(id);
+            var user = await FindAsync<User>(1);
 
             user.Should().NotBeNull();
             user.Username.Should().Be(newUser.Username);
@@ -71,9 +71,9 @@ namespace CleanTesting.Application.IntegrationTests
 
             var createCommand = new CreateUserCommand(newUser);
 
-            var createId = await SendAsync(createCommand);
+            var cancelationToken = await SendAsync(createCommand);
 
-            var createdUser = await FindAsync<User>(createId);
+            var createdUser = await FindAsync<User>(1);
 
             createdUser.Should().NotBeNull();
 
@@ -98,8 +98,8 @@ namespace CleanTesting.Application.IntegrationTests
                 Balls = 10
             };
             var createCommand = new CreateUserCommand(newUser);
-            var id = await SendAsync(createCommand);
-            var user = await FindAsync<User>(id);
+            var cancelationToken = await SendAsync(createCommand);
+            var user = await FindAsync<User>(1);
 
 
             var newUser2 = new UserVM()
@@ -110,12 +110,12 @@ namespace CleanTesting.Application.IntegrationTests
                 Balls = 20
             };
             var createCommand2 = new CreateUserCommand(newUser2);
-            var id2 = await SendAsync(createCommand2);
-            var user2 = await FindAsync<User>(id2);
+            var cancelationToken2 = await SendAsync(createCommand2);
+            var user2 = await FindAsync<User>(2);
             
 
-            var addFriendCommand = new AddFriendCommand(id, id2);
-            var idResult = await SendAsync(addFriendCommand);
+            var addFriendCommand = new AddFriendCommand(user.UserId, user2.UserId);
+            var cancelationToken3 = await SendAsync(addFriendCommand);
             var friendStaus = await FindAsync<Friends>(1);
 
             friendStaus.AcceptedUser1.Should().Be(true);
@@ -137,8 +137,8 @@ namespace CleanTesting.Application.IntegrationTests
             };
 
             var command = new CreateUserCommand(oldUser);
-            var id = await SendAsync(command);
-            var user = await FindAsync<User>(id);
+            var cancelationToken = await SendAsync(command);
+            var user = await FindAsync<User>(1);
 
             var newUser = new UserVM()
             {
@@ -150,11 +150,11 @@ namespace CleanTesting.Application.IntegrationTests
             };
 
             var commandupdate = new UpdateUserCommand(newUser);
-            var cancelationToken = await SendAsync(commandupdate);
+            var cancelationToken2 = await SendAsync(commandupdate);
             
 
             user.Should().NotBeNull();
-            cancelationToken.Should().Be(4001);
+            cancelationToken2.Should().Be(4001);
         }
 
         [Test]
@@ -168,8 +168,8 @@ namespace CleanTesting.Application.IntegrationTests
                 Balls = 10
             };
             var createCommand = new CreateUserCommand(newUser);
-            var id = await SendAsync(createCommand);
-            var user = await FindAsync<User>(id);
+            var cancelationToken = await SendAsync(createCommand);
+            var user = await FindAsync<User>(1);
 
 
             var newUser2 = new UserVM()
@@ -180,22 +180,58 @@ namespace CleanTesting.Application.IntegrationTests
                 Balls = 20
             };
             var createCommand2 = new CreateUserCommand(newUser2);
-            var id2 = await SendAsync(createCommand2);
-            var user2 = await FindAsync<User>(id2);
+            var cancelationToken2 = await SendAsync(createCommand2);
+            var user2 = await FindAsync<User>(2);
 
 
-            var addFriendCommand = new AddFriendCommand(id, id2);
-            var cancelationToken = await SendAsync(addFriendCommand);
+            var addFriendCommand = new AddFriendCommand(user.UserId, user2.UserId);
+            var cancelationToken3 = await SendAsync(addFriendCommand);
             var friendStaus = await FindAsync<Friends>(1);
 
-            var acceptFriendCommand = new AcceptFriendRequestCommand(id2, id);
-            var cancelationToken2 = await SendAsync(addFriendCommand);
-            var friendStausAccept = await FindAsync<Friends>(1);
+            var acceptFriendCommand = new AcceptFriendRequestCommand(user2.UserId, user.UserId);
+            var cancelationToken4 = await SendAsync(acceptFriendCommand);
+            var friendStausAccept = await FindAsync<Friends>(2);
 
+            friendStaus.AcceptedUser1.Should().Be(true);
+            friendStaus.AcceptedUser2.Should().Be(false);
             friendStausAccept.AcceptedUser1.Should().Be(true);
             friendStausAccept.AcceptedUser2.Should().Be(true);
-            friendStausAccept.UserId.Should().Be(user.UserId);
-            friendStausAccept.FriendId.Should().Be(user2.UserId);
+            friendStausAccept.UserId.Should().Be(user2.UserId);
+            friendStausAccept.FriendId.Should().Be(user.UserId);
+        }
+
+        [Test]
+        public async Task ShouldFailToAcceptFriend()
+        {
+            var newUser = new UserVM()
+            {
+                Name = "Test",
+                Username = "Test123",
+                Email = "test@gmail.com",
+                Balls = 10
+            };
+            var createCommand = new CreateUserCommand(newUser);
+            var cancelationToken = await SendAsync(createCommand);
+            var user = await FindAsync<User>(1);
+
+
+            var newUser2 = new UserVM()
+            {
+                Name = "Test2",
+                Username = "Test123_2",
+                Email = "test2@gmail.com",
+                Balls = 20
+            };
+            var createCommand2 = new CreateUserCommand(newUser2);
+            var cancelationToken2 = await SendAsync(createCommand2);
+            var user2 = await FindAsync<User>(2);
+
+            var acceptFriendCommand = new AcceptFriendRequestCommand(user2.UserId, user.UserId);
+            var cancelationToken3 = await SendAsync(acceptFriendCommand);
+            var friendStausAccept = await FindAsync<Friends>(2);
+
+
+            cancelationToken3.Should().Be(4002);
         }
     }
 }
