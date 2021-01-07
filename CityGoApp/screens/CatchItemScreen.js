@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Image, Text, StyleSheet, ToastAndroid } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+const USER_ID = 2;
 
 export default class CatchItemScreen extends React.Component {
   constructor(props) {
@@ -13,17 +14,37 @@ export default class CatchItemScreen extends React.Component {
   }
 
   async componentDidMount() {
+    this.getUserById(USER_ID);
   }
 
   async getUserById(id) {
     let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + id);
     let respJson = await resp.json();
     this.setState({ currentUser: respJson })
+
+    // TODO: remove
+    let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Items/3');
+    let respJson2 = await resp2.json();
+    this.setState({ item: respJson2 })
   }
 
   async addItemToUser() {
-    let user = this.state.currentUser;
+    const request = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' }
+    };
+    await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + this.state.currentUser.userId + '/Items/' + this.state.item.itemId, request)
+      .then(function (response) {
+        return response.json();
+      })
+      .catch(function (error) {
+        //console.log("Update location error", error)
+      })
+  }
 
+  async updateUsersBalls() {
+    let user = this.state.currentUser;
+    user.balls = user.balls - 1;
     const request = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -40,21 +61,27 @@ export default class CatchItemScreen extends React.Component {
 
   collect = () => {
     this.addItemToUser();
-    this.props.changeComponent('One')
+    this.updateUsersBalls();
+    this.props.changeComponent('One');
     ToastAndroid.show("Item added to your collection!", ToastAndroid.LONG);
   }
 
   render() {
-    if (true) {
+    if (this.state.currentUser == null || this.state.item == null) {
+      return (
+        <View style={styles.container}></View>
+      )
+    }
+    if (this.state.currentUser.balls > 0) {
       return (
         <View style={styles.container}>
           <Text style={styles.header}>New Item!</Text>
-          <Text style={styles.name}>Antwerps Handje</Text>
-          <Text style={styles.rarity}>Rare</Text>
+          <Text style={styles.name}>{this.state.item.name}</Text>
+          <Text style={styles.rarity}>{this.state.item.rarity}</Text>
           <Image
             style={styles.logo}
             source={{
-              uri: "http://www.nederlands-dis.nl/wp-content/uploads/2016/04/antwerps-handje.jpg",
+              uri: this.state.item.picture,
             }}
           />
           <TouchableOpacity style={styles.button1} onPress={this.collect}>
@@ -63,7 +90,7 @@ export default class CatchItemScreen extends React.Component {
           <TouchableOpacity style={styles.button2} onPress={() => this.props.changeComponent('One')}>
             <Text style={styles.button2_text}>Cancel</Text>
           </TouchableOpacity>
-          <Text style={styles.balls_text}>2 balls left</Text>
+          <Text style={styles.balls_text}>{this.state.currentUser.balls} balls left</Text>
         </View>
       )
     }
@@ -71,12 +98,12 @@ export default class CatchItemScreen extends React.Component {
       return (
         <View style={styles.container}>
           <Text style={styles.header}>New Item!</Text>
-          <Text style={styles.name}>Antwerps Handje</Text>
-          <Text style={styles.rarity}>Rare</Text>
+          <Text style={styles.name}>{this.state.item.name}</Text>
+          <Text style={styles.rarity}>{this.state.item.rarity}</Text>
           <Image
             style={styles.logo}
             source={{
-              uri: "http://www.nederlands-dis.nl/wp-content/uploads/2016/04/antwerps-handje.jpg",
+              uri: this.state.item.picture,
             }}
           />
           <TouchableOpacity style={styles.no_balls_button1}>
@@ -89,26 +116,6 @@ export default class CatchItemScreen extends React.Component {
         </View>
       )
     }
-    
-    /*
-    return (
-      <View style={styles.container}>
-        <Text style={styles.header}>New Item!</Text>
-        <Text style={styles.name}>{this.state.item.name}</Text>
-        <Text style={styles.rarity}>{this.state.item.rarity}</Text>
-        <Image
-          style={styles.icon}
-          source={{
-            uri: this.state.item.url,
-          }}
-        />
-        <TouchableOpacity style={styles.button1} onPress={this.collect}>
-          <Text style={styles.btntext}>Add to you collection</Text>
-        </TouchableOpacity>
-      </View>
-    )
-    */
-
   }
 }
 
