@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "citygopanel": {
+      "hosting": {
+        "ngx-admin-demo": [
+          "citygopanel"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "citygopanel"
+  }
+}
