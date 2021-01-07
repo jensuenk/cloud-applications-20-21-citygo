@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
+  NbAlertModule,
   NbActionsModule,
   NbButtonModule,
   NbCardModule,
@@ -18,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
+    NbAlertModule,
     FormsModule,
     ThemeModule,
     NbCardModule,
