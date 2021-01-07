@@ -10,7 +10,7 @@ import MapZelf from './MapZelf'
 import QuestionScreen from './QuestionScreen';
 import TicTacToe from './TicTacToe';
 import MemoryGame from './MemoryGame';
-import CatchItem from './CatchItem';
+import CatchItemScreen from './CatchItemScreen';
 
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
@@ -46,7 +46,7 @@ export default class Map2 extends React.Component {
     } else if (component == 'Four') {
       return <MemoryGame changeComponent={this.changeComponent} />
     } else if (component == 'catch') {
-      return <CatchItem changeComponent={this.changeComponent} />
+      return <CatchItemScreen changeComponent={this.changeComponent} />
     }
   }
 

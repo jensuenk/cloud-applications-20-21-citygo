@@ -313,7 +313,6 @@ export default class Mapke extends React.Component {
       }
     })
     this.setState({ notFoundItems: notFoundItems })
-    // TODO: Call more
     this.updateLocation();
   }
   async updatePositionAPI() {
@@ -379,6 +378,7 @@ export default class Mapke extends React.Component {
           )),
             this.state.userLocations.map((user) => (
               <MapView.Marker
+                key={user.userId}
                 title={user.username}
                 description={user.name}
                 coordinate={{
