@@ -207,6 +207,15 @@ export default class Mapke extends React.Component {
     //this.timer = setInterval(() => this.getAllUsersLocations(), 10000)
   }
 
+  updateLocation() {
+    this.state.notFoundItems.forEach(item => {
+      // Check if item is in a radius of +-10m
+      if (!(Math.abs(this.state.locatie.latitude - item.location.latitude) > 0.001 || Math.abs(this.state.locatie.longitude - item.location.longitude) > 0.001)) {
+        console.log("You are near " + item.name)
+      }
+    })
+  }
+
   async getUserById(id) {
     let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + id);
     let respJson = await resp.json();
@@ -259,8 +268,9 @@ export default class Mapke extends React.Component {
       }
     })
     this.setState({ notFoundItems: notFoundItems })
+    // TODO: Call more
+    this.updateLocation();
   }
-
   async updatePositionAPI() {
     let user = this.state.currentUser;
     user.location.latitude = this.state.locatie.latitude,
