@@ -55,7 +55,7 @@ export default class Mapke extends React.Component {
           { 
             text: "Yes", 
             onPress: () => (
-              this.props.changeComponent('Two'),
+              this.props.changeComponent('catch'),
               this.alertIsActive = false) 
           }
         ],
@@ -379,7 +379,6 @@ export default class Mapke extends React.Component {
           )),
             this.state.userLocations.map((user) => (
               <MapView.Marker
-                key={user.userId}
                 title={user.username}
                 description={user.name}
                 coordinate={{
@@ -388,10 +387,12 @@ export default class Mapke extends React.Component {
                 }}
                 image={require('../assets/user-icon.png')}
               />
-            )),
+            ))
+            // Uncomment to show all items on the map
+            /*
+            ,
             this.state.notFoundItems.map((item) => (
               <MapView.Marker
-                key={item.itemId}
                 title={item.name}
                 description={item.rarity}
                 coordinate={{
@@ -400,7 +401,9 @@ export default class Mapke extends React.Component {
                 }}
                 pinColor={'blue'}
               />
-            ))}
+            ))
+              */
+              }
         </MapView>
       </View>
     );
