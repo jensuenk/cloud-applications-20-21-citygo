@@ -91,7 +91,10 @@ namespace Application.Command.Sight
             oldSight.Info = newSight.Info;
             oldSight.Monument = newSight.Monument;
             oldSight.Stop = newSight.Stop;
-            oldSight.Challenges = newSight.Challenges;
+            if (request.SightVM.Challenges != null)
+            {
+                oldSight.Challenges = newSight.Challenges;
+            }
             oldSight.Coordinates = newSight.Coordinates;
 
 

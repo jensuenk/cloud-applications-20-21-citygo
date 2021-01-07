@@ -111,8 +111,15 @@ namespace Application.Command.Challenge
             oldChallenge.Task = newChallenge.Task;
             oldChallenge.Answer = newChallenge.Answer;
             oldChallenge.QuestionChallenge = newChallenge.QuestionChallenge;
-            oldChallenge.Items = newItems;
-            oldChallenge.UsersChallenges = newUser;
+            if (request.ChallengeVM.Items != null)
+            {
+                oldChallenge.Items = newItems;
+            }
+            if (request.ChallengeVM.UsersChallenges != null)
+            {
+                oldChallenge.UsersChallenges = newUser;
+            }
+        
             var query = _context.Challenges.Update(oldChallenge);
             return await _context.SaveAsync(cancellationToken);
         }
