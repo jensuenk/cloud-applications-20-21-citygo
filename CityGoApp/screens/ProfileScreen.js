@@ -30,7 +30,8 @@ export default class ProfileScreen extends React.Component {
     query: '',
     fullData: [],
     isLoading: true,
-    FriendsList:[]
+    FriendsList:[],
+    FriendRequest:[],
     
   };
 
@@ -41,6 +42,7 @@ export default class ProfileScreen extends React.Component {
   componentDidMount() {
    this.apiCallFriends();
    this.apiCallUser();
+   this.apiCallFriends();
   }
 
   // nog een check doen voor als hij geen vrienden heeft
@@ -62,6 +64,16 @@ export default class ProfileScreen extends React.Component {
     this.setState({ data: page === 1 ? respJson : [...this.state.data, ...respJson] })
     console.log(this.state.data)
     // TODO: order friends
+  }
+
+  
+  async apiCallFriendRequest() {
+    const { page, seed } = this.state
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/FriendRequests')
+    let respJson = await resp.json();
+    this.setState({ FriendRequest: page === 1 ? respJson.friends : [...this.state.FriendRequest, ...respJson.friends] })
+    console.log(this.state.FriendRequest)
+    
   }
 
   componentWillMount() {
@@ -138,7 +150,7 @@ export default class ProfileScreen extends React.Component {
 
   
   render() {
-    const { data, isLoading } = this.state;
+    const { FriendRequest, data, isLoading } = this.state;
     let text = 'Waiting..';
     let stad = this.state.city;
     let land = this.state.country;
@@ -146,6 +158,15 @@ export default class ProfileScreen extends React.Component {
     let balls = this.state.data.balls
     let score = this.state.data.score
     let teller = -2
+    let amountRequest =  <View style={styles.statsBox}>
+    <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
+    <Text  onPress={() => this.gotoRequests()} style={[styles.text, styles.subText]}>requests</Text>
+    </View>;
+    let noRequest = <View style={styles.statsBox}>
+    <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
+    <Text style={[styles.text, styles.subText]}>requests</Text>
+    </View>;
+
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
     } else if (this.state.location) {
@@ -200,6 +221,9 @@ export default class ProfileScreen extends React.Component {
               <Text  onPress={() => this.goToFriends()} style={[styles.text, styles.subText]}>friends</Text>
             </View>
 
+            {this.state.FriendRequest.length>0?amountRequest:null}
+            {this.state.FriendRequest.length==null?amountRequest:null}
+
           </View>
           <View style={{ marginTop: 32 }}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -229,6 +253,7 @@ export default class ProfileScreen extends React.Component {
           <View style={{ flex: 1, padding: 24 }}>
           <FlatList 
         data={this.state.FriendsList}
+        FriendRequest={this.state.FriendRequest}
         renderItem={ 
           ({ item }) =>  {
             if(item.userId != 1){

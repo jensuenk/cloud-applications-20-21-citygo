@@ -85,7 +85,7 @@ export default class Hangman extends React.Component {
     if(wrong>4){
       Alert.alert(
         'Verloren...',
-        'Try again later',
+        'probeer later nog eens',
         [
           {text: 'OK', onPress: () =>  this.props.changeComponent('One')},
         ],
