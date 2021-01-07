@@ -83,7 +83,6 @@ namespace Application.Command
             // Assign the list to the user's useritems
             newUser.UsersItems = newUserItems;
 
-
             // Link existing challenges to a user trough the body
             List<Domain.UsersChallenges> newChallenges = new List<Domain.UsersChallenges>(); ;
             try
@@ -134,8 +133,14 @@ namespace Application.Command
             olduser.Username = newUser.Username;
             olduser.Email = newUser.Email;
             olduser.Balls = newUser.Balls;
-            olduser.UsersChallenges = newChallenges;
-            olduser.UsersItems = newUserItems;
+            if (request.UserVM.UsersChallenges != null)
+            {
+                olduser.UsersChallenges = newChallenges;
+            }
+            if (request.UserVM.Items != null)
+            {
+                olduser.UsersItems = newUserItems;
+            }
             olduser.Score = newUser.Score;
             olduser.Location = newUser.Location;
             olduser.Online = newUser.Online;

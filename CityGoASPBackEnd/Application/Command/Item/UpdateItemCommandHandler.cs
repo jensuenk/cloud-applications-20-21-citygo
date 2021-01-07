@@ -53,7 +53,10 @@ namespace Application.Command.Item
             oldItem.Location = newItem.Location;
             oldItem.Picture = newItem.Picture;
             oldItem.Rarity = newItem.Rarity;
-            oldItem.UsersItems = newItem.UsersItems;
+            if (request.ItemVM.UsersItems != null)
+            {
+                oldItem.UsersItems = newItem.UsersItems;
+            }
 
             var query = _context.Items.Update(oldItem);
             return await _context.SaveAsync(cancellationToken);

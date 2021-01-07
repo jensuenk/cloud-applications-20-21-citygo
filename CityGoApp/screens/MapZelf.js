@@ -13,6 +13,7 @@ import Constants from 'expo-constants';
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
 
+const USER_ID = 2;
 
 export default class Mapke extends React.Component {
 
@@ -26,12 +27,44 @@ export default class Mapke extends React.Component {
           onPress: () => console.log(""),
           style: "cancel"
         },
-        // nu standaard naar 2 maar moet van api komen naar wat soort vraag het moet gaan
         { text: "OK", onPress: () => (this.props.changeComponent('Two')) }
       ],
       { cancelable: false }
     );
   }
+
+  AlertItem(item) {
+    let alreadyCanceled = false;
+    this.state.itemDialogsCanceled.forEach(canceledItem => {
+      if (canceledItem.itemId == item.itemId) {
+        alreadyCanceled = true;
+      }
+    })
+    if (!alreadyCanceled) {
+      Alert.alert(
+        "Item Nearby",
+        "You found an item! Would you like to catch it?",
+        [
+          {
+            text: "No",
+            onPress: () => (
+              this.state.itemDialogsCanceled.push(item),
+              this.alertIsActive = false
+            ) 
+          },
+          { 
+            text: "Yes", 
+            onPress: () => (
+              this.props.changeComponent('Two'),
+              this.alertIsActive = false) 
+          }
+        ],
+        { cancelable: false }
+      );
+    }
+  }
+
+  
 
   /*registerForPushNotifications = async () =>{
     //Nagaan of de persmissions al toegekend waren
@@ -84,7 +117,10 @@ export default class Mapke extends React.Component {
           longitude: 101.652778
         },
       }],
-      userLocations: []
+      userLocations: [],
+      currentUser: null,
+      notFoundItems: [],
+      itemDialogsCanceled: []
     }
 
     this.locationWatcher = null
@@ -164,6 +200,7 @@ export default class Mapke extends React.Component {
             enableHighAccuracy: true,
             timeInterval: 500,
           }, (location) => {
+            console.log(location.coords.latitude, location.coords.longitude)
             this.setState({
               locatie: {
                 latitude: location.coords.latitude,
@@ -196,12 +233,42 @@ export default class Mapke extends React.Component {
 
         }
       })
+    // TODO: change id to global
+    this.getUserById(USER_ID);
+
+    this.locationTimer = setInterval(() => this.getAllUsersLocations(), 10000)
+    this.itemTimer = setInterval(() => this.getItems(), 10000);
+
+    this.setState({ itemDialogsCanceled: [] })
+  }
+  
+
+  componentWillUnmount() {
+    clearInterval(this.itemTimer);
+    clearInterval(this.locationTimer);
+  }
+
+  updateLocation() {
+    this.state.notFoundItems.forEach(item => {
+      // Check if item is in a radius of +-10m
+      if (!(Math.abs(this.state.locatie.latitude - item.location.latitude) > 0.001 || Math.abs(this.state.locatie.longitude - item.location.longitude) > 0.001)) {
+        if (!this.alertIsActive) {
+          this.alertIsActive = true;
+          this.AlertItem(item);
+        }
+        return;
+      }
+    })
+  }
+
+  async getUserById(id) {
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + id);
+    let respJson = await resp.json();
+    this.setState({ currentUser: respJson })
 
     this.apiCallSights();
     this.getAllUsersLocations();
-
-
-    //this.timer = setInterval(() => this.getAllUsersLocations(), 10000)
+    this.getItems();
   }
 
   async apiCallSights() {
@@ -216,8 +283,7 @@ export default class Mapke extends React.Component {
 
     let userLocations = [];
     respJson.users.forEach(user => {
-      // TODO: Replace with current user
-      if (user.userId != 4 && user.location != null && user.online) {
+      if (user.userId != this.state.currentUser.userId && user.location != null && user.online) {
         if (!(Math.abs(this.state.locatie.latitude - user.location.latitude) > 0.01 || Math.abs(this.state.locatie.longitude - user.location.longitude) > 0.01)) {
           userLocations.push(user);
         }
@@ -227,42 +293,45 @@ export default class Mapke extends React.Component {
     this.updatePositionAPI();
   }
 
+  async getItems() {
+    let itemsResp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Items/');
+    let itemsRespJson = await itemsResp.json();
+
+    let userItemsResp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + this.state.currentUser.userId + '/Items')
+    let userItemsRespJson = await userItemsResp.json();
+
+    let notFoundItems = [];
+    itemsRespJson.items.forEach(item => {
+      let add = true;
+      userItemsRespJson.usersItems.forEach(userItem => {
+        if (item.itemId == userItem.item.itemId) {
+          add = false;
+        }
+      })
+      if (add) {
+        notFoundItems.push(item);
+      }
+    })
+    this.setState({ notFoundItems: notFoundItems })
+    // TODO: Call more
+    this.updateLocation();
+  }
   async updatePositionAPI() {
-    // TODO: Replace with current user
-    let user = {
-      userId: 1,
-        name: "Testje",
-        username: "Test Tester",
-        email: "jens.uenk@iclou.com",
-        picrtureURL: "url",
-        score: 122,
-        balls: 10,
-    }
+    let user = this.state.currentUser;
+    user.location.latitude = this.state.locatie.latitude,
+    user.location.longitude = this.state.locatie.longitude
     const request = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        userId: user.userId,
-        name: user.name,
-        username: user.username,
-        email: user.email,
-        picrtureURL: user.picrtureURL,
-        score: user.score,
-        balls: user.balls,
-        location: {
-          latitude: this.state.locatie.latitude,
-          longitude: this.state.locatie.longitude
-        },
-        online: true
-      })
+      body: JSON.stringify(user)
     };
     await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/', request)
-    .then(function(response){
-      return response.json();
-    })
-    .catch(function(error) {
-      //console.log("Update location error", error)
-    })
+      .then(function (response) {
+        return response.json();
+      })
+      .catch(function (error) {
+        //console.log("Update location error", error)
+      })
   }
 
   _isInPolygon = (point, polygonArray) => {
@@ -310,6 +379,7 @@ export default class Mapke extends React.Component {
           )),
             this.state.userLocations.map((user) => (
               <MapView.Marker
+                key={user.userId}
                 title={user.username}
                 description={user.name}
                 coordinate={{
@@ -317,6 +387,18 @@ export default class Mapke extends React.Component {
                   longitude: user.location.longitude,
                 }}
                 image={require('../assets/user-icon.png')}
+              />
+            )),
+            this.state.notFoundItems.map((item) => (
+              <MapView.Marker
+                key={item.itemId}
+                title={item.name}
+                description={item.rarity}
+                coordinate={{
+                  latitude: item.location.latitude,
+                  longitude: item.location.longitude,
+                }}
+                pinColor={'blue'}
               />
             ))}
         </MapView>
