@@ -30,7 +30,9 @@ export default class ProfileScreen extends React.Component {
     query: '',
     fullData: [],
     isLoading: true,
-    FriendsList:[]
+    FriendsList:[],
+    FriendRequest:[],
+    userchallanges:[],
     
   };
 
@@ -41,10 +43,13 @@ export default class ProfileScreen extends React.Component {
   componentDidMount() {
    this.apiCallFriends();
    this.apiCallUser();
+   this.apiCallFriends();
   }
+
+  // nog een check doen voor als hij geen vrienden heeft
   async apiCallFriends() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygo5.azurewebsites.net/Users/1')
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/Friends')
     let respJson = await resp.json();
    // console.log(respJson)
     this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
@@ -52,14 +57,34 @@ export default class ProfileScreen extends React.Component {
     // TODO: order friends
   }
 
+  async apiCalluserchallanges() {
+    const { page, seed } = this.state
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/Friends')
+    let respJson = await resp.json();
+   // console.log(respJson)
+    this.setState({ userchallanges: page === 1 ? respJson.usersChallenges : [...this.state.userchallanges, ...respJson.usersChallenges] })
+    console.log(this.state.usersChallenges)
+    // TODO: order friends
+  }
+
   async apiCallUser() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygo5.azurewebsites.net/Users/1')
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1')
     let respJson = await resp.json();
    // console.log(respJson)
     this.setState({ data: page === 1 ? respJson : [...this.state.data, ...respJson] })
     console.log(this.state.data)
     // TODO: order friends
+  }
+
+  
+  async apiCallFriendRequest() {
+    const { page, seed } = this.state
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/FriendRequests')
+    let respJson = await resp.json();
+    this.setState({ FriendRequest: page === 1 ? respJson.friends : [...this.state.FriendRequest, ...respJson.friends] })
+    console.log(this.state.FriendRequest)
+    
   }
 
   componentWillMount() {
@@ -120,9 +145,18 @@ export default class ProfileScreen extends React.Component {
       .catch(error => console.log(error))
   }
 */
+  goToHangman = () => {
+    this.props.changeComponent('Four')
+  }
+
+
   
   goToFriends = () => {
     this.props.changeComponent('Three')
+  }
+
+  gotoRequests = () => {
+    this.props.changeComponent('Five')
   }
 
   //logout functie
@@ -135,13 +169,23 @@ export default class ProfileScreen extends React.Component {
 
   
   render() {
-    const { data, isLoading } = this.state;
+    const { FriendRequest, data, isLoading } = this.state;
     let text = 'Waiting..';
     let stad = this.state.city;
     let land = this.state.country;
     let naam = this.state.data.name
     let balls = this.state.data.balls
-    let teller = -2
+    let score = this.state.data.score
+    let teller = 0
+    let amountRequest =  <View style={styles.statsBox}>
+    <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
+    <Text  onPress={() => this.gotoRequests()} style={[styles.text, styles.subText]}>requests</Text>
+    </View>;
+    let noRequest = <View style={styles.statsBox}>
+    <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
+    <Text style={[styles.text, styles.subText]}>requests</Text>
+    </View>;
+
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
     } else if (this.state.location) {
@@ -150,13 +194,14 @@ export default class ProfileScreen extends React.Component {
       land = land;
       naam = naam;
       balls = balls;
+      score = score;
     }
 
     return (
       <SafeAreaView style={styles.container}  data = {this.state.data}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.titleBar}>
-            <TouchableOpacity>
+            <TouchableOpacity  onPress={() => { this.signOut() }}>
               <Ionicons name="md-log-out" size={24} color="#52575D"></Ionicons>
             </TouchableOpacity>
           </View>
@@ -179,11 +224,11 @@ export default class ProfileScreen extends React.Component {
 
           <View style={styles.statsContainer}>
           <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-              <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
+              <Text style={[styles.text, { fontSize: 24 }]}>{score}</Text>
               <Text style={[styles.text, styles.subText]}>score</Text>
             </View>
             <View style={styles.statsBox}>
-              <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
+              <Text style={[styles.text, { fontSize: 24 }]}>{this.state.userchallanges.length}</Text>
               <Text style={[styles.text, styles.subText]}>challanges</Text>
             </View>
             <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
@@ -194,6 +239,9 @@ export default class ProfileScreen extends React.Component {
               <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendsList.length}</Text>
               <Text  onPress={() => this.goToFriends()} style={[styles.text, styles.subText]}>friends</Text>
             </View>
+
+            {this.state.FriendRequest.length>0?amountRequest:null}
+            {this.state.FriendRequest.length==null?amountRequest:null}
 
           </View>
           <View style={{ marginTop: 32 }}>
@@ -224,6 +272,7 @@ export default class ProfileScreen extends React.Component {
           <View style={{ flex: 1, padding: 24 }}>
           <FlatList 
         data={this.state.FriendsList}
+        FriendRequest={this.state.FriendRequest}
         renderItem={ 
           ({ item }) =>  {
             if(item.userId != 1){
@@ -241,6 +290,12 @@ export default class ProfileScreen extends React.Component {
                   style={{
                     color: '#000'
                   }}>{`${item.name}`} 
+                </Text>
+                <Text
+                  category='s1'
+                  style={{
+                    color: '#000'
+                  }}>{`       score: ${item.score}`} 
                 </Text>
               </View>)
             }
@@ -262,9 +317,10 @@ export default class ProfileScreen extends React.Component {
               <Text style={styles.appButtonText} >ADD FRIENDS</Text>
             </TouchableOpacity>
           </View>
-          <StandardButton
-            buttonTitle="Log Out"
-            onPress={() => { this.signOut() }}
+
+                <StandardButton
+            buttonTitle="Hangman"
+            onPress={() => { this.goToHangman() }}
           />
 
 

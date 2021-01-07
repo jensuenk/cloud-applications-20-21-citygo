@@ -9,7 +9,7 @@ import filter from 'lodash.filter';
 
 
 
-export default class AddFriends extends React.Component {
+export default class FriendRequest extends React.Component {
   state = {
     loading: false,
     data: [],
@@ -17,7 +17,8 @@ export default class AddFriends extends React.Component {
     seed: 1,
     error: null,
     query: '',
-    fullData: []
+    fullData: [],
+    allUsers:[],
   }
 
  
@@ -26,13 +27,32 @@ export default class AddFriends extends React.Component {
     this.makeRemoteRequest()
   }
 
- 
+  async apiCallUser() {
+    const { page, seed } = this.state
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/')
+    let respJson = await resp.json();
+   // console.log(respJson)
+    this.setState({ allUsers: page === 1 ? respJson.users : [...this.state.allUsers, ...respJson.users] })
+    console.log(this.state.allUsers)
+    // TODO: order friends
+  }
+
+  getuserNames=()=>{
+        array.forEach(element => {
+            
+        });
+
+      if(this.state.allUsers.userId){
+
+      }
+  }
+
 
 
   makeRemoteRequest = () => {
     const { page, seed } = this.state
     //const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
-    const url = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users'
+    const url = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/FriendRequests'
     this.setState({ loading: true })
 
 
@@ -40,10 +60,10 @@ export default class AddFriends extends React.Component {
       .then(res => res.json())
       .then(res => {
         this.setState({
-          data: page === 1 ? res.users : [...this.state.data, ...res.users],
+          data: page === 1 ? res.friends : [...this.state.data, ...res.friends],
           error: res.error || null,
           loading: false,
-          fullData: res.users
+          fullData: res.friends
         })
       
       })
@@ -53,10 +73,15 @@ export default class AddFriends extends React.Component {
 
   }
 
-  contains = ({ name, email, userId }, query) => {
-    if (name.includes(query) ||
-      email.includes(query) ||
-      userId.includes(query)
+  getUsers=() => {
+
+  }
+
+  contains = ({ userId, acceptedUser1, friendId,acceptedUser2 }, query) => {
+    if (userId.includes(query) ||
+      acceptedUser1.includes(query) ||
+      friendId.includes(query) ||
+      acceptedUser2.includes(query)
     ) {
       return true
     }
@@ -65,9 +90,9 @@ export default class AddFriends extends React.Component {
   
   }
   
- // versturen van een verzoek zal nu hardcoded zijn vanuit het standpunt van user1
+ // versturen van een accepteren zal nu hardcoded zijn vanuit het standpunt van user1
   
-  sendFriendRequest = (fid, uid = '1' ) => {
+  acceptFriendRequest = (fid, uid = '1' ) => {
     const urlFriendRequest = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/'+uid+'/Friends/'+fid
     console.log(urlFriendRequest)
     const putMethod = {
@@ -190,7 +215,7 @@ render() {
         data={this.state.data}
         renderItem={ 
           ({ item }) =>  {
-            if(item.userId != 1){
+            if(item.friendId != 1){
               return(  <View
                 style={{
                   flexDirection: 'row',
@@ -209,10 +234,10 @@ render() {
                     color: '#000'
                   }}>{`${item.name}`} 
                 </Text>
-                <TouchableOpacity onPress={() => this.sendFriendRequest(item.userId)}>
+                <TouchableOpacity onPress={() => this.acceptFriendRequest(item.friendId)}>
                   <View style={styles.button}>
                     <Text style={styles.buttonText} >
-                      Add
+                      Accept
                                 </Text>
                   </View>
                 </TouchableOpacity>
