@@ -27,12 +27,44 @@ export default class Mapke extends React.Component {
           onPress: () => console.log(""),
           style: "cancel"
         },
-        // nu standaard naar 2 maar moet van api komen naar wat soort vraag het moet gaan
         { text: "OK", onPress: () => (this.props.changeComponent('Two')) }
       ],
       { cancelable: false }
     );
   }
+
+  AlertItem(item) {
+    let alreadyCanceled = false;
+    this.state.itemDialogsCanceled.forEach(canceledItem => {
+      if (canceledItem.itemId == item.itemId) {
+        alreadyCanceled = true;
+      }
+    })
+    if (!alreadyCanceled) {
+      Alert.alert(
+        "Item Nearby",
+        "You found an item! Would you like to catch it?",
+        [
+          {
+            text: "No",
+            onPress: () => (
+              this.state.itemDialogsCanceled.push(item),
+              this.alertIsActive = false
+            ) 
+          },
+          { 
+            text: "Yes", 
+            onPress: () => (
+              this.props.changeComponent('Two'),
+              this.alertIsActive = false) 
+          }
+        ],
+        { cancelable: false }
+      );
+    }
+  }
+
+  
 
   /*registerForPushNotifications = async () =>{
     //Nagaan of de persmissions al toegekend waren
@@ -87,7 +119,8 @@ export default class Mapke extends React.Component {
       }],
       userLocations: [],
       currentUser: null,
-      notFoundItems: []
+      notFoundItems: [],
+      itemDialogsCanceled: []
     }
 
     this.locationWatcher = null
@@ -203,15 +236,27 @@ export default class Mapke extends React.Component {
     // TODO: change id to global
     this.getUserById(USER_ID);
 
-    // TODO: uncomment
-    //this.timer = setInterval(() => this.getAllUsersLocations(), 10000)
+    this.locationTimer = setInterval(() => this.getAllUsersLocations(), 10000)
+    this.itemTimer = setInterval(() => this.getItems(), 10000);
+
+    this.setState({ itemDialogsCanceled: [] })
+  }
+  
+
+  componentWillUnmount() {
+    clearInterval(this.itemTimer);
+    clearInterval(this.locationTimer);
   }
 
   updateLocation() {
     this.state.notFoundItems.forEach(item => {
       // Check if item is in a radius of +-10m
       if (!(Math.abs(this.state.locatie.latitude - item.location.latitude) > 0.001 || Math.abs(this.state.locatie.longitude - item.location.longitude) > 0.001)) {
-        console.log("You are near " + item.name)
+        if (!this.alertIsActive) {
+          this.alertIsActive = true;
+          this.AlertItem(item);
+        }
+        return;
       }
     })
   }
@@ -334,6 +379,7 @@ export default class Mapke extends React.Component {
           )),
             this.state.userLocations.map((user) => (
               <MapView.Marker
+                key={user.userId}
                 title={user.username}
                 description={user.name}
                 coordinate={{
@@ -345,6 +391,7 @@ export default class Mapke extends React.Component {
             )),
             this.state.notFoundItems.map((item) => (
               <MapView.Marker
+                key={item.itemId}
                 title={item.name}
                 description={item.rarity}
                 coordinate={{
