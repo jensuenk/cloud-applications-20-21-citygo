@@ -75,7 +75,7 @@ export default class Hangman extends React.Component {
         'Proficiat',
         'Je hebt het juiste antwoord geraden',
         [
-          {text: 'OK', onPress: () => this.init()},
+          {text: 'OK', onPress: () =>  this.props.changeComponent('One')},
         ],
         { cancelable: false }
       )
@@ -87,7 +87,7 @@ export default class Hangman extends React.Component {
         'Verloren...',
         'Try again later',
         [
-          {text: 'OK', onPress: () => this.init()},
+          {text: 'OK', onPress: () =>  this.props.changeComponent('One')},
         ],
         { cancelable: false }
       )
