@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import {  StyleSheet, Text, TextInput, View, Button, TouchableHighlight, Alert} from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import Svg, { Circle, Rect,Line } from 'react-native-svg';
+import Svg, { Circle, Rect,Line,G } from 'react-native-svg';
 
 //DONE:
 // - TEKENEN VAN DE GALG
 // - PLAATSEN VAN HET TOESTENBORD
 // - VALIDEREN VAN DE OP GEDRUKTE LETTER
 // - PLAATSEN VAN DE GALG 
-// - 
+// - TEKENEN VAN HET MANNETJE --> doen door de waarde van wrond te checken --> if wrong 1: teken hoofd blablabla
 
 //TODO: 
-// - TEKENEN VAN HET MANNETJE --> doen door de waarde van wrond te checken --> if wrong 1: teken hoofd blablabla
 // - foto url van de api verkrijgen 
 // - antwoorden  van de api verkrijgen 
 // - 
@@ -47,6 +46,10 @@ export default class Hangman extends React.Component {
     }else{
       return;
     }
+  }
+
+  navigateBack(loswin){
+
   }
  
   validate(usedLetters,letter){
@@ -145,6 +148,13 @@ export default class Hangman extends React.Component {
 
  render() {
    let rope = <Line x1="250" y1 = "0" x2="250" y2 = "120" stroke="#895917" strokeWidth="5" id="rope"/>;
+   let head = <Circle cx="250" cy="150" r="30" id="head" fill="#ecd2b7"/>;
+   let bodyMain = <Rect width="10" height="140" x="245" y="150" id="bodyMain" fill="#ecd2b7"/>;
+   let armright = <View style={styles.armRight}></View>;
+   let armleft = <View style={styles.armLeft}></View>;
+   let legright = <View style={styles.legRight}></View>;
+   let legleft =  <View style={styles.legLeft}></View>;
+   
   return (
     <View style={styles.container}>
     <Svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet" class="svg-content" width="200" height="250">
@@ -152,6 +162,12 @@ export default class Hangman extends React.Component {
     <Rect fill="#053544" width="300" height="10" x="20" y="0" />
     <Rect fill="#053544" width="300" height="10" x="0" y="400" />
     {this.state.wrong>0?rope:null}
+    {this.state.wrong>1?head:null}
+    {this.state.wrong>2?bodyMain:null}
+    {this.state.wrong>3?armright:null}
+    {this.state.wrong>3?armleft:null}
+    {this.state.wrong>4?legleft:null}
+    {this.state.wrong>4?legright:null}
     </Svg>
     {this.renderDashes()}
     <View style={styles.hintContainer}><Text style={styles.hintText}>Hint : {this.state.hint}</Text></View>
@@ -169,6 +185,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop:10,
   },
   image: {
     flex: 1,
@@ -358,6 +375,42 @@ const styles = StyleSheet.create({
   hintText:{
     fontSize:18,
     fontWeight:"500",
-  }
+  },armRight: {
+    position: 'absolute',
+    transform: [ {rotate: '140deg'} ],
+    top: 80,
+    right:96,
+    width: 25,
+    height: 1,
+    borderBottomColor: "#ecd2b7",
+    borderBottomWidth: 5,
+  },armLeft: {
+    position: 'absolute',
+    transform: [ {rotate: '40deg'} ],
+    top: 80,
+    right:80,
+    width: 25,
+    height: 1,
+    borderBottomColor: "#ecd2b7",
+    borderBottomWidth: 5,
+  },legRight: {
+    position: 'absolute',
+    transform: [ {rotate: '40deg'} ],
+    top: 115,
+    right:80,
+    width: 25,
+    height: 1,
+    borderBottomColor: "#ecd2b7",
+    borderBottomWidth: 5,
+  },legLeft: {
+    position: 'absolute',
+    transform: [ {rotate: '140deg'} ],
+    top: 115,
+    right:96,
+    width: 25,
+    height: 1,
+    borderBottomColor: "#ecd2b7",
+    borderBottomWidth: 5,
+  },
 
 });
