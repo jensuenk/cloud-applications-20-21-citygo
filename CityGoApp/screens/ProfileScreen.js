@@ -32,6 +32,7 @@ export default class ProfileScreen extends React.Component {
     isLoading: true,
     FriendsList:[],
     FriendRequest:[],
+    userchallanges:[],
     
   };
 
@@ -53,6 +54,16 @@ export default class ProfileScreen extends React.Component {
    // console.log(respJson)
     this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
     console.log(this.state.FriendsList)
+    // TODO: order friends
+  }
+
+  async apiCalluserchallanges() {
+    const { page, seed } = this.state
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/Friends')
+    let respJson = await resp.json();
+   // console.log(respJson)
+    this.setState({ userchallanges: page === 1 ? respJson.usersChallenges : [...this.state.userchallanges, ...respJson.usersChallenges] })
+    console.log(this.state.usersChallenges)
     // TODO: order friends
   }
 
@@ -140,6 +151,10 @@ export default class ProfileScreen extends React.Component {
     this.props.changeComponent('Three')
   }
 
+  gotoRequests = () => {
+    this.props.changeComponent('Five')
+  }
+
   //logout functie
   /*
   logout = () => {
@@ -157,7 +172,7 @@ export default class ProfileScreen extends React.Component {
     let naam = this.state.data.name
     let balls = this.state.data.balls
     let score = this.state.data.score
-    let teller = -2
+    let teller = 0
     let amountRequest =  <View style={styles.statsBox}>
     <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
     <Text  onPress={() => this.gotoRequests()} style={[styles.text, styles.subText]}>requests</Text>
@@ -209,7 +224,7 @@ export default class ProfileScreen extends React.Component {
               <Text style={[styles.text, styles.subText]}>score</Text>
             </View>
             <View style={styles.statsBox}>
-              <Text style={[styles.text, { fontSize: 24 }]}>10</Text>
+              <Text style={[styles.text, { fontSize: 24 }]}>{this.state.userchallanges.length}</Text>
               <Text style={[styles.text, styles.subText]}>challanges</Text>
             </View>
             <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
@@ -271,6 +286,12 @@ export default class ProfileScreen extends React.Component {
                   style={{
                     color: '#000'
                   }}>{`${item.name}`} 
+                </Text>
+                <Text
+                  category='s1'
+                  style={{
+                    color: '#000'
+                  }}>{`       score: ${item.score}`} 
                 </Text>
               </View>)
             }
