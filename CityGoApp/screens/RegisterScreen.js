@@ -107,7 +107,7 @@ class RegisterScreen extends React.Component {
 
     //De Email moet voldoen aan de regex van een email "XX@domain.com" Een doorsnee email is ook langer dan 5 tekens
     handleValidEmail = (val) => {
-        var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (val.trim().length >= 5) {
             if (regEmail.test(val)) {
                 this.state.isValidEmail = true;
@@ -133,27 +133,21 @@ class RegisterScreen extends React.Component {
 
     //De username moet langer zijn dan 1 teken, daarna wordt er gecheckt of de username die ingevoerd is al bestaat in de API, als dat is, krijgt de gebruiker een alert
     handleValidUsername = (val) => {
-        //console.log("username getypt:", val);
         if (val.trim().length >= 1) {
             for (let item of this.state.users) {
-                //console.log("username: ", item.username);
                 if (item.username == val) {
-                    //console.log("username matcht");
-                    //this.state.isvalidUsername = false;
-                    //console.log("staat: ", this.state.isvalidUsername);
                     alert("De ingevoerde username " + item.username + " is al in gebruik. Probeer een andere username.");
                     this.state.isvalidUsername = false;
                     break;
                 }
                 else {
-                    //console.log("username matcht niet");
                     this.state.isvalidUsername = true;
                 }
             }
         }
         else{
             this.state.isvalidUsername = false;
-            alert("De usernname moet langer zijn dan 1 teken");
+            alert("De username moet langer zijn dan 1 teken");
         }
     }
 

@@ -9,35 +9,54 @@ import ApplicationNavigator from '../navigation/AppStack';
 import { NavigationContainer } from '@react-navigation/native';
 
 class LoginScreen extends React.Component {
-    
-    constructor(props){
+
+    constructor(props) {
         super(props);
         this.state = {
-            email: '', 
-            password:'',
-            isValidEmail:true,
-            isValidPassword:true,
-            isValidLogin:true,
+            nameUser:'',
+            email: '',
+            password: '',
+            isValidEmail: true,
+            isValidPassword: true,
+            isValidLogin: true,
+            currentUser: null,
+            userId: 1,
+            name: "",
+            username: "",
+            email: "",
+            balls: 0,
+            score: 0,
+            picrtureURL: null,
+            friendIds: null,
+            items: null,
+            usersItems: null,
+            usersChallenges: null,
+            friends: null,
+            userFriends: null,
+            location: null,
+            online: true,
         };
-        global.Myuser=false;
+        global.Myuser = false;
+        global.uid;
     }
 
     handleValidPassword = (val) => {
-        if(val.trim().length >= 5){
+        if (val.trim().length >= 5) {
             this.state.isValidPassword = true;
         }
-        else{
+        else {
             this.state.isValidPassword = false;
         }
     }
 
     handleValidEmail = (val) => {
+        global.emailUser = this.state.email;
         var regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (val.trim().length >= 5) {
-            if(regEmail.test(val)){
+            if (regEmail.test(val)) {
                 this.state.isValidEmail = true;
             }
-            else{
+            else {
                 this.state.isValidEmail = false;
             }
         }
@@ -46,16 +65,38 @@ class LoginScreen extends React.Component {
         }
     }
 
+    /*
     handleInvalidUserInput = () => {
         this.state.isValidLogin = false;
+    }*/
+
+    
+    //get request: opvragen van user bij de login functie. De user id kan worden gebruikt voor andere functies
+    async apiCallUserEmail() {
+        console.log("global email: ", global.emailUser);
+        let responseApiUserEmail = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/'+global.emailUser+'/email');
+        let responseJsonUserEmail = await responseApiUserEmail.json();
+        console.log("get request: ", responseJsonUserEmail);        
+        global.uid = responseJsonUserEmail.userId;
+        console.log("userId: ", responseJsonUserEmail.userId);
+        console.log("userId: ", global.uid);
     }
 
+    /*
     handleLogin = () => {
         Firebase.auth()
             .signInWithEmailAndPassword(this.state.email,this.state.password)
             .then(global.Myuser = true, this.props.navigation.navigate("MainScreen"))                       
-            .catch(error=> console(error), this.handleInvalidUserInput())  
+            .catch(error=> console(error))
+    }*/
+
+    handleLogin = () => {
+        Firebase.auth()
+            .signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then(global.Myuser = true, this.props.navigation.navigate("MainScreen"),this.apiCallUserEmail())
+            .catch(/*this.props.navigation.navigate("LoginScreen"), this.handleInvalidUserInput()*/)
     }
+
 
     render() {
         return (
@@ -66,7 +107,7 @@ class LoginScreen extends React.Component {
                 />
                 <InputField
                     labelValue={this.state.email}
-                    onChangeText={(email) => this.setState({ email },(email) => this.handleValidEmail(this.state.email))}
+                    onChangeText={(email) => this.setState({ email }, (email) => this.handleValidEmail(this.state.email))}
                     placeholderText="Email"
                     iconType="user"
                     secureTextEntry={false}
@@ -74,7 +115,7 @@ class LoginScreen extends React.Component {
                     autoCapitalize="none"
                 />
                 { this.state.isValidEmail ? null :
-                <Text style={styles.errorMessage}>The email needs to look like xxx@domain.</Text>
+                    <Text style={styles.errorMessage}>The email needs to look like xxx@domain.</Text>
                 }
 
                 <InputField
@@ -85,7 +126,7 @@ class LoginScreen extends React.Component {
                     secureTextEntry={true}
                 />
                 { this.state.isValidPassword ? null :
-                <Text style={styles.errorMessage}>The password needs to be 6 characters long.</Text>
+                    <Text style={styles.errorMessage}>The password needs to be 6 characters long.</Text>
                 }
 
 
@@ -93,9 +134,6 @@ class LoginScreen extends React.Component {
                     buttonTitle="Log In"
                     onPress={() => { this.handleLogin() }}
                 />
-                { this.state.isValidLogin ? null :
-                    <Text style={styles.errorMessage}>The combination of email and password is incorrect.</Text>
-                }
 
                 <TouchableOpacity style={styles.forgotButton} onPress={() => this.props.navigation.navigate('RegisterScreen')}>
                     <Text style={styles.navButtonText} >Not registered yet? Register here</Text>
@@ -139,7 +177,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#2e64e5',
     },
-    errorMessage:{
+    errorMessage: {
         color: '#FE0000',
     }
 });
