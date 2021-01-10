@@ -7,6 +7,7 @@ import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import StandardButton from '../components/StandardButton';
 import Firebase from '../config/Firebase';
+import LoginScreen from './LoginScreen'
 
 
 
@@ -137,7 +138,6 @@ export default class ProfileScreen extends React.Component {
   };
 
   /*
-  //overbodig, philip ging logout doen
   signOut = () => {
     Firebase.auth()
       .signOut()
@@ -145,6 +145,7 @@ export default class ProfileScreen extends React.Component {
       .catch(error => console.log(error))
   }
 */
+
   goToHangman = () => {
     this.props.changeComponent('Four')
   }
@@ -160,12 +161,17 @@ export default class ProfileScreen extends React.Component {
   }
 
   //logout functie
-  /*
+  
   logout = () => {
     //logout via firebase afhandelen
-    this.props.changeComponent('login')
+    Firebase.auth()
+    .signOut()
+    .then(() => this.props.navigation.navigate('LoginScreen'))
+    .then(() => this.props.changeComponent('Six'))
+    .catch(error => console.log(error))
+    global.Myuser = false;
   };
-  */
+  
 
   
   render() {
@@ -201,7 +207,7 @@ export default class ProfileScreen extends React.Component {
       <SafeAreaView style={styles.container}  data = {this.state.data}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.titleBar}>
-            <TouchableOpacity  onPress={() => { this.signOut() }}>
+            <TouchableOpacity  onPress={() => { this.logout() }}>
               <Ionicons name="md-log-out" size={24} color="#52575D"></Ionicons>
             </TouchableOpacity>
           </View>
@@ -312,7 +318,7 @@ export default class ProfileScreen extends React.Component {
            
           <View>
             <TouchableOpacity 
-             onPress={this.onPress}
+              onPress={() => this.logout()}
              style={styles.buttonlogout}>
               <Text style={styles.appButtonText} >ADD FRIENDS</Text>
             </TouchableOpacity>
