@@ -6,7 +6,12 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import filter from 'lodash.filter';
+import { sub } from 'react-native-reanimated';
 const urlImage = 'https://pokeres.bastionbot.org/images/pokemon/';
+const urlImage2 = 'https://rickandmortyapi.com/api/character/avatar/'
+
+//https://rickandmortyapi.com/api/character/avatar/1.jpeg
+
 
 
 export default class ProfilePicture extends React.Component {
@@ -34,13 +39,15 @@ export default class ProfilePicture extends React.Component {
   renderItem = ({item, index})=>{
     let url = item.url;
     const idPokemon = url.split('https://pokeapi.co/api/v2/pokemon/');
+    //console.log(idPokemon);
     const link = urlImage + idPokemon[1].substring(0,idPokemon[1].length-1) + ".png";
+    const link2 = urlImage2 + idPokemon[1].substring(0,idPokemon[1].length-1) + ".jpeg";
     return(
     <View style={styles.item}>
         <Image
         style={styles.image}
         resizeMode="contain"
-        source={{uri:link}}/>
+        source={{uri:link2}}/>
         <Text>{item.name}</Text>
       </View>)
   }
