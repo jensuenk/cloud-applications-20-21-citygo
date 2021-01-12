@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ActivityIndicator, TextInput, Text, View, FlatList, SafeAreaView, Image, ScrollView } from "react-native";
+import { StyleSheet, ActivityIndicator, TextInput, Text, View, FlatList, SafeAreaView, Image, ScrollView, Alert } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Location from 'expo-location';
@@ -35,16 +35,56 @@ export default class ProfilePicture extends React.Component {
     console.log(this.state.data)
   }
 
-  renderItem = ({item, index})=>{
 
+  testClick = (url) => {
+    Alert.alert(
+        "Ben je zeker dat je deze profielfoto wilt?",
+        url,
+        [
+          {
+            text: "Neen",
+            onPress: () => console.log("Nope"),
+            style: "cancel"
+          },
+          { text: "Ja", onPress: () => console.log("OK Pressed") }
+        ],
+        { cancelable: false }
+      );
+
+  }
+
+  renderItem = ({item, index})=>{
     return(
     <View style={styles.item}>
+        <TouchableOpacity onPress={() => { this.testClick(item.image) }}>
         <Image
         style={styles.image}
         resizeMode="contain"
         source={{uri:item.image}}/>
         <Text>{item.name}</Text>
+        </TouchableOpacity>
       </View>)
+  }
+
+  setProfilePicture =() =>{
+      /*
+    const urlsetPic = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/'+uid+'/Friends/'+fid
+    console.log(urlsetPic)
+    const putMethod = {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+       },
+      body: {}
+    }
+
+       // make the HTTP put request using fetch api
+       fetch(urlsetPic, putMethod)
+       .then(response => response.json())
+       .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
+       .catch(err => console.log(err)) // Do something with the error
+
+    */
   }
 
   backtoProfile = () => {
@@ -65,7 +105,7 @@ render() {
      style={styles.container}
      data = {data}
      renderItem={this.renderItem}
-     />
+     ></FlatList>
     </SafeAreaView>
   )
 }
