@@ -7,8 +7,7 @@ import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import filter from 'lodash.filter';
 import { sub } from 'react-native-reanimated';
-const urlImage = 'https://pokeres.bastionbot.org/images/pokemon/';
-const urlImage2 = 'https://rickandmortyapi.com/api/character/avatar/'
+const urlImage = 'https://rickandmortyapi.com/api/character/avatar/';
 
 //https://rickandmortyapi.com/api/character/avatar/1.jpeg
 
@@ -23,45 +22,49 @@ export default class ProfilePicture extends React.Component {
  
 
   componentDidMount() {
-    this.getListPokemon();
+    this.getListRandM();
   }
 
-  async getListPokemon() {
+  async getListRandM() {
     const { page, seed } = this.state
-    let resp = await fetch('https://pokeapi.co/api/v2/pokemon?limit=50')
+    let resp = await fetch('https://rickandmortyapi.com/api/character')
+
     let respJson = await resp.json();
-   // console.log(respJson)
+   
     this.setState({ data: page === 1 ? respJson.results : [...this.state.data, ...respJson.results] })
     console.log(this.state.data)
-    
   }
 
   renderItem = ({item, index})=>{
-    let url = item.url;
-    const idPokemon = url.split('https://pokeapi.co/api/v2/pokemon/');
-    //console.log(idPokemon);
-    const link = urlImage + idPokemon[1].substring(0,idPokemon[1].length-1) + ".png";
-    const link2 = urlImage2 + idPokemon[1].substring(0,idPokemon[1].length-1) + ".jpeg";
+
     return(
     <View style={styles.item}>
         <Image
         style={styles.image}
         resizeMode="contain"
-        source={{uri:link2}}/>
+        source={{uri:item.image}}/>
         <Text>{item.name}</Text>
       </View>)
   }
+
+  backtoProfile = () => {
+    this.props.changeComponent('One')
+  };
 
 render() {
     const{data} = this.state;
   return (
     <SafeAreaView style={styles.container}>
+        <View>
+         <TouchableOpacity  onPress={() => { this.backtoProfile() }}>
+        <Text style = {styles.back}>BACK</Text>
+        </TouchableOpacity>
+        </View>
      <FlatList
      numColumns={2}
      style={styles.container}
      data = {data}
      renderItem={this.renderItem}
-     keyExtractor={item=>`key${item.name}`}
      />
     </SafeAreaView>
   )
@@ -96,5 +99,12 @@ const styles = StyleSheet.create({
      height:100,
 
  },
+ back:{
+    fontSize: 15,
+    alignSelf: 'flex-start',
+    color: "#000",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+ }
  
 });
