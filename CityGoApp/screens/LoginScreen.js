@@ -13,7 +13,7 @@ class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nameUser:'',
+            nameUser: '',
             email: '',
             password: '',
             isValidEmail: true,
@@ -65,38 +65,68 @@ class LoginScreen extends React.Component {
         }
     }
 
-    /*
-    handleInvalidUserInput = () => {
-        this.state.isValidLogin = false;
-    }*/
-
-    
     //get request: opvragen van user bij de login functie. De user id kan worden gebruikt voor andere functies
     async apiCallUserEmail() {
         console.log("global email: ", global.emailUser);
-        let responseApiUserEmail = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/'+global.emailUser+'/email');
+        let responseApiUserEmail = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + global.emailUser + '/email');
         let responseJsonUserEmail = await responseApiUserEmail.json();
-        console.log("get request: ", responseJsonUserEmail);        
+        console.log("get request: ", responseJsonUserEmail);
         global.uid = responseJsonUserEmail.userId;
         console.log("userId: ", responseJsonUserEmail.userId);
         console.log("userId: ", global.uid);
+    }
+
+    authSuccessfull = () => {
+        global.Myuser = true;
+        this.props.navigation.navigate("MainScreen");
+    }
+
+    authNotSuccessfull = (val) => {
+        errorCode = val.code;
+        errorMessage = val.message;
+        if (errorCode === 'auth/invalid-password') {
+            console.log("Invalid password");
+            alert('Invalid password.');
+        } else {
+            if (errorCode === 'auth/invalid-email') {
+                console.log("Invalid email");
+                alert('Invalid email.');
+            } else {
+                this.apiCallUserEmail(); //call users to find UID
+                this.props.navigation.navigate('MainScreen'); //navigate to the MAP screen
+            }
+        }
+    }
+
+    handleLogin = () => {
+        if (this.state.password == "") {
+            alert('Give input to all fields');
+            return;
+        } else {
+            if (this.state.email == "") {
+                alert('Give input to all fields');
+                return;
+            } else {
+                if (this.state.password.trim().length <= 5) {
+                    alert('give a password longer than 6 signs.');
+                    return;
+                } else {
+                    Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+                        .then(this.authSuccessfull) //Authentication was successfull
+                        .catch(error => this.authNotSuccessfull(error))
+                }
+            }
+        }
     }
 
     /*
     handleLogin = () => {
         Firebase.auth()
             .signInWithEmailAndPassword(this.state.email,this.state.password)
-            .then(global.Myuser = true, this.props.navigation.navigate("MainScreen"))                       
-            .catch(error=> console(error))
-    }*/
-
-    handleLogin = () => {
-        Firebase.auth()
-            .signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(global.Myuser = true, this.props.navigation.navigate("MainScreen"),this.apiCallUserEmail())
-            .catch(/*this.props.navigation.navigate("LoginScreen"), this.handleInvalidUserInput()*/)
-    }
-
+            .catch(error=> console(error))
+    } 
+    */
 
     render() {
         return (
