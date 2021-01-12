@@ -160,6 +160,11 @@ export default class ProfileScreen extends React.Component {
     this.props.changeComponent('Five')
   }
 
+  goToProfilePictures = () => {
+    this.props.changeComponent('Seven')
+  }
+
+
   //logout functie
   
   logout = () => {
@@ -218,7 +223,9 @@ export default class ProfileScreen extends React.Component {
             </View>
 
             <View style={styles.add}>
+            <TouchableOpacity  onPress={() => { this.goToProfilePictures() }}>
               <Ionicons name="ios-add" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
+              </TouchableOpacity>
             </View>
           </View>
 
