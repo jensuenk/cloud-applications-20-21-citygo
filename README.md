@@ -37,9 +37,20 @@ With the CityGo app you can play a city game in Antwerp. There are 'sights' at v
 
 ## Key Features
 
-TODO: Add Features
+- Learn about the city trough a game
+- Map with realtime userlocation 
+- See other players location on a map
+- Ability to cath items
+- Compete with other players
+- Play certain challanges depending on the users location
+- Ability to register a user profile
+- Profile page
+- Ability to send and accept a friend requests
+- Login using Oauth2
+- Admin panel to control the game and user settings
+- Geofencing 
+- API with 3 layerd architecture
 
--
 
 ## Demo
 
