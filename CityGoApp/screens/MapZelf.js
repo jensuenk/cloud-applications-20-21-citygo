@@ -262,7 +262,7 @@ export default class Mapke extends React.Component {
   }
 
   async getUserById(id) {
-    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + id);
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
     let respJson = await resp.json();
     this.setState({ currentUser: respJson })
 
@@ -272,13 +272,13 @@ export default class Mapke extends React.Component {
   }
 
   async apiCallSights() {
-    let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/sights')
+    let resp2 = await fetch('https://citygo-ap.azurewebsites.net/sights')
     let respJson2 = await resp2.json();
     this.setState({ sights: respJson2.sights })
   }
 
   async getAllUsersLocations() {
-    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users')
     let respJson = await resp.json();
 
     let userLocations = [];
@@ -294,10 +294,10 @@ export default class Mapke extends React.Component {
   }
 
   async getItems() {
-    let itemsResp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Items/');
+    let itemsResp = await fetch('https://citygo-ap.azurewebsites.net/Items/');
     let itemsRespJson = await itemsResp.json();
 
-    let userItemsResp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + this.state.currentUser.userId + '/Items')
+    let userItemsResp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + this.state.currentUser.userId + '/Items')
     let userItemsRespJson = await userItemsResp.json();
 
     let notFoundItems = [];
@@ -324,7 +324,7 @@ export default class Mapke extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user)
     };
-    await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/', request)
+    await fetch('https://citygo-ap.azurewebsites.net/Users/', request)
       .then(function (response) {
         return response.json();
       })

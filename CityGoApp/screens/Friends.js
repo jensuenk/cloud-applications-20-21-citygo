@@ -27,7 +27,7 @@ export default class Friends extends React.Component {
 
     makeRemoteRequest = () => {
         const { page, seed } = this.state
-        const url = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/Friends'
+        const url = 'https://citygo-ap.azurewebsites.net/Users/1/Friends'
         this.setState({ loading: true })
 
 
@@ -70,7 +70,7 @@ export default class Friends extends React.Component {
     deleteFriend = (fid, uid = '1' ) => {
 
      
-      const urlFriendDelete = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/'+uid+'/Friends/'+fid
+      const urlFriendDelete = 'https://citygo-ap.azurewebsites.net/Users/'+uid+'/Friends/'+fid
       console.log(urlFriendDelete)
 
       const deleteMethod = {
@@ -87,7 +87,7 @@ export default class Friends extends React.Component {
 
 
         // verwijderen van de friend op de 2 plaatsen (zowel curr user als friend)    
-      const urlFriendDelete2 = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/'+fid+'/Friends/'+uid
+      const urlFriendDelete2 = 'https://citygo-ap.azurewebsites.net/Users/'+fid+'/Friends/'+uid
       console.log(urlFriendDelete)
 
       const deleteMethod2 = {

@@ -9,7 +9,7 @@ import { Coordinate } from '../sights-table/sight.service';
 })
 export class ItemService {
 
-  private url = "https://citygoaspbackend20201224141859.azurewebsites.net/Items";
+  private url = "https://citygo-ap.azurewebsites.net/Items";
 
   constructor(private http: HttpClient) { }
 

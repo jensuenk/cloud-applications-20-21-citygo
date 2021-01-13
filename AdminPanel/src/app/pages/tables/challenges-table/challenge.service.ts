@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class ChallengeService {
 
-  private url = "https://citygoaspbackend20201224141859.azurewebsites.net/Challenges";
+  private url = "https://citygo-ap.azurewebsites.net/Challenges";
 
   constructor(private http: HttpClient) { }
 

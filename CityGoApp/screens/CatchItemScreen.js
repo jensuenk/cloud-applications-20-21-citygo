@@ -18,12 +18,12 @@ export default class CatchItemScreen extends React.Component {
   }
 
   async getUserById(id) {
-    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + id);
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
     let respJson = await resp.json();
     this.setState({ currentUser: respJson })
 
     // TODO: remove
-    let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Items/3');
+    let resp2 = await fetch('https://citygo-ap.azurewebsites.net/Items/3');
     let respJson2 = await resp2.json();
     this.setState({ item: respJson2 })
   }
@@ -33,7 +33,7 @@ export default class CatchItemScreen extends React.Component {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' }
     };
-    await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + this.state.currentUser.userId + '/Items/' + this.state.item.itemId, request)
+    await fetch('https://citygo-ap.azurewebsites.net/Users/' + this.state.currentUser.userId + '/Items/' + this.state.item.itemId, request)
       .then(function (response) {
         return response.json();
       })
@@ -50,7 +50,7 @@ export default class CatchItemScreen extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user)
     };
-    await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/', request)
+    await fetch('https://citygo-ap.azurewebsites.net/Users/', request)
       .then(function (response) {
         return response.json();
       })

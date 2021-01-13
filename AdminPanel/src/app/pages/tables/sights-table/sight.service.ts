@@ -8,7 +8,7 @@ import { Challenge } from '../challenges-table/challenge.service';
 })
 
 export class SightService {
-  private url = "https://citygoaspbackend20201224141859.azurewebsites.net/Sights";
+  private url = "https://citygo-ap.azurewebsites.net/Sights";
 
   constructor(private http: HttpClient) { }
 

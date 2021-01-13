@@ -36,7 +36,7 @@ class RegisterScreen extends React.Component {
 
     //Deze Asynchronische functie zorgt er voor dat er een GET request naar de API gestuurd wordt, om de gegevens van de reeds geregistreerde users na te kunnen gaan
     async apiCallUsers() {
-        let responseApiUsers = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/');
+        let responseApiUsers = await fetch('https://citygo-ap.azurewebsites.net/Users/');
         let responseJsonUsers = await responseApiUsers.json();
         this.setState({ users: responseJsonUsers.users })
         console.log("API werd gecalld");
@@ -62,7 +62,7 @@ class RegisterScreen extends React.Component {
                 userFriends: null,
             })
         };
-        await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/', PostRequest)
+        await fetch('https://citygo-ap.azurewebsites.net/Users/', PostRequest)
             .then(response => response.json())
             //.then(data => console.log(data)) // Kijken wat de teruggekregen data is, evt analyseren
             //.catch(err => console.log(err)) // De error opvangen, evt gebruiken

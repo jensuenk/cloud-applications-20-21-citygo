@@ -68,7 +68,7 @@ class LoginScreen extends React.Component {
     //get request: opvragen van user bij de login functie. De user id kan worden gebruikt voor andere functies
     async apiCallUserEmail() {
         console.log("global email: ", global.emailUser);
-        let responseApiUserEmail = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/' + global.emailUser + '/email');
+        let responseApiUserEmail = await fetch('https://citygo-ap.azurewebsites.net/Users/' + global.emailUser + '/email');
         let responseJsonUserEmail = await responseApiUserEmail.json();
         console.log("get request: ", responseJsonUserEmail);
         global.uid = responseJsonUserEmail.userId;

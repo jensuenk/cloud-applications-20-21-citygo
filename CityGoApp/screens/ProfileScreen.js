@@ -49,7 +49,7 @@ export default class ProfileScreen extends React.Component {
   // nog een check doen voor als hij geen vrienden heeft
   async apiCallFriends() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/Friends')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/1/Friends')
     let respJson = await resp.json();
    // console.log(respJson)
     this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
@@ -59,7 +59,7 @@ export default class ProfileScreen extends React.Component {
 
   async apiCalluserchallanges() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/Friends')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/1/Friends')
     let respJson = await resp.json();
    // console.log(respJson)
     this.setState({ userchallanges: page === 1 ? respJson.usersChallenges : [...this.state.userchallanges, ...respJson.usersChallenges] })
@@ -69,7 +69,7 @@ export default class ProfileScreen extends React.Component {
 
   async apiCallUser() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/1')
     let respJson = await resp.json();
    // console.log(respJson)
     this.setState({ data: page === 1 ? respJson : [...this.state.data, ...respJson] })
@@ -80,7 +80,7 @@ export default class ProfileScreen extends React.Component {
   
   async apiCallFriendRequest() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/FriendRequests')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/1/FriendRequests')
     let respJson = await resp.json();
     this.setState({ FriendRequest: page === 1 ? respJson.friends : [...this.state.FriendRequest, ...respJson.friends] })
     console.log(this.state.FriendRequest)
