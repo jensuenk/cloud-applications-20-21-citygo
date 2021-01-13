@@ -32,7 +32,8 @@
 
 ## About
 
-TODO: Add description
+CityGo is a project of 5 IT students from Antwerp. The user interface was developed in react native. An admin panel has also been developed using Angular. The third part of this project is an API, which is hosted using Microsoft Azure.
+With the CityGo app you can play a city game in Antwerp. There are 'sights' at various locations. You can visit these sights and collect items all over the city. You can also see other active players in the city on the map.
 
 ## Key Features
 
