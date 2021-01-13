@@ -10,7 +10,7 @@
          alt="Builds">
   </a>
   <a href="https://github.com/AP-Elektronica-ICT/cloud-applications-20-21-citygo/actions?query=workflow%3A%22Deploy+to+Firebase+Hosting+on+merge%22">
-    <img src="https://github.com/AP-Elektronica-ICT/cloud-applications-20-21-citygo/workflows/Deploy%20to%20Firebase%20Hosting%20on%20merge/badge.svg"
+    <img src="https://github.com/AP-Elektronica-ICT/cloud-applications-20-21-citygo/workflows/Panel%20Deploy/badge.svg"
          alt="Panel Build">
   </a>
   <a href="https://opensource.org/licenses/MIT">
