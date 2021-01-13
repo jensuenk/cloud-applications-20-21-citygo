@@ -38,7 +38,7 @@ With the CityGo app you can play a city game in Antwerp. There are 'sights' at v
 ## Key Features
 
 - Learn about the city trough a game
-- Map with realtime userlocation 
+- Map with realtime userlocation
 - See other players location on a map
 - Ability to cath items
 - Compete with other players
@@ -48,28 +48,27 @@ With the CityGo app you can play a city game in Antwerp. There are 'sights' at v
 - Ability to send and accept a friend requests
 - Login using Oauth2
 - Admin panel to control the game and user settings
-- Geofencing 
+- Geofencing
 - API with 3 layerd architecture
-
 
 ## Demo
 
 **APP**  
-TODO: Add app demo  
-  
+TODO: Add app demo
+
 **Admin panel**  
 You can find a demo of the panel [here](https://panel.citygo.xyz). It's hosted on Firebase hosting.  
 Username: panel@citygo.xyz  
-Password: admin  
-  
+Password: admin
+
 **API**  
-You can find a demo of the API [here](https://citygoaspbackend20201224141859.azurewebsites.net/Sights). The API is hosted on an Azure Web Service with an SQL Database. For more info on how you should use the API, navigate to <a href="#api-usage">API Usage</a>.  
+You can find a demo of the API [here](https://citygo-ap.azurewebsites.net/Sights). The API is hosted on an Azure Web Service with an SQL Database. For more info on how you should use the API, navigate to <a href="#api-usage">API Usage</a>.
 
 ## How To Use
 
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.  
 **Run the app on your device**  
-You will also need [Expo](https://docs.expo.io) to be able to run the app on your device. Start with downloading the Expo client app from the [Andriod Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent) or form the [iOS App Store](https://apps.apple.com/nl/app/expo-client/id982107779). Expo client allows you to open up apps that are being served through Expo CLI.  
+You will also need [Expo](https://docs.expo.io) to be able to run the app on your device. Start with downloading the Expo client app from the [Andriod Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent) or form the [iOS App Store](https://apps.apple.com/nl/app/expo-client/id982107779). Expo client allows you to open up apps that are being served through Expo CLI.
 
 ```bash
 # Clone the repository (if you havn't done this yet)
@@ -88,7 +87,7 @@ $ expo start
 ```
 
 **Setup the admin panel**  
-The admin panel acts as an interface between you and the API. This allows you to manage sights, challenges, items and users without having to run a single request.  
+The admin panel acts as an interface between you and the API. This allows you to manage sights, challenges, items and users without having to run a single request.
 
 ```bash
 # Clone the repository (if you havn't done this yet)
@@ -117,7 +116,7 @@ $ git clone https://github.com/AP-Elektronica-ICT/ap-valley-20-21-apv12/
 ## API Usage
 
 The API is made with ASP.NET CORE 3.1 written in the clean code architecture.  
-TODO: Document commands  
+TODO: Document commands
 
 ## Contributions
 
