@@ -144,6 +144,7 @@ namespace Application.Command
             olduser.Score = newUser.Score;
             olduser.Location = newUser.Location;
             olduser.Online = newUser.Online;
+            olduser.PicrtureURL = newUser.PicrtureURL;
             var query = _context.Users.Update(olduser);
             return await _context.SaveAsync(cancellationToken);
         }     
