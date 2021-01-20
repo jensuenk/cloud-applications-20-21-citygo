@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Image, Text, StyleSheet, ToastAndroid } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const USER_ID = 2;
+const USER_ID = 4;
 
 export default class CatchItemScreen extends React.Component {
   constructor(props) {
@@ -14,18 +14,14 @@ export default class CatchItemScreen extends React.Component {
   }
 
   async componentDidMount() {
+    this.state.item = this.props.collectItem;
     this.getUserById(USER_ID);
   }
 
   async getUserById(id) {
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
     let respJson = await resp.json();
-    this.setState({ currentUser: respJson })
-
-    // TODO: remove
-    let resp2 = await fetch('https://citygo-ap.azurewebsites.net/Items/3');
-    let respJson2 = await resp2.json();
-    this.setState({ item: respJson2 })
+    this.setState({ currentUser: respJson });
   }
 
   async addItemToUser() {
@@ -42,9 +38,13 @@ export default class CatchItemScreen extends React.Component {
       })
   }
 
-  async updateUsersBalls() {
+  async collectItem() {
     let user = this.state.currentUser;
     user.balls = user.balls - 1;
+    delete user.usersItems;
+    delete user.usersChallenges;
+    delete user.friends;
+    delete user.userFriends;
     const request = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -55,13 +55,13 @@ export default class CatchItemScreen extends React.Component {
         return response.json();
       })
       .catch(function (error) {
-        //console.log("Update location error", error)
+        //console.log("Save error", error)
       })
+      this.addItemToUser();
   }
 
   collect = () => {
-    this.addItemToUser();
-    this.updateUsersBalls();
+    this.collectItem();
     this.props.changeComponent('One');
     ToastAndroid.show("Item added to your collection!", ToastAndroid.LONG);
   }
@@ -151,29 +151,32 @@ const styles = StyleSheet.create({
   no_balls_button1: {
     alignSelf: 'stretch',
     alignItems: 'center',
-    width: 300,
+    width: 350,
     paddingTop: 20,
     paddingBottom: 20,
     backgroundColor: "red",
     marginTop: 10,
+    borderRadius: 100
   },
   button1: {
     alignSelf: 'stretch',
     alignItems: 'center',
-    width: 300,
+    width: 350,
     paddingTop: 20,
     paddingBottom: 20,
     backgroundColor: "purple",
     marginTop: 10,
+    borderRadius: 100
   },
   button2: {
     alignSelf: 'stretch',
     alignItems: 'center',
-    width: 300,
+    width: 350,
     paddingTop: 20,
     paddingBottom: 20,
     borderWidth: 1,
-    marginTop: 10
+    marginTop: 10,
+    borderRadius: 100
   },
   button1_text: {
     fontSize: 17,

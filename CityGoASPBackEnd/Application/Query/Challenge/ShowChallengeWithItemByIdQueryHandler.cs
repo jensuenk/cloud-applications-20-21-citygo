@@ -36,6 +36,7 @@ namespace Application.Query.Challenge
                     Task = challenge.Task,
                     Items = challenge.Items,
                     Score = challenge.Score,
+                    Balls = challenge.Balls,
                     Sight = challenge.Sight
                 };
 

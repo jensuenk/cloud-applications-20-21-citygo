@@ -18,6 +18,7 @@
                     <td><label class="label">Question</label></td>
                     <td><label class="label">Answer</label></td>
                     <td><label class="label">Score</label></td>
+                    <td><label class="label">Balls Reward</label></td>
                     <td><label class="label">Rewards</label></td>
                     <td></td>
                 </tr>
@@ -35,6 +36,7 @@
                     <td><input nbInput fullWidth type="text" name="answer" value={{challenge.answer}} [(ngModel)]="challenge.answer">
                     </td>
                     <td><input nbInput fullWidth type="number" name="score" value={{challenge.score}} [(ngModel)]="challenge.score">
+                    <td><input nbInput fullWidth type="number" name="balls" value={{challenge.balls}} [(ngModel)]="challenge.balls">
                     <td><button nbButton outline fullWidth (click)="openItemSelector(challenge.items)">Edit</button></td>
                     <td><button nbButton fullWidth outline status="success" (click)="updateChallenge(challenge)">Save</button>
                     </td>
@@ -59,6 +61,7 @@
                     <td><label class="label">Question</label></td>
                     <td><label class="label">Answer</label></td>
                     <td><label class="label">Score</label></td>
+                    <td><label class="label">Balls Reward</label></td>
                     <td><label class="label">Rewards</label></td>
                     <td></td>
                 </tr>
@@ -70,9 +73,10 @@
                 <td><input nbInput fullWidth type="text" name="questionChallenge" [(ngModel)]="questionChallenge"></td>
                 <td><input nbInput outline fullWidth type="text" name="answer" [(ngModel)]="answer"></td>
                 <td><input nbInput fullWidth type="number" name="score" [(ngModel)]="score"></td>
+                <td><input nbInput fullWidth type="number" name="balls" [(ngModel)]="balls"></td>
                 <td><button nbButton outline fullWidth (click)="openItemSelector()">Add</button></td>
                 <td><button nbButton outline status="success"
-                        (click)="createChallenge(name, task, questionChallenge, answer, score)">Create</button>
+                        (click)="createChallenge(name, task, questionChallenge, answer, score, balls)">Create</button>
                 </td>
             </tbody>
         </table>

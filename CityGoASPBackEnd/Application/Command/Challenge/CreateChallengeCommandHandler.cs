@@ -34,7 +34,8 @@ namespace Application.Command.Challenge
                         Task = request.ChallengeVM.Task,
                         Answer = request.ChallengeVM.Answer,
                         QuestionChallenge = request.ChallengeVM.QuestionChallenge,
-                        Score = request.ChallengeVM.Score
+                        Score = request.ChallengeVM.Score,
+                        Balls = request.ChallengeVM.Balls
                     };
                 }
                 else

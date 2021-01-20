@@ -117,18 +117,7 @@ namespace Application.Command
             // Assign the list to the user's challenges
             newUser.UsersChallenges = newChallenges;
 
-            int localScore = 0;
-            if (newChallenges != null)
-            {
-                foreach (var chal in newUser.UsersChallenges)
-                {
-                    var foundChallenge = _context.Challenges.Find(chal.ChallengeId);
-                    localScore += foundChallenge.Score;
-                }
-            }
-            newUser.Score = localScore;
-
-
+            olduser.Score = newUser.Score;
             olduser.Name = newUser.Name;
             olduser.Username = newUser.Username;
             olduser.Email = newUser.Email;

@@ -19,6 +19,8 @@ namespace Application.ViewModel.Challenge
 
         public int Score { get; set; }
 
+        public int Balls { get; set; }
+
         public Domain.Sight Sight { get; set; }
 
         public List<Domain.UsersChallenges> UsersChallenges { get; set; }
