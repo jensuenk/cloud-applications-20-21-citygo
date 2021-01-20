@@ -29,7 +29,7 @@ export default class FriendRequest extends React.Component {
 
   async apiCallUser() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/Users/')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/')
     let respJson = await resp.json();
    // console.log(respJson)
     this.setState({ allUsers: page === 1 ? respJson.users : [...this.state.allUsers, ...respJson.users] })
@@ -52,7 +52,7 @@ export default class FriendRequest extends React.Component {
   makeRemoteRequest = () => {
     const { page, seed } = this.state
     //const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
-    const url = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/1/FriendRequests'
+    const url = 'https://citygo-ap.azurewebsites.net/Users/4/FriendRequests'
     this.setState({ loading: true })
 
 
@@ -93,7 +93,7 @@ export default class FriendRequest extends React.Component {
  // versturen van een accepteren zal nu hardcoded zijn vanuit het standpunt van user1
   
   acceptFriendRequest = (fid, uid = '1' ) => {
-    const urlFriendRequest = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/'+uid+'/Friends/'+fid
+    const urlFriendRequest = 'https://citygo-ap.azurewebsites.net/Users/'+uid+'/Friends/'+fid
     console.log(urlFriendRequest)
     const putMethod = {
       method: 'PUT',
@@ -112,7 +112,7 @@ export default class FriendRequest extends React.Component {
 
 
         //moet op beide plaatsen aangemaakt worden
-       const urlFriendRequest2 = 'https://citygoaspbackend20201224141859.azurewebsites.net/Users/'+fid+'/Friends/'+uid
+       const urlFriendRequest2 = 'https://citygo-ap.azurewebsites.net/Users/'+fid+'/Friends/'+uid
        console.log(urlFriendRequest)
        const putMethod2 = {
          method: 'PUT',
