@@ -11,6 +11,7 @@ import QuestionScreen from './QuestionScreen';
 import TicTacToe from './TicTacToe';
 import MemoryGame from './MemoryGame';
 import CatchItemScreen from './CatchItemScreen';
+import RewardScreen from './RewardScreen';
 
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
@@ -29,6 +30,8 @@ export default class Map2 extends React.Component {
     this.state =
     {
       componentSelected: 'One',
+      collectItem: null,
+      rewardChallenge: null
     }
   }
 
@@ -36,9 +39,17 @@ export default class Map2 extends React.Component {
     this.setState({ componentSelected: component });
   }
 
+  setCollectItem = (item) => {
+    this.setState({ collectItem: item });
+  }
+
+  setRewardChallenge = (challenge) => {
+    this.setState({ rewardChallenge: challenge });
+  }
+
   renderComponent(component) {
     if (component == 'One') {
-      return <MapZelf changeComponent={this.changeComponent} />
+      return <MapZelf changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
     } else if (component == 'Two') {
       return <QuestionScreen changeComponent={this.changeComponent} />
     } else if (component == 'Three') {
@@ -46,7 +57,9 @@ export default class Map2 extends React.Component {
     } else if (component == 'Four') {
       return <MemoryGame changeComponent={this.changeComponent} />
     } else if (component == 'catch') {
-      return <CatchItemScreen changeComponent={this.changeComponent} />
+      return <CatchItemScreen changeComponent={this.changeComponent} collectItem={this.state.collectItem}/>
+    } else if (component == 'reward') {
+      return <RewardScreen changeComponent={this.changeComponent} rewardChallenge={this.state.rewardChallenge} setCollectItem={this.setCollectItem}/>
     }
   }
 

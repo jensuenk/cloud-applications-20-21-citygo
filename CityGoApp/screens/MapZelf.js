@@ -9,11 +9,12 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Notifications } from 'expo-notifications';
 import Firebase from '../config/Firebase';
 import Constants from 'expo-constants';
+import LoginScreen from './LoginScreen';
 
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
 
-const USER_ID = 2;
+const USER_ID = 4;
 
 export default class Mapke extends React.Component {
 
@@ -122,10 +123,8 @@ export default class Mapke extends React.Component {
       notFoundItems: [],
       itemDialogsCanceled: []
     }
-
-    this.locationWatcher = null
-    this.spawnInterval = null
-
+    this.locationWatcher = null;
+    this.spawnInterval = null;
   }
 
   // Om middelpunt van polygon te krijgen
@@ -230,7 +229,6 @@ export default class Mapke extends React.Component {
 
             console.log(this.state.markers)
           })
-
         }
       })
     // TODO: change id to global
