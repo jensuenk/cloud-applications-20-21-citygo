@@ -245,6 +245,7 @@ export default class Mapke extends React.Component {
   componentWillUnmount() {
     clearInterval(this.itemTimer);
     clearInterval(this.locationTimer);
+    this.updatePositionAPI(false);
   }
 
   updateLocation() {
@@ -302,7 +303,7 @@ export default class Mapke extends React.Component {
       }
     })
     this.setState({ userLocations: userLocations });
-    this.updatePositionAPI();
+    this.updatePositionAPI(true);
   }
 
   async getItems() {
@@ -328,11 +329,12 @@ export default class Mapke extends React.Component {
     this.updateLocation();
   }
 
-  async updatePositionAPI() {
+  async updatePositionAPI(online) {
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + USER_ID);
     let respJson = await resp.json();
     this.setState({ currentUser: respJson })
     let user = this.state.currentUser;
+    user.online = online;
     delete user.usersItems;
     delete user.usersChallenges;
     delete user.friends;
