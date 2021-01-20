@@ -38,9 +38,13 @@ export default class CatchItemScreen extends React.Component {
       })
   }
 
-  async updateUsersBalls() {
+  async collectItem() {
     let user = this.state.currentUser;
     user.balls = user.balls - 1;
+    delete user.usersItems;
+    delete user.usersChallenges;
+    delete user.friends;
+    delete user.userFriends;
     const request = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -51,13 +55,13 @@ export default class CatchItemScreen extends React.Component {
         return response.json();
       })
       .catch(function (error) {
-        //console.log("Update location error", error)
+        //console.log("Save error", error)
       })
+      this.addItemToUser();
   }
 
   collect = () => {
-    this.addItemToUser();
-    this.updateUsersBalls();
+    this.collectItem();
     this.props.changeComponent('One');
     ToastAndroid.show("Item added to your collection!", ToastAndroid.LONG);
   }

@@ -56,6 +56,7 @@ export default class Mapke extends React.Component {
           { 
             text: "Yes", 
             onPress: () => (
+              this.props.setCollectItem(item),
               this.props.changeComponent('catch'),
               this.alertIsActive = false) 
           }
@@ -247,6 +248,19 @@ export default class Mapke extends React.Component {
   }
 
   updateLocation() {
+    this.locationWatcher = Location.watchPositionAsync({
+      enableHighAccuracy: true
+    }, (location) => {
+      this.setState({
+        locatie: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta,
+          longitudeDelta,
+        }
+      })
+    })
+    //console.log("Current Location: ", this.state.locatie.latitude, this.state.locatie.longitude)
     this.state.notFoundItems.forEach(item => {
       // Check if item is in a radius of +-10m
       if (!(Math.abs(this.state.locatie.latitude - item.location.latitude) > 0.001 || Math.abs(this.state.locatie.longitude - item.location.longitude) > 0.001)) {
@@ -313,10 +327,26 @@ export default class Mapke extends React.Component {
     this.setState({ notFoundItems: notFoundItems })
     this.updateLocation();
   }
+
   async updatePositionAPI() {
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + USER_ID);
+    let respJson = await resp.json();
+    this.setState({ currentUser: respJson })
     let user = this.state.currentUser;
-    user.location.latitude = this.state.locatie.latitude,
-    user.location.longitude = this.state.locatie.longitude
+    delete user.usersItems;
+    delete user.usersChallenges;
+    delete user.friends;
+    delete user.userFriends;
+    if (user.location == null) {
+        user.location = {
+          latitude: this.state.locatie.latitude,
+          longitude: this.state.locatie.longitude
+        }
+    }
+    else {
+      user.location.latitude = this.state.locatie.latitude,
+      user.location.longitude = this.state.locatie.longitude
+    }
     const request = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },

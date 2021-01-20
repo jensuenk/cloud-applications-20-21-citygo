@@ -36,23 +36,36 @@ export default class RewardScreen extends React.Component {
     });
   }
 
-  async updateUsersBalls() {
-    if (this.challenge.balls != null || this.challenge.balls != 0) {
-      let user = this.state.currentUser;
+  async updateUsersCollection() {
+    let user = this.state.currentUser;
+    delete user.usersItems;
+    delete user.usersChallenges;
+    delete user.friends;
+    delete user.userFriends;
+    if (this.state.challenge.balls != null) {
       user.balls = user.balls + this.state.challenge.balls;
-      const request = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-      };
-      await fetch('https://citygo-ap.azurewebsites.net/Users/', request)
-        .then(function (response) {
-          return response.json();
-        })
-        .catch(function (error) {
-          //console.log("Update location error", error)
-        })
     }
+    const request = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    };
+    await fetch('https://citygo-ap.azurewebsites.net/Users/', request)
+      .then(function (response) {
+        return response.json();
+      })
+      .catch(function (error) {
+        //console.log("Save error", error)
+      })
+    // Add challenge to user
+    await fetch('https://citygo-ap.azurewebsites.net/Users/' + this.state.currentUser.userId + '/Challenges/' + this.state.challenge.challengeId, request)
+      .then(function (response) {
+        return response.json();
+      })
+      .catch(function (error) {
+        //console.log("Save error", error)
+      })
+      
     if (this.state.item != null) {
       this.props.setCollectItem(this.state.item);
       this.props.changeComponent('catch');
@@ -60,13 +73,14 @@ export default class RewardScreen extends React.Component {
   }
 
   collect = () => {
-    this.updateUsersBalls();
+    this.updateUsersCollection();
     this.props.changeComponent('One');
     ToastAndroid.show("Added rewards to your collection!", ToastAndroid.LONG);
   }
 
   collectCatch = () => {
-    this.updateUsersBalls();
+    console.log("User: ", this.state.currentUser)
+    this.updateUsersCollection();
   }
 
   render() {
