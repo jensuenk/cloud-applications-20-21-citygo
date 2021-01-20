@@ -34,7 +34,8 @@ namespace Application.Command.Challenge
                         Task = request.ChallengeVM.Task,
                         Answer = request.ChallengeVM.Answer,
                         QuestionChallenge = request.ChallengeVM.QuestionChallenge,
-                        Score = request.ChallengeVM.Score
+                        Score = request.ChallengeVM.Score,
+                        Balls = request.ChallengeVM.Balls
                     };
                 }
                 else
@@ -110,6 +111,8 @@ namespace Application.Command.Challenge
             oldChallenge.Name = newChallenge.Name;
             oldChallenge.Task = newChallenge.Task;
             oldChallenge.Answer = newChallenge.Answer;
+            oldChallenge.Balls = newChallenge.Balls;
+            oldChallenge.Score = newChallenge.Score;
             oldChallenge.QuestionChallenge = newChallenge.QuestionChallenge;
             if (request.ChallengeVM.Items != null)
             {

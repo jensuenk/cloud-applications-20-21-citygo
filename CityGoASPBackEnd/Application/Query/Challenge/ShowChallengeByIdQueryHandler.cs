@@ -31,6 +31,7 @@ namespace Application.Query.Challenge
                     Task = challenge.Task,
                     Answer = challenge.Answer,
                     Score = challenge.Score,
+                    Balls = challenge.Balls,
                     QuestionChallenge = challenge.QuestionChallenge
                 };
                 return vm;

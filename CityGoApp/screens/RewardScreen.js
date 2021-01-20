@@ -37,20 +37,22 @@ export default class RewardScreen extends React.Component {
   }
 
   async updateUsersBalls() {
-    let user = this.state.currentUser;
-    user.balls = user.balls + this.state.item.balls;
-    const request = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user)
-    };
-    await fetch('https://citygo-ap.azurewebsites.net/Users/', request)
-      .then(function (response) {
-        return response.json();
-      })
-      .catch(function (error) {
-        //console.log("Update location error", error)
-      })
+    if (this.challenge.balls != null || this.challenge.balls != 0) {
+      let user = this.state.currentUser;
+      user.balls = user.balls + this.state.challenge.balls;
+      const request = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
+      };
+      await fetch('https://citygo-ap.azurewebsites.net/Users/', request)
+        .then(function (response) {
+          return response.json();
+        })
+        .catch(function (error) {
+          //console.log("Update location error", error)
+        })
+    }
     if (this.state.item != null) {
       this.props.setCollectItem(this.state.item);
       this.props.changeComponent('catch');

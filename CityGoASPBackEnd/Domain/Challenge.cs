@@ -26,6 +26,7 @@ namespace Domain
         public string Answer { get; set; }
 
         public int Score { get; set; }
+        public int Balls { get; set; }
 
         [JsonIgnore]
         public Sight Sight { get; set; }
