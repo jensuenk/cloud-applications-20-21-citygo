@@ -14,8 +14,6 @@ import LoginScreen from './LoginScreen';
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
 
-const USER_ID = 4;
-
 export default class Mapke extends React.Component {
 
   AlertChallenge() {
@@ -232,8 +230,7 @@ export default class Mapke extends React.Component {
           })
         }
       })
-    // TODO: change id to global
-    this.getUserById(USER_ID);
+    this.getUserById(global.uid);
 
     this.locationTimer = setInterval(() => this.getAllUsersLocations(), 10000)
     this.itemTimer = setInterval(() => this.getItems(), 10000);
@@ -330,7 +327,7 @@ export default class Mapke extends React.Component {
   }
 
   async updatePositionAPI(online) {
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + USER_ID);
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + global.uid);
     let respJson = await resp.json();
     this.setState({ currentUser: respJson })
     let user = this.state.currentUser;

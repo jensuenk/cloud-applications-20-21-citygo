@@ -2,8 +2,6 @@ import React from 'react'
 import { View, Image, Text, StyleSheet, ToastAndroid } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const USER_ID = 4;
-
 export default class CatchItemScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -15,7 +13,7 @@ export default class CatchItemScreen extends React.Component {
 
   async componentDidMount() {
     this.state.item = this.props.collectItem;
-    this.getUserById(USER_ID);
+    this.getUserById(global.uid);
   }
 
   async getUserById(id) {

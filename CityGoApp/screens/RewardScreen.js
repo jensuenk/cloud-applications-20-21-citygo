@@ -2,8 +2,6 @@ import React from 'react'
 import { View, Image, Text, StyleSheet, ToastAndroid } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const USER_ID = 4;
-
 export default class RewardScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -15,9 +13,8 @@ export default class RewardScreen extends React.Component {
   }
 
   async componentDidMount() {
-    this.getUserById(USER_ID);
-    // TODO: Uncomment
-    //this.state.challenge = this.props.rewardChallenge;
+    this.getUserById(global.uid);
+    this.state.challenge = this.props.rewardChallenge;
     
   }
 
@@ -26,8 +23,7 @@ export default class RewardScreen extends React.Component {
     let respJson = await resp.json();
     this.setState({ currentUser: respJson });
 
-    // TODO: Change number to this.state.challenge
-    let resp1 = await fetch('https://citygo-ap.azurewebsites.net/Challenges/3/Items');
+    let resp1 = await fetch('https://citygo-ap.azurewebsites.net/Challenges/' + this.state.challenge.challengeId + '/Items');
     let respJson1 = await resp1.json();
     this.setState({ challenge: respJson1 });
 

@@ -78,6 +78,7 @@ class LoginScreen extends React.Component {
 
     authSuccessfull = () => {
         global.Myuser = true;
+        this.apiCallUserEmail(); //call users to find UID
         this.props.navigation.navigate("MainScreen");
     }
 
