@@ -275,6 +275,14 @@ Here you can find all possible requests which get handled by the API:
   ```http
   DELETE /Users/{uid}
   ```
+  Get a user by email  
+  ```http
+  GET /Users/{email}/Email
+  ```
+  Change profile picture of a user 
+  ```http
+  PUT /Users/ProfilePicture
+  ```
   _cid = challengeId, sid = sightId, uid = userId, iid = itemId, fid = friendId_
 </details>
 
