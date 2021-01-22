@@ -86,6 +86,7 @@ export default class AddFriends extends React.Component {
 
 
 
+       /*
         //moet op beide plaatsen aangemaakt worden
        const urlFriendRequest2 = 'https://citygo-ap.azurewebsites.net/Users/'+fid+'/Friends/'+uid
        console.log(urlFriendRequest)
@@ -102,7 +103,7 @@ export default class AddFriends extends React.Component {
           .then(response => response.json())
           .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
           .catch(err => console.log(err)) // Do something with the error
-          
+          */
        
   }
  

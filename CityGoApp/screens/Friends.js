@@ -16,12 +16,14 @@ export default class Friends extends React.Component {
         seed: 1,
         error: null,
         query: '',
-        fullData: []
+        fullData: [],
+        acceptedFriends:[]
     }
 
 
     componentDidMount() {
         this.makeRemoteRequest()
+        this.FilterdFriends()
     }
 
 
@@ -39,8 +41,31 @@ export default class Friends extends React.Component {
                     error: res.error || null,
                     loading: false,
                     fullData: res.userFriends
+
                 })
             })
+    }
+
+
+    FilterdFriends =()=>{
+      const { page, seed } = this.state
+      const url = 'https://citygo-ap.azurewebsites.net/Users/4/Friends'
+      this.setState({ loading: true })
+
+
+      fetch(url)
+          .then(res => res.json())
+          .then(res => {
+              this.setState({
+                  acceptedFriends: page === 1 ? res.friends : [...this.state.acceptedFriends, ...res.friends],
+                  error: res.error || null,
+                  loading: false,
+                 
+
+              })
+          })
+          //console.log(_.filter(acceptedFriends, { acceptedUser2: false}));
+          console.log("dit is een log voorbeeld")
     }
 
 

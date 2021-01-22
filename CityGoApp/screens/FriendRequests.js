@@ -109,7 +109,7 @@ export default class FriendRequest extends React.Component {
        .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
        .catch(err => console.log(err)) // Do something with the error
 
-
+        
 
         //moet op beide plaatsen aangemaakt worden
        const urlFriendRequest2 = 'https://citygo-ap.azurewebsites.net/Users/'+fid+'/Friends/'+uid

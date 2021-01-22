@@ -51,7 +51,9 @@ export default class ProfileScreen extends React.Component {
   // nog een check doen voor als hij geen vrienden heeft
   async apiCallFriends() {
     const { page, seed } = this.state
+
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4/Friends')
+
     let respJson = await resp.json();
     this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
    
@@ -59,7 +61,9 @@ export default class ProfileScreen extends React.Component {
 
   async apiCalluserchallanges() {
     const { page, seed } = this.state
+
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4')
+
     let respJson = await resp.json();
     // console.log(respJson)
     this.setState({ userchallanges: page === 1 ? respJson.usersChallenges : [...this.state.userchallanges, ...respJson.usersChallenges] })
@@ -72,7 +76,9 @@ export default class ProfileScreen extends React.Component {
 
   async apiCallUser() {
     const { page, seed } = this.state
+
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4')
+
     let respJson = await resp.json();
     // console.log(respJson)
     this.setState({ data: page === 1 ? respJson : [...this.state.data, ...respJson] })
@@ -82,7 +88,9 @@ export default class ProfileScreen extends React.Component {
 
   async apiCallFriendRequest() {
     const { page, seed } = this.state
+
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4/FriendRequests')
+
     let respJson = await resp.json();
     this.setState({ FriendRequest: page === 1 ? respJson.friends : [...this.state.FriendRequest, ...respJson.friends] })
 
@@ -295,7 +303,7 @@ export default class ProfileScreen extends React.Component {
               FriendRequest={this.state.FriendRequest}
               renderItem={
                 ({ item }) => {
-                  if (item.userId != 1) {
+                  if (item.userId != 4) {
                     return (<View
                       style={{
                         flexDirection: 'row',
