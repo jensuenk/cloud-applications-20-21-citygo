@@ -13,21 +13,32 @@ import Constants from 'expo-constants';
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
 
+var doorstuurgetal
 const USER_ID = 2;
+
 
 export default class Mapke extends React.Component {
 
   AlertChallenge() {
+    if(this.state.soortchallenge=="vraag"){
+      doorstuurgetal="Two"
+    }
+    else if(this.state.soortchallenge=="tictactoe"){
+      doorstuurgetal="Three"
+    }
+    else if(this.state.soortchallenge=="memorygame"){
+      doorstuurgetal="Four"
+    }
     Alert.alert(
       "ALERT",
       "You are nearby " + this.state.huidigeSightNaam + ", do you want to do a challenge?",
       [
         {
           text: "Cancel",
-          onPress: () => console.log(""),
           style: "cancel"
         },
-        { text: "OK", onPress: () => (this.props.changeComponent('Two')) }
+        // nu standaard naar 2 maar moet van api komen naar wat soort vraag het moet gaan
+        { text: "OK", onPress: () => (this.props.changeComponent(doorstuurgetal)) }
       ],
       { cancelable: false }
     );
@@ -121,6 +132,8 @@ export default class Mapke extends React.Component {
       currentUser: null,
       notFoundItems: [],
       itemDialogsCanceled: []
+      }],
+      soortchallenge:""
     }
 
     this.locationWatcher = null
@@ -219,6 +232,7 @@ export default class Mapke extends React.Component {
               if (this._isInPolygon(this.state.coordinaten, element.coordinates)) {
                 this.setState({ huidigeSightNaam: element.name })
                 this.setState({ huidigeSightId: element.sightId })
+                this.setState({soortchallenge:element.challenges[0].questionChallenge})
                 this.AlertChallenge();
               }
 
@@ -228,7 +242,6 @@ export default class Mapke extends React.Component {
               this.coordinate(sight)
             });
 
-            console.log(this.state.markers)
           })
 
         }
@@ -374,6 +387,7 @@ export default class Mapke extends React.Component {
                 latitude: marker.coordinates.latitude,
                 longitude: marker.coordinates.longitude,
               }}
+              onPress={() => this.AlertChallenge()}
             />
           )),
             this.state.userLocations.map((user) => (

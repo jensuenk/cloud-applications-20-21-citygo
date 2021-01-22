@@ -31,7 +31,8 @@ export default class QuestionScreen extends React.Component {
       huidigeSightId: 0,
       vraag: "(Hier komt vraag van API)",
       antwoord: "",
-      juistantwoord:""
+      juistantwoord:"",
+      id:0
     }
   }
 
@@ -100,7 +101,7 @@ export default class QuestionScreen extends React.Component {
   } 
 
   async apiCallSights() {
-    let resp2 = await fetch('https://citygoaspbackend20201120025600.azurewebsites.net/sights')
+    let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/sights')
     let respJson2 = await resp2.json();
     this.setState({ sights: respJson2.sights })
 
@@ -108,11 +109,12 @@ export default class QuestionScreen extends React.Component {
   }
 
   async apiCallChallenge(id) { 
-    let url='https://citygoaspbackend20201120025600.azurewebsites.net/sights/'+id+'/challenges';
+    let url='https://citygoaspbackend20201224141859.azurewebsites.net/sights/'+id+'/challenges';
     let resp = await fetch(url)
     let respJson = await resp.json();
     this.setState({ vraag: respJson.challenges[0].task })
     this.setState({ juistantwoord: respJson.challenges[0].answer })
+    this.setState({ id: respJson.challenges[0].challengeId })
   }
 
   confirm=()=>{
@@ -129,7 +131,8 @@ export default class QuestionScreen extends React.Component {
        
        // make the HTTP put request using fetch api
        // voorlopig hardcoded, kan wanneer login af is
-       fetch("https://citygo5.azurewebsites.net/users/1/challenges/1", putMethod)
+       var id=this.state.id
+       fetch("https://citygoaspbackend20201224141859.azurewebsites.net/users/1/challenges/"+id, putMethod)
        .then(response => response.json())
        .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
        .catch(err => console.log(err)) // Do something with the error

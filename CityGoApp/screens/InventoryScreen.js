@@ -10,6 +10,7 @@ import { CheckBox } from 'react-native-elements'
 import { TabRouter } from 'react-navigation';
 
 
+
 export default class InventoryScreen extends React.Component {
   constructor() {
     super();
@@ -33,16 +34,14 @@ export default class InventoryScreen extends React.Component {
 
   //voorlopig enkel user 1 aangezien login nog niet helemaal werkt
   async apiCall() {
-    let resp = await fetch('https://citygo5.azurewebsites.net/sights')
+    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/sights')
     let respJson = await resp.json();
     this.setState({ sights: respJson.sights })
-    let resp2 = await fetch('https://citygo5.azurewebsites.net/users/1')
+    let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/users/1')
     let respJson2 = await resp2.json();
-    this.setState({ voltooideChallenges: respJson2.challenges })
+    this.setState({ voltooideChallenges: respJson2.usersChallenges })
 
     this.state.sights.forEach(sight => {
-
-
       this.checkenVanSightChallenge(sight)
       if (this.state.intOmTeChecken > 0) {
         const lijst = this.state.booleans;
@@ -58,14 +57,17 @@ export default class InventoryScreen extends React.Component {
       this.setState({ intOmTeChecken: 0 });
     });
 
-
+    //console.log(this.state.booleans) 
 
   }
 
   checkenVanSightChallenge(sight) {
     this.state.voltooideChallenges.forEach(voltooidech => {
 
-      if (sight.challenges[0].challengeId == voltooidech.challengeId) {
+      //console.log(voltooidech.challenge.challengeId)
+
+      if (sight.challenges[0].challengeId == voltooidech.challenge.challengeId) {
+
         let i = this.state.intOmTeChecken;
         i++;
         this.setState({ intOmTeChecken: i })
