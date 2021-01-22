@@ -52,7 +52,7 @@ export default class FriendRequest extends React.Component {
   makeRemoteRequest = () => {
     const { page, seed } = this.state
     //const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
-    const url = 'https://citygo-ap.azurewebsites.net/Users/1/FriendRequests'
+    const url = 'https://citygo-ap.azurewebsites.net/Users/4/FriendRequests'
     this.setState({ loading: true })
 
 

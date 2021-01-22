@@ -27,7 +27,7 @@ export default class Friends extends React.Component {
 
     makeRemoteRequest = () => {
         const { page, seed } = this.state
-        const url = 'https://citygo-ap.azurewebsites.net/Users/1/Friends'
+        const url = 'https://citygo-ap.azurewebsites.net/Users/4/Friends'
         this.setState({ loading: true })
 
 
@@ -67,7 +67,7 @@ export default class Friends extends React.Component {
 
 
   
-    deleteFriend = (fid, uid = '1' ) => {
+    deleteFriend = (fid, uid = '4' ) => {
 
      
       const urlFriendDelete = 'https://citygo-ap.azurewebsites.net/Users/'+uid+'/Friends/'+fid
