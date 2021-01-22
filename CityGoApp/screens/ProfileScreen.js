@@ -45,6 +45,7 @@ export default class ProfileScreen extends React.Component {
     this.apiCallFriends();
     this.apiCallUser();
     this.apiCallFriends();
+    this.apiCalluserchallanges();
   }
 
   // nog een check doen voor als hij geen vrienden heeft
@@ -52,19 +53,20 @@ export default class ProfileScreen extends React.Component {
     const { page, seed } = this.state
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4/Friends')
     let respJson = await resp.json();
-    // console.log(respJson)
     this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
-    console.log(this.state.FriendsList)
-    // TODO: order friends
+   
   }
 
   async apiCalluserchallanges() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4/Friends')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4')
     let respJson = await resp.json();
     // console.log(respJson)
     this.setState({ userchallanges: page === 1 ? respJson.usersChallenges : [...this.state.userchallanges, ...respJson.usersChallenges] })
-    console.log(this.state.usersChallenges)
+
+    const membersToRender = this.state.userchallanges.filter(c => c.challengeId)
+    const numRows = membersToRender.length
+    console.log(numRows)
     // TODO: order friends
   }
 
@@ -74,8 +76,7 @@ export default class ProfileScreen extends React.Component {
     let respJson = await resp.json();
     // console.log(respJson)
     this.setState({ data: page === 1 ? respJson : [...this.state.data, ...respJson] })
-    console.log(this.state.data)
-    // TODO: order friends
+  
   }
 
 
@@ -84,7 +85,6 @@ export default class ProfileScreen extends React.Component {
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4/FriendRequests')
     let respJson = await resp.json();
     this.setState({ FriendRequest: page === 1 ? respJson.friends : [...this.state.FriendRequest, ...respJson.friends] })
-    console.log(this.state.FriendRequest)
 
   }
 
@@ -118,8 +118,7 @@ export default class ProfileScreen extends React.Component {
       });
       // stad = postalAddress[0].city
       // land = postalAddress[0].country
-      console.log(postalAddress[0].city)
-      console.log(postalAddress[0].country)
+
 
       this.setState({ city: postalAddress[0].city })
       this.setState({ country: postalAddress[0].country })
@@ -188,7 +187,9 @@ export default class ProfileScreen extends React.Component {
     let balls = this.state.data.balls
     let score = this.state.data.score
     let picurl = this.state.data.picrtureURL
-    console.log(picurl);
+   // let numbofchallanges = this.state.userchallanges.length
+
+
     let teller = 0
     let amountRequest = <View style={styles.statsBox}>
       <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
@@ -247,7 +248,7 @@ export default class ProfileScreen extends React.Component {
               <Text style={[styles.text, styles.subText]}>score</Text>
             </View>
             <View style={styles.statsBox}>
-              <Text style={[styles.text, { fontSize: 24 }]}>{this.state.userchallanges.length}</Text>
+              <Text style={[styles.text, { fontSize: 24 }]}>666</Text>
               <Text style={[styles.text, styles.subText]}>challanges</Text>
             </View>
             <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
