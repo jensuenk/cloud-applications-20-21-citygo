@@ -132,7 +132,7 @@ export default class ProfileScreen extends React.Component {
     alert(item.name)
   }
 
-  onPress = () => {
+  goToAddFriends = () => {
     this.props.changeComponent('Two')
   };
 
@@ -332,7 +332,7 @@ export default class ProfileScreen extends React.Component {
 
           <View>
             <TouchableOpacity
-              onPress={() => this.logout()}
+              onPress={() => this.goToAddFriends()}
               style={styles.buttonlogout}>
               <Text style={styles.appButtonText} >ADD FRIENDS</Text>
             </TouchableOpacity>
