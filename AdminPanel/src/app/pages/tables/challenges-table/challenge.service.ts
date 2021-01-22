@@ -60,6 +60,7 @@ export interface Challenge {
   sight?: any;
   items?: any;
   score: number;
+  balls: number;
 }
 
 export interface RootObject {

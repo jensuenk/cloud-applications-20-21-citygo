@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {ActivityIndicator, StyleSheet, Text, View, FlatList, SafeAreaView, Image, ScrollView, LogBox } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View, FlatList, SafeAreaView, Image, ScrollView, LogBox } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Location from 'expo-location';
@@ -7,16 +7,17 @@ import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import StandardButton from '../components/StandardButton';
 import Firebase from '../config/Firebase';
+import LoginScreen from './LoginScreen'
 
 
 
 export default class ProfileScreen extends React.Component {
 
-  
-  
+
+
   state = {
     location: null,
-    city:null,
+    city: null,
     country: null,
     errorMessage: null,
     name: [],
@@ -30,61 +31,61 @@ export default class ProfileScreen extends React.Component {
     query: '',
     fullData: [],
     isLoading: true,
-    FriendsList:[],
-    FriendRequest:[],
-    userchallanges:[],
-    
+    FriendsList: [],
+    FriendRequest: [],
+    userchallanges: [],
+
   };
 
 
-  
+
 
 
   componentDidMount() {
-   this.apiCallFriends();
-   this.apiCallUser();
-   this.apiCallFriends();
+    this.apiCallFriends();
+    this.apiCallUser();
+    this.apiCallFriends();
+    this.apiCalluserchallanges();
   }
 
   // nog een check doen voor als hij geen vrienden heeft
   async apiCallFriends() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/1/Friends')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4/Friends')
     let respJson = await resp.json();
-   // console.log(respJson)
     this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
-    console.log(this.state.FriendsList)
-    // TODO: order friends
+   
   }
 
   async apiCalluserchallanges() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/1/Friends')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4')
     let respJson = await resp.json();
-   // console.log(respJson)
+    // console.log(respJson)
     this.setState({ userchallanges: page === 1 ? respJson.usersChallenges : [...this.state.userchallanges, ...respJson.usersChallenges] })
-    console.log(this.state.usersChallenges)
+
+    const membersToRender = this.state.userchallanges.filter(c => c.challengeId)
+    const numRows = membersToRender.length
+    console.log(numRows)
     // TODO: order friends
   }
 
   async apiCallUser() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/1')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4')
     let respJson = await resp.json();
-   // console.log(respJson)
+    // console.log(respJson)
     this.setState({ data: page === 1 ? respJson : [...this.state.data, ...respJson] })
-    console.log(this.state.data)
-    // TODO: order friends
+  
   }
 
-  
+
   async apiCallFriendRequest() {
     const { page, seed } = this.state
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/1/FriendRequests')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4/FriendRequests')
     let respJson = await resp.json();
     this.setState({ FriendRequest: page === 1 ? respJson.friends : [...this.state.FriendRequest, ...respJson.friends] })
-    console.log(this.state.FriendRequest)
-    
+
   }
 
   componentWillMount() {
@@ -112,32 +113,30 @@ export default class ProfileScreen extends React.Component {
       const { latitude, longitude } = location.coords;
 
       const postalAddress = await Location.reverseGeocodeAsync({
-          latitude,
-          longitude,
+        latitude,
+        longitude,
       });
       // stad = postalAddress[0].city
       // land = postalAddress[0].country
-      console.log(postalAddress[0].city)
-      console.log(postalAddress[0].country)
 
-      this.setState({city: postalAddress[0].city})
-      this.setState({country: postalAddress[0].country})
+
+      this.setState({ city: postalAddress[0].city })
+      this.setState({ country: postalAddress[0].country })
 
     }
   };
 
-  
-  
+
+
   alertItemName = (item) => {
     alert(item.name)
   }
 
-  onPress = () => {
-      this.props.changeComponent('Two')
+  goToAddFriends = () => {
+    this.props.changeComponent('Two')
   };
 
   /*
-  //overbodig, philip ging logout doen
   signOut = () => {
     Firebase.auth()
       .signOut()
@@ -145,12 +144,13 @@ export default class ProfileScreen extends React.Component {
       .catch(error => console.log(error))
   }
 */
+
   goToHangman = () => {
     this.props.changeComponent('Four')
   }
 
 
-  
+
   goToFriends = () => {
     this.props.changeComponent('Three')
   }
@@ -159,15 +159,25 @@ export default class ProfileScreen extends React.Component {
     this.props.changeComponent('Five')
   }
 
+  goToProfilePictures = () => {
+    this.props.changeComponent('Seven')
+  }
+
+
   //logout functie
-  /*
+
   logout = () => {
     //logout via firebase afhandelen
-    this.props.changeComponent('login')
+    Firebase.auth()
+      .signOut()
+      .then(() => this.props.navigation.navigate('LoginScreen'))
+      .then(() => this.props.changeComponent('Six'))
+      .catch(error => console.log(error))
+    global.Myuser = false;
   };
-  */
 
-  
+
+
   render() {
     const { FriendRequest, data, isLoading } = this.state;
     let text = 'Waiting..';
@@ -176,14 +186,18 @@ export default class ProfileScreen extends React.Component {
     let naam = this.state.data.name
     let balls = this.state.data.balls
     let score = this.state.data.score
+    let picurl = this.state.data.picrtureURL
+   // let numbofchallanges = this.state.userchallanges.length
+
+
     let teller = 0
-    let amountRequest =  <View style={styles.statsBox}>
-    <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
-    <Text  onPress={() => this.gotoRequests()} style={[styles.text, styles.subText]}>requests</Text>
+    let amountRequest = <View style={styles.statsBox}>
+      <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
+      <Text onPress={() => this.gotoRequests()} style={[styles.text, styles.subText]}>requests</Text>
     </View>;
     let noRequest = <View style={styles.statsBox}>
-    <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
-    <Text style={[styles.text, styles.subText]}>requests</Text>
+      <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
+      <Text style={[styles.text, styles.subText]}>requests</Text>
     </View>;
 
     if (this.state.errorMessage) {
@@ -195,40 +209,46 @@ export default class ProfileScreen extends React.Component {
       naam = naam;
       balls = balls;
       score = score;
+      picurl = picurl;
     }
 
     return (
-      <SafeAreaView style={styles.container}  data = {this.state.data}>
+      <SafeAreaView style={styles.container} data={this.state.data}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.titleBar}>
-            <TouchableOpacity  onPress={() => { this.signOut() }}>
+            <TouchableOpacity onPress={() => { this.logout() }}>
               <Ionicons name="md-log-out" size={24} color="#52575D"></Ionicons>
             </TouchableOpacity>
           </View>
 
           <View style={{ alignSelf: "center" }}>
             <View style={styles.profileImage}>
-              <Image source={require('../assets/Balleke.jpg')} style={styles.image} resizeMode="center"></Image>
+              <Image
+                style={styles.image}
+                resizeMode="contain"
+                source={{uri: picurl}} />
             </View>
 
             <View style={styles.add}>
-              <Ionicons name="ios-add" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
+              <TouchableOpacity onPress={() => { this.goToProfilePictures() }}>
+                <Ionicons name="ios-add" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
+              </TouchableOpacity>
             </View>
           </View>
 
           <View style={styles.infoContainer}>
             <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{naam}</Text>
-          <Text style={[styles.text, { fontWeight: "200", fontSize: 20 }]}>{land}, {stad}</Text>
-            
+            <Text style={[styles.text, { fontWeight: "200", fontSize: 20 }]}>{land}, {stad}</Text>
+
           </View>
 
           <View style={styles.statsContainer}>
-          <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
+            <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
               <Text style={[styles.text, { fontSize: 24 }]}>{score}</Text>
               <Text style={[styles.text, styles.subText]}>score</Text>
             </View>
             <View style={styles.statsBox}>
-              <Text style={[styles.text, { fontSize: 24 }]}>{this.state.userchallanges.length}</Text>
+              <Text style={[styles.text, { fontSize: 24 }]}>666</Text>
               <Text style={[styles.text, styles.subText]}>challanges</Text>
             </View>
             <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
@@ -237,11 +257,11 @@ export default class ProfileScreen extends React.Component {
             </View>
             <View style={styles.statsBox}>
               <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendsList.length}</Text>
-              <Text  onPress={() => this.goToFriends()} style={[styles.text, styles.subText]}>friends</Text>
+              <Text onPress={() => this.goToFriends()} style={[styles.text, styles.subText]}>friends</Text>
             </View>
 
-            {this.state.FriendRequest.length>0?amountRequest:null}
-            {this.state.FriendRequest.length==null?amountRequest:null}
+            {this.state.FriendRequest.length > 0 ? amountRequest : null}
+            {this.state.FriendRequest.length == null ? amountRequest : null}
 
           </View>
           <View style={{ marginTop: 32 }}>
@@ -270,55 +290,55 @@ export default class ProfileScreen extends React.Component {
             <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Top Friends</Text>
           </View>
           <View style={{ flex: 1, padding: 24 }}>
-          <FlatList 
-        data={this.state.FriendsList}
-        FriendRequest={this.state.FriendRequest}
-        renderItem={ 
-          ({ item }) =>  {
-            if(item.userId != 1){
-              return(  <View
-                style={{
-                  flexDirection: 'row',
-                  padding: 16,
-                  alignItems: 'center',
-                  alignSelf: "center",
-                  fontWeight: "200",
-                }}>
-                  <Text>{teller = teller+1}. </Text> 
-                <Text
-                  category='s1'
-                  style={{
-                    color: '#000'
-                  }}>{`${item.name}`} 
-                </Text>
-                <Text
-                  category='s1'
-                  style={{
-                    color: '#000'
-                  }}>{`       score: ${item.score}`} 
-                </Text>
-              </View>)
-            }
-        
-        }}
+            <FlatList
+              data={this.state.FriendsList}
+              FriendRequest={this.state.FriendRequest}
+              renderItem={
+                ({ item }) => {
+                  if (item.userId != 1) {
+                    return (<View
+                      style={{
+                        flexDirection: 'row',
+                        padding: 16,
+                        alignItems: 'center',
+                        alignSelf: "center",
+                        fontWeight: "200",
+                      }}>
+                      <Text>{teller = teller + 1}. </Text>
+                      <Text
+                        category='s1'
+                        style={{
+                          color: '#000'
+                        }}>{`${item.name}`}
+                      </Text>
+                      <Text
+                        category='s1'
+                        style={{
+                          color: '#000'
+                        }}>{`       score: ${item.score}`}
+                      </Text>
+                    </View>)
+                  }
 
-        keyExtractor={item => item.email}
-        ItemSeparatorComponent={this.renderSeparator}
-        ListFooterComponent={this.renderFooter}
-        ListHeaderComponent={this.renderHeader}
-      ></FlatList>
-        
-      </View>
-           
+                }}
+
+              keyExtractor={item => item.email}
+              ItemSeparatorComponent={this.renderSeparator}
+              ListFooterComponent={this.renderFooter}
+              ListHeaderComponent={this.renderHeader}
+            ></FlatList>
+
+          </View>
+
           <View>
-            <TouchableOpacity 
-             onPress={this.onPress}
-             style={styles.buttonlogout}>
+            <TouchableOpacity
+              onPress={() => this.goToAddFriends()}
+              style={styles.buttonlogout}>
               <Text style={styles.appButtonText} >ADD FRIENDS</Text>
             </TouchableOpacity>
           </View>
 
-                <StandardButton
+          <StandardButton
             buttonTitle="Hangman"
             onPress={() => { this.goToHangman() }}
           />
@@ -406,10 +426,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 32
   },
-  centerText:{
+  centerText: {
     alignSelf: "center",
     fontWeight: "200",
-     fontSize: 36 
+    fontSize: 36
   },
   button: {
     flexDirection: "row",

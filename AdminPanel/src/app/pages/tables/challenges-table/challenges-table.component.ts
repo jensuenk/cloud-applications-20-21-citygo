@@ -64,7 +64,7 @@ export class ChallengesTableComponent implements OnInit {
     );
   }
 
-  createChallenge(name, task, questionChallenge, answer, score) {
+  createChallenge(name, task, questionChallenge, answer, score, balls) {
     let newChallenge: Challenge = {
       challengeId: 0,
       name: name,
@@ -72,7 +72,8 @@ export class ChallengesTableComponent implements OnInit {
       questionChallenge: questionChallenge,
       answer: answer,
       items: this.items,
-      score: score
+      score: score,
+      balls: balls
     }
     this.challengeService.createChallenge(newChallenge).subscribe(
       data => {

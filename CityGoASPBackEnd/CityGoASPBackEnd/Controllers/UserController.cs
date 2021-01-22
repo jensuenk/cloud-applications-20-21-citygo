@@ -183,5 +183,15 @@ namespace CityGoASPBackEnd.Controllers
             var valResult = ValidationController.HandleValidation(result);
             return await valResult;
         }
+
+        [Route("ProfilePicture")]
+        [HttpPut]
+        public async Task<IActionResult> ChangeProfilePicture([FromBody] UserVM newUser)
+        {
+            var command = new ChangeProfileURLfromUserCommand(newUser);
+            var result = await _mediator.Send(command);
+            var valResult = ValidationController.HandleValidation(result);
+            return await valResult;
+        }
     }
 }

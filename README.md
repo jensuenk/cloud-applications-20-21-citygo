@@ -5,10 +5,6 @@
 <h4 align="center">A city game app with API and admin panel</h4>
 
 <p align="center">
-  <a href="https://app.bitrise.io/app/f8e4f5158cfde012#/builds">
-    <img src="https://app.bitrise.io/app/f8e4f5158cfde012/status.svg?token=cLg-X0PmNx5LMdekTn0WvA&branch=master"
-         alt="Builds">
-  </a>
   <a href="https://github.com/AP-Elektronica-ICT/cloud-applications-20-21-citygo/actions?query=workflow%3A%22Deploy+to+Firebase+Hosting+on+merge%22">
     <img src="https://github.com/AP-Elektronica-ICT/cloud-applications-20-21-citygo/workflows/Panel%20Deploy/badge.svg"
          alt="Panel Build">

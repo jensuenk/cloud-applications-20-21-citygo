@@ -67,7 +67,7 @@ export default class AddFriends extends React.Component {
   
  // versturen van een verzoek zal nu hardcoded zijn vanuit het standpunt van user1
   
-  sendFriendRequest = (fid, uid = '1' ) => {
+  sendFriendRequest = (fid, uid = '4' ) => {
     const urlFriendRequest = 'https://citygo-ap.azurewebsites.net/Users/'+uid+'/Friends/'+fid
     console.log(urlFriendRequest)
     const putMethod = {

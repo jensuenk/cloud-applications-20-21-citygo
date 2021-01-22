@@ -13,6 +13,8 @@ import ProfileScreen from './ProfileScreen'
 import Friends from './Friends'
 import Hangman from './Hangman'
 import FriendRequest from './FriendRequests'
+import LoginScreen from './LoginScreen'
+import ProfilePicture from './ProfilePicture'
 
 
 export default class ProfileNavigatoin extends React.Component{
@@ -42,6 +44,12 @@ constructor(props) {
     }
     else if (component == 'Five'){
       return <FriendRequest changeComponent = {this.changeComponent} />
+    }
+    else if (component == 'Six'){
+      return <LoginScreen changeComponent = {this.changeComponent} />
+    }
+    else if (component == 'Seven'){
+      return <ProfilePicture changeComponent = {this.changeComponent} />
     }
   }
 

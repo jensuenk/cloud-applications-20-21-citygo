@@ -36,6 +36,7 @@ namespace Application.Query.Challenge
                     QuestionChallenge = challenge.QuestionChallenge,
                     Items = challenge.Items,
                     Score = challenge.Score,
+                    Balls = challenge.Balls
                 });
             }
             return vm;
