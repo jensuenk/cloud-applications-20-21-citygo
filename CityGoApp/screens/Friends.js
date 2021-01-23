@@ -18,13 +18,15 @@ export default class Friends extends React.Component {
     query: '',
     fullData: [],
     allUsers: [],
-    result: []
+    result: [],
+    probeersel:[]
   }
 
 
   componentDidMount() {
     this.makeRemoteRequest()
-    this.getAllUsers()
+    //this.getAllUsers()
+    
   }
 
 
@@ -47,6 +49,24 @@ export default class Friends extends React.Component {
       })
 
 
+
+    //nummerke 2
+
+    const { page2, seed2 } = this.state
+    const url2 = 'https://citygo-ap.azurewebsites.net/Users'
+    this.setState({ loading: true })
+
+    fetch(url2)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          allUsers: page2 === 1 ? res.users : [...this.state.allUsers, ...res.users],
+          error: res.error || null,
+          loading: false,
+        })
+      })
+      
+
   }
 
 
@@ -63,12 +83,14 @@ export default class Friends extends React.Component {
           allUsers: page === 1 ? res.users : [...this.state.allUsers, ...res.users],
           error: res.error || null,
           loading: false,
+          
+          
 
         })
-
       })
-
-      this.state.result = JSON.stringify(this.state.allUsers);
+      
+    //this.state.result = JSON.stringify(this.state.allUsers);
+    //this.state.probeersel = JSON.stringify(this.state.allUsers.filter((x)=>x.userId === 4))
   }
 
 
@@ -97,18 +119,13 @@ export default class Friends extends React.Component {
     this.setState({ data, query: text })
   }
 
-  vergelijk = ()=> {
+  vergelijk = () => {
 
-    //dees is een array me de data van alle friends van de user 
-    this.state.data
-    // dees is een array waar alle users in staan
-    this.state.allUsers
+    const tempList = this.state.fullData.map(item => item.userId);
+    this.state.probeersel = this.state.allUsers.filter(item => (tempList.includes(item.userId)))
 
-    /*
-    zowel de friends van de users hebben een id als alle users (logisch)
-    nu zou ik gewoon alle overeenkomstige id's van die users moeten hebben ma voor 1 of andere reden lukt da
-    */
-
+   
+    //this.state.probeersel = JSON.stringify(this.state.allUsers.map(item => item.userId))
 
   }
 
@@ -151,7 +168,7 @@ export default class Friends extends React.Component {
     });
     */
     //TODO: verbeteren?
-    this.componentDidMount()
+    setTimeout(() => {  this.componentDidMount() }, 1000);
 
   }
 
@@ -216,6 +233,9 @@ export default class Friends extends React.Component {
     this.props.changeComponent('One')
   };
   render() {
+    const tempList = this.state.fullData.map(item => item.userId);
+    this.state.probeersel = this.state.allUsers.filter(item => (tempList.includes(item.userId)))
+    const url = JSON.stringify(this.state.allUsers.filter(item => (tempList.includes(item.userId))))
 
     return (
       <View style={{
@@ -227,7 +247,7 @@ export default class Friends extends React.Component {
         <Text onPress={this.onPress} style={styles.backstyle}>Back</Text>
 
         <FlatList
-          data={this.state.data}
+          data={this.state.probeersel}
           user={this.state.result}
           renderItem={({ item }) => (
             <View
@@ -237,20 +257,10 @@ export default class Friends extends React.Component {
                 alignItems: 'center'
               }}>
               <Image
-                source={{ uri: 'https://i.ytimg.com/vi/LkHcB34a2yo/hqdefault.jpg' }}
+                source={{ uri: item.picrtureURL }}
                 size='giant'
                 style={styles.profileImage}>
               </Image>
-
-
-
-              <Text
-                category='s1'
-                style={{
-                  color: '#000'
-                }}>{`${this.state.result}`}
-              </Text>
-
 
               <Text
                 category='s1'

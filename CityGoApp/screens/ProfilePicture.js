@@ -73,7 +73,7 @@ export default class ProfilePicture extends React.Component {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        "userId": 4,
+        "userId": 6,
         "picrtureURL": _url
       })
     };
