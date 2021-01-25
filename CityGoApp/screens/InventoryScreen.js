@@ -34,10 +34,10 @@ export default class InventoryScreen extends React.Component {
 
   //voorlopig enkel user 1 aangezien login nog niet helemaal werkt
   async apiCall() {
-    let resp = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/sights')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/sights')
     let respJson = await resp.json();
     this.setState({ sights: respJson.sights })
-    let resp2 = await fetch('https://citygoaspbackend20201224141859.azurewebsites.net/users/1')
+    let resp2 = await fetch('https://citygo-ap.azurewebsites.net/users/1')
     let respJson2 = await resp2.json();
     this.setState({ voltooideChallenges: respJson2.usersChallenges })
 
