@@ -133,8 +133,7 @@ export default class Mapke extends React.Component {
       userLocations: [],
       currentUser: null,
       notFoundItems: [],
-      itemDialogsCanceled: []
-      }],
+      itemDialogsCanceled: [],
       soortchallenge:""
     }
     this.locationWatcher = null;
