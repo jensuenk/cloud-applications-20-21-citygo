@@ -130,10 +130,11 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderWidth: 2,
     color: 'white',
-    height:100
+    height:80
   },
   itemText: {
-    fontSize: 40,
+    paddingTop:10,
+    fontSize: 35,
     color: 'white',
     width: "70%"
   },
