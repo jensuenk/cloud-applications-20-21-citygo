@@ -30,6 +30,9 @@ export default class Mapke extends React.Component {
     else if(this.state.soortchallenge=="memorygame"){
       doorstuurgetal="Four"
     }
+    else if(this.state.soortchallenge=="Hangman"){
+      doorstuurgetal="Hangman"
+    }
     Alert.alert(
       "ALERT",
       "You are nearby " + this.state.huidigeSightNaam + ", do you want to do a challenge?",
