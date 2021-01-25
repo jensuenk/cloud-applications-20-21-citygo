@@ -59,7 +59,7 @@ export default class Map2 extends React.Component {
       return <MemoryGame changeComponent={this.changeComponent} />
     } else if (component == 'catch') {
       return <CatchItemScreen changeComponent={this.changeComponent} collectItem={this.state.collectItem}/>
-    } else if(component=="hangman"){
+    } else if(component=='Hangman'){
       return <Hangman changeComponent={this.changeComponent} />
     } 
     else if (component == 'reward') {
