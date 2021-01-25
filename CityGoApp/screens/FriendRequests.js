@@ -68,9 +68,6 @@ export default class FriendRequest extends React.Component {
       
       })
 
-
-
-
   }
 
   getUsers=() => {

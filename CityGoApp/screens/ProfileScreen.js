@@ -7,7 +7,7 @@ import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import StandardButton from '../components/StandardButton';
 import Firebase from '../config/Firebase';
-import LoginScreen from './LoginScreen'
+import LoginScreen from './LoginScreen';
 
 
 
@@ -46,6 +46,7 @@ export default class ProfileScreen extends React.Component {
     this.apiCallUser();
     this.apiCallFriends();
     this.apiCalluserchallanges();
+    this.apiCallFriendRequest();
   }
 
   // nog een check doen voor als hij geen vrienden heeft
@@ -56,7 +57,7 @@ export default class ProfileScreen extends React.Component {
 
     let respJson = await resp.json();
     this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
-   
+
   }
 
   async apiCalluserchallanges() {
@@ -82,7 +83,7 @@ export default class ProfileScreen extends React.Component {
     let respJson = await resp.json();
     // console.log(respJson)
     this.setState({ data: page === 1 ? respJson : [...this.state.data, ...respJson] })
-  
+
   }
 
 
@@ -195,18 +196,17 @@ export default class ProfileScreen extends React.Component {
     let balls = this.state.data.balls
     let score = this.state.data.score
     let picurl = this.state.data.picrtureURL
-   // let numbofchallanges = this.state.userchallanges.length
-
-
+    // let numbofchallanges = this.state.userchallanges.length
     let teller = 0
-    let amountRequest = <View style={styles.statsBox}>
-      <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
-      <Text onPress={() => this.gotoRequests()} style={[styles.text, styles.subText]}>requests</Text>
-    </View>;
-    let noRequest = <View style={styles.statsBox}>
-      <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
-      <Text style={[styles.text, styles.subText]}>requests</Text>
-    </View>;
+    /*
+     
+        let amountRequest =
+        
+        let noRequest = <View style={styles.statsBox}>
+          <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
+          <Text style={[styles.text, styles.subText]}>Friend Request</Text>
+        </View>;
+        */
 
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
@@ -230,11 +230,15 @@ export default class ProfileScreen extends React.Component {
           </View>
 
           <View style={{ alignSelf: "center" }}>
+            <View>
+              {this.state.FriendRequest.length>0 && <TouchableOpacity onPress={() => this.gotoRequests()}><Image  style={styles.imagerequest} source={require('../Images/friendRequesticon.jpg')} /></TouchableOpacity>}
+             
+            </View>
             <View style={styles.profileImage}>
               <Image
                 style={styles.image}
                 resizeMode="contain"
-                source={{uri: picurl}} />
+                source={{ uri: picurl }} />
             </View>
 
             <View style={styles.add}>
@@ -252,24 +256,23 @@ export default class ProfileScreen extends React.Component {
 
           <View style={styles.statsContainer}>
             <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-              <Text style={[styles.text, { fontSize: 24 }]}>{score}</Text>
+              <Text style={[styles.text, { fontSize: 22 }]}>{score}</Text>
               <Text style={[styles.text, styles.subText]}>score</Text>
             </View>
             <View style={styles.statsBox}>
-              <Text style={[styles.text, { fontSize: 24 }]}>666</Text>
+              <Text style={[styles.text, { fontSize: 22 }]}>666</Text>
               <Text style={[styles.text, styles.subText]}>challanges</Text>
             </View>
             <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-              <Text style={[styles.text, { fontSize: 24 }]}>{balls}</Text>
+              <Text style={[styles.text, { fontSize: 22 }]}>{balls}</Text>
               <Text style={[styles.text, styles.subText]}>balls</Text>
             </View>
             <View style={styles.statsBox}>
-              <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendsList.length}</Text>
+              <Text style={[styles.text, { fontSize: 22 }]}>{this.state.FriendsList.length}</Text>
               <Text onPress={() => this.goToFriends()} style={[styles.text, styles.subText]}>friends</Text>
             </View>
 
-            {this.state.FriendRequest.length > 0 ? amountRequest : null}
-            {this.state.FriendRequest.length == null ? amountRequest : null}
+
 
           </View>
           <View style={{ marginTop: 32 }}>
@@ -374,6 +377,12 @@ const styles = StyleSheet.create({
     height: undefined,
     width: undefined
   },
+  imagerequest: {
+    width: 60,
+    height: 60,
+    overflow: "hidden",
+    marginLeft:150
+  },
   titleBar: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -382,10 +391,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 16
   },
   subText: {
-    fontSize: 12,
+    fontSize: 10,
     color: "#AEB5BC",
     textTransform: "uppercase",
-    fontWeight: "500"
+    fontWeight: "500",
+    alignSelf: 'center'
   },
   profileImage: {
     width: 200,
