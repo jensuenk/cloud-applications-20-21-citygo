@@ -12,6 +12,7 @@ import TicTacToe from './TicTacToe';
 import MemoryGame from './MemoryGame';
 import CatchItemScreen from './CatchItemScreen';
 import RewardScreen from './RewardScreen';
+import Hangman from './Hangman'
 
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
@@ -58,7 +59,10 @@ export default class Map2 extends React.Component {
       return <MemoryGame changeComponent={this.changeComponent} />
     } else if (component == 'catch') {
       return <CatchItemScreen changeComponent={this.changeComponent} collectItem={this.state.collectItem}/>
-    } else if (component == 'reward') {
+    } else if(component=="hangman"){
+      return <Hangman changeComponent={this.changeComponent} />
+    } 
+    else if (component == 'reward') {
       return <RewardScreen changeComponent={this.changeComponent} rewardChallenge={this.state.rewardChallenge} setCollectItem={this.setCollectItem}/>
     }
   }
