@@ -18,33 +18,35 @@ export default class FriendRequest extends React.Component {
     error: null,
     query: '',
     fullData: [],
-    allUsers:[],
+    allUsers: [],
+    uid: null,
   }
 
- 
+
 
   componentDidMount() {
     this.makeRemoteRequest()
+    this.getAllUsers()
   }
 
   async apiCallUser() {
     const { page, seed } = this.state
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/')
     let respJson = await resp.json();
-   // console.log(respJson)
+    // console.log(respJson)
     this.setState({ allUsers: page === 1 ? respJson.users : [...this.state.allUsers, ...respJson.users] })
     console.log(this.state.allUsers)
     // TODO: order friends
   }
 
-  getuserNames=()=>{
-        array.forEach(element => {
-            
-        });
+  getuserNames = () => {
+    array.forEach(element => {
 
-      if(this.state.allUsers.userId){
+    });
 
-      }
+    if (this.state.allUsers.userId) {
+
+    }
   }
 
 
@@ -65,16 +67,14 @@ export default class FriendRequest extends React.Component {
           loading: false,
           fullData: res.friends
         })
-      
+
       })
 
   }
 
-  getUsers=() => {
 
-  }
 
-  contains = ({ userId, acceptedUser1, friendId,acceptedUser2 }, query) => {
+  contains = ({ userId, acceptedUser1, friendId, acceptedUser2 }, query) => {
     if (userId.includes(query) ||
       acceptedUser1.includes(query) ||
       friendId.includes(query) ||
@@ -83,174 +83,203 @@ export default class FriendRequest extends React.Component {
       return true
     }
     return false
-  
-  
+
+
   }
-  
- // versturen van een accepteren zal nu hardcoded zijn vanuit het standpunt van user1
-  
-  acceptFriendRequest = (fid, uid = '4' ) => {
-    const urlFriendRequest = 'https://citygo-ap.azurewebsites.net/Users/'+uid+'/Friends/'+fid
+
+  // versturen van een accepteren zal nu hardcoded zijn vanuit het standpunt van user1
+
+  acceptFriendRequest = (fid, uid = '4') => {
+    const urlFriendRequest = 'https://citygo-ap.azurewebsites.net/Users/' + uid + '/Friends/' + fid
     console.log(urlFriendRequest)
     const putMethod = {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
-       },
+      },
       body: {}
     }
 
-       // make the HTTP put request using fetch api
-       fetch(urlFriendRequest, putMethod)
-       .then(response => response.json())
-       .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
-       .catch(err => console.log(err)) // Do something with the error
+    // make the HTTP put request using fetch api
+    fetch(urlFriendRequest, putMethod)
+      .then(response => response.json())
+      .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
+      .catch(err => console.log(err)) // Do something with the error
 
-        
 
-        //moet op beide plaatsen aangemaakt worden
-       const urlFriendRequest2 = 'https://citygo-ap.azurewebsites.net/Users/'+fid+'/Friends/'+uid
-       console.log(urlFriendRequest)
-       const putMethod2 = {
-         method: 'PUT',
-         headers: {
-           'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
-          },
-         body: {}
-       }
-   
-          // make the HTTP put request using fetch api
-          fetch(urlFriendRequest2, putMethod2)
-          .then(response => response.json())
-          .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
-          .catch(err => console.log(err)) // Do something with the error
-          
-       
+
+    //moet op beide plaatsen aangemaakt worden
+
+    const urlFriendRequest2 = 'https://citygo-ap.azurewebsites.net/Users/' + uid + '/FriendRequests/' + friendId
+    console.log(urlFriendRequest)
+    const putMethod2 = {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+      },
+      body: {}
+    }
+
+    // make the HTTP put request using fetch api
+    fetch(urlFriendRequest2, putMethod2)
+      .then(response => response.json())
+      .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
+      .catch(err => console.log(err)) // Do something with the error
+
+
   }
- 
+
+
+  getAllUsers = () => {
+    const { page, seed } = this.state
+    const url = 'https://citygo-ap.azurewebsites.net/Users'
+    this.setState({ loading: true })
+
+
+    fetch(url)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          allUsers: page === 1 ? res.users : [...this.state.allUsers, ...res.users],
+          error: res.error || null,
+          loading: false,
 
 
 
-handleSearch = text => {
-  // const formattedQuery = text.toLowercase()
-  const data = filter(this.state.fullData, user => {
-    return this.contains(user, text)
-  })
-  this.setState({ data, query: text })
-}
+        })
+      })
+
+    //this.state.result = JSON.stringify(this.state.allUsers);
+    //this.state.probeersel = JSON.stringify(this.state.allUsers.filter((x)=>x.userId === 4))
+  }
 
 
-renderHeader = () => (
-  <View
-    style={{
-      backgroundColor: '#fff',
-      padding: 10,
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-    <Text onPress={this.onPress} style={styles.appButtonText} >Back</Text>
 
-    <TextInput
-      autoCapitalize='none'
-      autoCorrect={false}
-      onChangeText={this.handleSearch}
-      status='info'
-      placeholder='Search'
-      style={{
-        borderRadius: 25,
-        borderColor: '#333',
-        backgroundColor: '#fff'
-      }}
-      textStyle={{ color: '#000' }}
-      clearButtonMode='always'
-    ></TextInput>
 
-  </View>
+  handleSearch = text => {
+    // const formattedQuery = text.toLowercase()
+    const data = filter(this.state.fullData, user => {
+      return this.contains(user, text)
+    })
+    this.setState({ data, query: text })
+  }
 
-)
 
-renderSeparator = () => {
-  return (
+  renderHeader = () => (
     <View
       style={{
-        height: 1,
-        width: '86%',
-        backgroundColor: '#CED0CE',
-        marginLeft: '5%'
-      }}
-    />
-  )
-}
-
-renderFooter = () => {
-  if (!this.state.loading) return null
-  return (
-    <View
-      style={{
-        paddingVertical: 20,
-        borderTopWidth: 1,
-        borderColor: '#CED0CE'
+        backgroundColor: '#fff',
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
       }}>
-      <ActivityIndicator animating size='large' />
-    </View>
-  )
-}
+      <Text onPress={this.onPress} style={styles.appButtonText} >Back</Text>
 
-onPress = () => {
-  this.props.changeComponent('One')
-};
-
-render() {
-  return (
-    <View style={{
-      flex: 1,
-      paddingHorizontal: 20,
-      paddingVertical: 20,
-      marginTop: 40,
-    }}>
-      <FlatList 
-        data={this.state.data}
-        renderItem={ 
-          ({ item }) =>  {
-            if(item.friendId != 1){
-              return(  <View
-                style={{
-                  flexDirection: 'row',
-                  padding: 16,
-                  alignItems: 'center'
-                }}>
-                <Image
-                  source={{ uri: 'https://i.ytimg.com/vi/LkHcB34a2yo/hqdefault.jpg' }}
-                  size='giant'
-                  style={styles.profileImage}>
-                </Image>
-    
-                <Text
-                  category='s1'
-                  style={{
-                    color: '#000'
-                  }}>{`${item.name}`} 
-                </Text>
-                <TouchableOpacity onPress={() => this.acceptFriendRequest(item.friendId)}>
-                  <View style={styles.button}>
-                    <Text style={styles.buttonText} >
-                      Accept
-                                </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>)
-            }
-        
+      <TextInput
+        autoCapitalize='none'
+        autoCorrect={false}
+        onChangeText={this.handleSearch}
+        status='info'
+        placeholder='Search'
+        style={{
+          borderRadius: 25,
+          borderColor: '#333',
+          backgroundColor: '#fff'
         }}
+        textStyle={{ color: '#000' }}
+        clearButtonMode='always'
+      ></TextInput>
 
-        keyExtractor={item => item.email}
-        ItemSeparatorComponent={this.renderSeparator}
-        ListFooterComponent={this.renderFooter}
-        ListHeaderComponent={this.renderHeader}
-      ></FlatList>
     </View>
+
   )
-}
+
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '86%',
+          backgroundColor: '#CED0CE',
+          marginLeft: '5%'
+        }}
+      />
+    )
+  }
+
+  renderFooter = () => {
+    if (!this.state.loading) return null
+    return (
+      <View
+        style={{
+          paddingVertical: 20,
+          borderTopWidth: 1,
+          borderColor: '#CED0CE'
+        }}>
+        <ActivityIndicator animating size='large' />
+      </View>
+    )
+  }
+
+  onPress = () => {
+    this.props.changeComponent('One')
+  };
+
+  render() {
+    const tempList = this.state.fullData.map(item => item.friendId);
+    this.state.probeersel = this.state.allUsers.filter(item => (tempList.includes(item.userId)))
+    const url = JSON.stringify(this.state.allUsers.filter(item => (tempList.includes(item.userId))))
+    console.log(this.state.probeersel)
+    return (
+      <View style={{
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        marginTop: 40,
+      }}>
+        <FlatList
+          data={this.state.probeersel}
+          renderItem={
+            ({ item }) => {
+              if (item.friendId != 4) {
+                return (<View
+                  style={{
+                    flexDirection: 'row',
+                    padding: 16,
+                    alignItems: 'center'
+                  }}>
+                  <Image
+                    source={{ uri: item.picrtureURL }}
+                    size='giant'
+                    style={styles.profileImage}>
+                  </Image>
+
+                  <Text
+                    category='s1'
+                    style={{
+                      color: '#000'
+                    }}>{`${item.name}`}
+                  </Text>
+                  <TouchableOpacity onPress={() => this.acceptFriendRequest(item.friendId)}>
+                    <View style={styles.button}>
+                      <Text style={styles.buttonText} >
+                        Accept
+                                </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>)
+              }
+
+            }}
+
+          keyExtractor={item => item.email}
+          ItemSeparatorComponent={this.renderSeparator}
+          ListFooterComponent={this.renderFooter}
+          ListHeaderComponent={this.renderHeader}
+        ></FlatList>
+      </View>
+    )
+  }
 
 
 }

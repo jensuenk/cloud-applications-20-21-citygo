@@ -25,7 +25,7 @@ export default class Friends extends React.Component {
 
   componentDidMount() {
     this.makeRemoteRequest()
-    //this.getAllUsers()
+    this.getAllUsers()
     
   }
 
@@ -118,6 +118,8 @@ export default class Friends extends React.Component {
     })
     this.setState({ data, query: text })
   }
+
+  //nog te verwijder --> niet meer gebruikt
 
   vergelijk = () => {
 
