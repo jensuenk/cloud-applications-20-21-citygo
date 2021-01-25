@@ -2,12 +2,12 @@ import * as React from 'react';
 import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 
-export default class InventoryScreen extends React.Component {
+export default class ItemCollectionScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      allSights: [],
-      completedChallenges: []
+      allItems: [],
+      collectedItems: []
     }
   }
 
@@ -17,22 +17,20 @@ export default class InventoryScreen extends React.Component {
   }
 
   async apiCall() {
-    let sightsResp = await fetch('https://citygo-ap.azurewebsites.net/Sights')
-    let sightsRespJson = await sightsResp.json();
-    this.setState({ allSights: sightsRespJson.sights })
+    let itemsResp = await fetch('https://citygo-ap.azurewebsites.net/Items')
+    let itemsRespJson = await itemsResp.json();
+    this.setState({ allItems: itemsRespJson.items })
     let userResp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + global.uid)
     let userRespJson = await userResp.json();
-    this.setState({ completedChallenges: userRespJson.usersChallenges })
+    this.setState({ collectedItems: userRespJson.usersItems })
   }
 
-  hasVisited(sight) {
+  hasItem(item) {
     var returnValue = false;
-    sight.challenges.forEach(sightChallenges => {
-      this.state.completedChallenges.forEach(collectedChallenge => {
-        if (sightChallenges.challengeId == collectedChallenge.challenge.challengeId) {
-          returnValue = true;
-        }
-      });
+    this.state.collectedItems.forEach(collectedItem => {
+      if (item.itemId == collectedItem.item.itemId) {
+        returnValue = true;
+      }
     });
     return returnValue;
   }
@@ -40,26 +38,27 @@ export default class InventoryScreen extends React.Component {
   renderItem(item) {
     return (
       <View style={styles.item}>
+        <Image style={styles.logo} source={{uri: item.picture}}/>
         <Text style={styles.itemText}> {item.name}</Text>
-        <Text style={styles.itemDesc}> {item.info}</Text>
+        <Text style={styles.itemDesc}> {item.rarity}</Text>
         <View style={styles.checkbox}>
-        <CheckBox
-          checkedIcon={<Image source={require('../assets/checked.png')} />}
-          uncheckedIcon={<Image source={require('../assets/unchecked.png')} />}
-          checked={this.hasVisited(item)}
-        />
+          <CheckBox
+            checkedIcon={<Image source={require('../assets/checked.png')}/>}
+            uncheckedIcon={<Image source={require('../assets/unchecked.png')}/>}
+            checked={this.hasItem(item)}
+          />
         </View>
       </View>
-    )
+    );
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Visited Sights</Text>
+        <Text style={styles.header}>Item Collection</Text>
         <FlatList
           renderItem
-          data={this.state.allSights}
+          data={this.state.allItems}
           renderItem={({ item, index }) => this.renderItem(item)}
           keyExtractor={(item, index) => index.toString()}
         />
@@ -88,13 +87,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     height: 100,
     padding: 10,
-    paddingTop: 20
+    paddingLeft: 100
+  },
+  logo: {
+    position: 'absolute',
+    left: 10,
+    top: 10,
+    width: 80,
+    height: 80,
+    borderRadius: 10
   },
   itemText: {
+    marginTop: 14,
     fontWeight: 'bold',
-    marginLeft: -5,
-    fontSize: 26,
-    width: "70%",
+    fontSize: 22,
+    width: "75%"
   },
   itemDesc: {
     fontSize: 18,
@@ -104,6 +111,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     marginTop: 10,
-    width: "25%",
   }
 });

@@ -18,7 +18,6 @@ class MainScreen extends React.Component {
     }
 
     render() {
-        console.log("testje")
         return (
             <NavigationContainer independent={true}>
                 <ApplicationNavigator />

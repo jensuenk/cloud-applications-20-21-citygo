@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 import MapScreen from '../screens/MapScreen';
-import CameraScreen from '../screens/CameraScreen';
+import ItemCollectionScreen from '../screens/ItemCollectionScreen';
 import InventoryScreen from '../screens/InventoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ProfileScreenZelf from '../screens/ProfileScreenZelf';
@@ -22,12 +22,12 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 ),
             }
         },
-        Camera: {
-            screen: CameraScreen,
+        Items: {
+            screen: ItemCollectionScreen,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
                     <View>
-                        <Icon style={[{ color: tintColor }]} size={25} name={'ios-camera'} />
+                        <Icon style={[{ color: tintColor }]} size={25} name={'ios-list'} />
                     </View>
                 ),
                 activeColor: '#ffffff',
@@ -35,7 +35,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 barStyle: { backgroundColor: '#000000' },
             }
         },
-        Inventory: {
+        Sights: {
             screen: InventoryScreen,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
