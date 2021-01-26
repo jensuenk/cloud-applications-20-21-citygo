@@ -35,6 +35,7 @@ export default class ProfileScreen extends React.Component {
     FriendRequest: [],
     userchallanges: [],
     currentUser: null,
+    userItems:[]
     
 
   };
@@ -91,6 +92,9 @@ export default class ProfileScreen extends React.Component {
     let respJson = await resp.json();
     // console.log(respJson)
     this.setState({ data: page === 1 ? respJson : [...this.state.data, ...respJson] })
+    this.setState({ userItems: page === 1 ? respJson.usersItems : [...this.state.userItems, ...respJson.usersItems] })
+   
+    console.log(this.state.userItems.length)
 
   }
 
@@ -193,9 +197,24 @@ export default class ProfileScreen extends React.Component {
     global.Myuser = false;
   };
 
-
+ 
 
   render() {
+    const ItemList = ({ item }) => {
+      console.log(item.item.picture)
+      return (
+        <View style={styles.item}>
+          <Image
+            source={{ uri: item.item.picture }}
+            style={styles.imageitem} 
+            resizeMode="cover"
+           
+          />
+          <Text>{item.item.name}</Text>
+        </View>
+      );
+    };
+
     const { FriendRequest, data, isLoading } = this.state;
     let text = 'Waiting..';
     let stad = this.state.city;
@@ -283,27 +302,15 @@ export default class ProfileScreen extends React.Component {
 
 
           </View>
-          <View style={{ marginTop: 32 }}>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              <View style={styles.mediaImageContainer}>
-                <Image source={require("../assets/Balleke.jpg")} style={styles.image} resizeMode="cover"></Image>
-              </View>
-              <View style={styles.mediaImageContainer}>
-                <Image source={require("../assets/Balleke.jpg")} style={styles.image} resizeMode="cover"></Image>
-              </View>
-              <View style={styles.mediaImageContainer}>
-                <Image source={require("../assets/Balleke.jpg")} style={styles.image} resizeMode="cover"></Image>
-              </View>
-              <View style={styles.mediaImageContainer}>
-                <Image source={require("../assets/Balleke.jpg")} style={styles.image} resizeMode="cover"></Image>
-              </View>
-              <View style={styles.mediaImageContainer}>
-                <Image source={require("../assets/Balleke.jpg")} style={styles.image} resizeMode="cover"></Image>
-              </View>
-              <View style={styles.mediaImageContainer}>
-                <Image source={require("../assets/Balleke.jpg")} style={styles.image} resizeMode="cover"></Image>
-              </View>
-            </ScrollView>
+         <Text>ITEMS:</Text>
+          <FlatList
+                  horizontal
+                  data={this.state.userItems}
+                  renderItem={({ item }) => <ItemList item={item} />}
+                  showsHorizontalScrollIndicator={false}
+                />
+          <View>
+
           </View>
           <View style={styles.centerText}>
             <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Top Friends</Text>
@@ -383,7 +390,13 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     height: undefined,
-    width: undefined
+    width: undefined,
+
+  },
+  imageitem:{
+    flex: 1,
+    height: 100,
+    width: 100,
   },
   imagerequest: {
     width: 60,
