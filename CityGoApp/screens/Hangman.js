@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View, Button, TouchableHighlight, Alert } from "react-native";
+import { StyleSheet, Text, TextInput, View, Button, TouchableHighlight, Alert,ToastAndroid } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Svg, { Circle, Rect, Line, G } from 'react-native-svg';
 
@@ -20,8 +20,8 @@ export default class Hangman extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      "answer": "test",
-      "hint": "test",
+      answer: "test",
+      hint: "test",
       "correct": 0,
       "wrong": 0,
       "usedLetters": [],
@@ -45,6 +45,8 @@ export default class Hangman extends React.Component {
       antwoord: "",
       juistantwoord: "",
       id: 0,
+      sight: null,
+      challenge: null
     }
 
   }
@@ -57,112 +59,12 @@ export default class Hangman extends React.Component {
 
   async componentDidMount() {
     this.getUserById(global.uid);
-    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
-    const test = await Permissions.askAsync(Permissions.LOCATION)
-      .then(permission => {
-        if (permission.status === 'granted') {
-          this.locationWatcher = Location.watchPositionAsync({
-            enableHighAccuracy: true,
-            timeInterval: 500,
-          }, (location) => {
-            this.setState({
-              /*locatie: {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta,
-                longitudeDelta,
-              },*/
-              coordinaten: {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-              }
-            })
-
-            for (let element of this.state.sights) {
-              if (this._isInPolygon(this.state.coordinaten, element.coordinates)) {
-                this.setState({ huidigeSightNaam: element.name })
-                this.setState({ huidigeSightId: element.sightId })
-              }
-
-
-
-            }
-
-            this.apiCallChallenge(this.state.huidigeSightId);
-
-
-          })
-        }
-      })
-
-    this.apiCallSights();
+    this.setState({ sight: this.props.sight });
+    this.setState({ challenge: this.props.sight.challenges[0] });
+    this.setState({ hint: this.props.sight.challenges[0].questionChallenge })
+    this.setState({ answer: this.props.sight.challenges[0].answer })
   }
 
-  _isInPolygon = (point, polygonArray) => {
-
-    let x = point.latitude
-    let y = point.longitude
-
-    let inside = false
-    for (let i = 0, j = polygonArray.length - 1; i < polygonArray.length; j = i++) {
-      let xLat = polygonArray[i].latitude
-      let yLat = polygonArray[i].longitude
-      let xLon = polygonArray[j].latitude
-      let yLon = polygonArray[j].longitude
-
-      let intersect = ((yLat > y) !== (yLon > y)) && (x < (xLon - xLat) * (y - yLat) / (yLon - yLat) + xLat)
-      if (intersect) inside = !inside
-    }
-    return inside
-  }
-
-  async apiCallSights() {
-    let resp2 = await fetch('https://citygo-ap.azurewebsites.net/sights')
-    let respJson2 = await resp2.json();
-    this.setState({ sights: respJson2.sights })
-
-
-  }
-
-  confirm=()=>{
-    // feedback werkt enkel voor android via toast
-    if(this.state.antwoord==this.state.juistantwoord){
-
-      const putMethod = {
-        method: 'PUT', // Method itself
-        headers: {
-         'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
-        },
-        body: {}
-       }
-       
-       // make the HTTP put request using fetch api
-       // voorlopig hardcoded, kan wanneer login af is
-       var id=this.state.id
-       fetch("https://citygo-ap.azurewebsites.net/users/"+this.state.currentUser.userId+"/challenges/"+id, putMethod)
-       //console.log(this.state.currentUser.userId)
-       .then(response => response.json())
-       .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
-       .catch(err => console.log(err)) // Do something with the error
-
- 
-      this.props.changeComponent('One')
-      ToastAndroid.show("Congratulations!", ToastAndroid.LONG);
-    }
-    else{
-      ToastAndroid.show("Wrong answer!", ToastAndroid.LONG);
-    }
-
-  }
-
-  async apiCallChallenge(id) {
-    let url = 'https://citygo-ap.azurewebsites.net/sights/' + id + '/challenges';
-    let resp = await fetch(url)
-    let respJson = await resp.json();
-    this.setState({ vraag: respJson.challenges[0].task })
-    this.setState({ juistantwoord: respJson.challenges[0].answer })
-    this.setState({ id: respJson.challenges[0].challengeId })
-  }
 
 
   // wanneer we op een letter duwen moet deze gevalideerd worden
@@ -179,7 +81,7 @@ export default class Hangman extends React.Component {
 
   }
 
-  validate(usedLetters, letter) {
+  async validate(usedLetters, letter) {
     // aangeklikte letters moeten worden bijgehouden
     usedLetters.push(letter);
     let correct = this.state.correct,
@@ -202,7 +104,12 @@ export default class Hangman extends React.Component {
         'Proficiat',
         'Je hebt het juiste antwoord geraden',
         [
-          { text: 'OK', onPress: () => this.confirm },
+          {
+            text: 'OK', onPress: () => (
+              this.props.setRewardChallenge(this.state.challenge),
+              this.props.changeComponent('reward'),
+              ToastAndroid.show("Congratulations!", ToastAndroid.LONG))
+          },
         ],
         { cancelable: false }
       )
