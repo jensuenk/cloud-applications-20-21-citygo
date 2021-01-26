@@ -124,6 +124,7 @@ export default class Mapke extends React.Component {
   }
 
   componentDidMount() {
+    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
     Permissions.askAsync(Permissions.LOCATION)
       .then(permission => {
         if (permission.status === 'granted') {
@@ -155,6 +156,7 @@ export default class Mapke extends React.Component {
 
     this.setState({ itemDialogsCanceled: [] })
   }
+
 
   componentWillUnmount() {
     clearInterval(this.sightTimer);
@@ -319,7 +321,7 @@ export default class Mapke extends React.Component {
       user.location.latitude = this.state.location.latitude,
         user.location.longitude = this.state.location.longitude
     }
-    const request = {
+    const request = { 
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user)

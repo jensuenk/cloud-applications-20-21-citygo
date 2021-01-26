@@ -17,12 +17,23 @@ export default class ProfilePicture extends React.Component {
   state = {
     loading: false,
     data: [],
+    currentUser: null
   }
 
+  async getUserById(id) {
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
+    let respJson = await resp.json();
+    this.setState({ currentUser: respJson });
+    this.getListRandM();
 
+  }
 
   componentDidMount() {
+    console.disableYellowBox = false;
     this.getListRandM();
+    this.getUserById(global.uid);
+
+
   }
 
   async getListRandM() {
@@ -73,7 +84,7 @@ export default class ProfilePicture extends React.Component {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        "userId": 4,
+        "userId": this.state.currentUser.userId,
         "picrtureURL": _url
       })
     };

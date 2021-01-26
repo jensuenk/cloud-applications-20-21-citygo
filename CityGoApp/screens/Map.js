@@ -54,6 +54,7 @@ export default class Map2 extends React.Component {
   }
 
   renderComponent(component) {
+    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
     if (component == 'One') {
       return <MapZelf changeComponent={this.changeComponent} setCollectItem={this.setCollectItem} setSight={this.setSight}/>
     } else if (component == 'vraag') {
