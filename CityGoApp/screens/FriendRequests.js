@@ -27,6 +27,7 @@ export default class FriendRequest extends React.Component {
   componentDidMount() {
     this.makeRemoteRequest()
     this.getAllUsers()
+    //this.apiCallUser()
   }
 
   async apiCallUser() {
@@ -90,7 +91,8 @@ export default class FriendRequest extends React.Component {
   // versturen van een accepteren zal nu hardcoded zijn vanuit het standpunt van user1
 
   acceptFriendRequest = (fid, uid = '4') => {
-    const urlFriendRequest = 'https://citygo-ap.azurewebsites.net/Users/' + uid + '/Friends/' + fid
+    
+    const urlFriendRequest = 'https://citygo-ap.azurewebsites.net/Users/' + uid + '/FriendRequests/' + fid
     console.log(urlFriendRequest)
     const putMethod = {
       method: 'PUT',
@@ -109,22 +111,6 @@ export default class FriendRequest extends React.Component {
 
 
     //moet op beide plaatsen aangemaakt worden
-
-    const urlFriendRequest2 = 'https://citygo-ap.azurewebsites.net/Users/' + uid + '/FriendRequests/' + friendId
-    console.log(urlFriendRequest)
-    const putMethod2 = {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
-      },
-      body: {}
-    }
-
-    // make the HTTP put request using fetch api
-    fetch(urlFriendRequest2, putMethod2)
-      .then(response => response.json())
-      .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
-      .catch(err => console.log(err)) // Do something with the error
 
 
   }
@@ -260,7 +246,7 @@ export default class FriendRequest extends React.Component {
                       color: '#000'
                     }}>{`${item.name}`}
                   </Text>
-                  <TouchableOpacity onPress={() => this.acceptFriendRequest(item.friendId)}>
+                  <TouchableOpacity onPress={() => this.acceptFriendRequest(item.userId)}>
                     <View style={styles.button}>
                       <Text style={styles.buttonText} >
                         Accept

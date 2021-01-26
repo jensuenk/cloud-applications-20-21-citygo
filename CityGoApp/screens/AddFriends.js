@@ -191,7 +191,7 @@ render() {
         data={this.state.data}
         renderItem={ 
           ({ item }) =>  {
-            if(item.userId != 1){
+            if(item.userId != 4){
               return(  <View
                 style={{
                   flexDirection: 'row',

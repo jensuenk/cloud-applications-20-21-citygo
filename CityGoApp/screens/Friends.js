@@ -9,6 +9,7 @@ import filter from 'lodash.filter';
 
 
 export default class Friends extends React.Component {
+  
   state = {
     loading: false,
     data: [],
@@ -134,10 +135,10 @@ export default class Friends extends React.Component {
 
   deleteFriend = (fid, uid = '4') => {
 
-    console.log(fid)
+ 
 
     const urlFriendDelete = 'https://citygo-ap.azurewebsites.net/Users/' + uid + '/Friends/' + fid
-
+    console.log(urlFriendDelete)
 
     const deleteMethod = {
       method: "DELETE",
@@ -170,7 +171,7 @@ export default class Friends extends React.Component {
     });
     */
     //TODO: verbeteren?
-    setTimeout(() => {  this.componentDidMount() }, 1000);
+    setTimeout(() => {  this.componentDidMount() }, 2000);
 
   }
 
