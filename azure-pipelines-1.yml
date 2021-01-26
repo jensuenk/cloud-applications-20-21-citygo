@@ -43,3 +43,11 @@ steps:
     codeCoverageEnabled:  true
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '**/CleanTesting.Application.IntegrationTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+    testRunTitle: 'unittests'
