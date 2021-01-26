@@ -239,7 +239,7 @@ sort = (data) => {
         return item2.score - item1.score;
     })
     let userRank = sorted.findIndex((item) => {
-        return item.name === this.state.user.name;
+        return item.name === this.state.data.name;
     })
     this.setState({ userRank: ++userRank });
     return sorted;
@@ -258,7 +258,7 @@ renderTop() {
                     {ordinal_suffix_of(this.state.userRank)}
                 </Text>
                 <Text style={{ color: 'white', fontSize: 25, flex: 1, marginLeft: 40 }}>
-                    {this.state.user.score}pts
+                    {this.state.data.score}pts
                 </Text>
             </View>
             <ButtonGroup
