@@ -92,9 +92,6 @@ class LoginScreen extends React.Component {
             if (errorCode === 'auth/invalid-email') {
                 console.log("Invalid email");
                 alert('Invalid email.');
-            } else {
-                this.apiCallUserEmail(); //call users to find UID
-                this.props.navigation.navigate('MainScreen'); //navigate to the MAP screen
             }
         }
     }
@@ -114,7 +111,7 @@ class LoginScreen extends React.Component {
                 } else {
                     Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
                         .then(this.authSuccessfull) //Authentication was successfull
-                        .catch(error => this.authNotSuccessfull(error))
+                        .catch(error => this.authNotSuccessfull(error)) //Authentication was not successfull
                 }
             }
         }
