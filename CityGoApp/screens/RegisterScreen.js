@@ -34,6 +34,7 @@ class RegisterScreen extends React.Component {
         }
     }
 
+    //Gebruikt om lijst te krijgen van alle users
     //Deze Asynchronische functie zorgt er voor dat er een GET request naar de API gestuurd wordt, om de gegevens van de reeds geregistreerde users na te kunnen gaan
     async apiCallUsers() {
         let responseApiUsers = await fetch('https://citygo-ap.azurewebsites.net/Users/');
@@ -42,6 +43,7 @@ class RegisterScreen extends React.Component {
         console.log("API werd gecalld");
     }
 
+    //aanmaken NIEUWE USER in de API- registration
     async apiPostNewUser() {
         // POST request with all variables of the User in the API -> name, username, email, balls, score, pictureURL, friends ID, items, userItems, userChallenges, Friends and userFriends
         const PostRequest = {
@@ -151,6 +153,7 @@ class RegisterScreen extends React.Component {
         }
     }
 
+    //AANMAKEN NIEUWE USER in Firebase
     handleRegister = () => {
         if (this.state.isValidName) {
             if(this.state.name==""){
