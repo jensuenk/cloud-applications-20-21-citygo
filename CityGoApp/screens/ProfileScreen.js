@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View, FlatList, SafeAreaView, Image, ScrollView, LogBox } from "react-native";
+import { ButtonGroup } from 'react-native-elements';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Location from 'expo-location';
@@ -8,6 +9,7 @@ import Constants from 'expo-constants';
 import StandardButton from '../components/StandardButton';
 import Firebase from '../config/Firebase';
 import LoginScreen from './LoginScreen';
+import Leaderboard from 'react-native-leaderboard';
 
 
 
@@ -35,8 +37,21 @@ export default class ProfileScreen extends React.Component {
     FriendRequest: [],
     userchallanges: [],
     currentUser: null,
-    userItems:[]
-    
+    userItems: [],
+
+
+    globalData: [],
+    friendData: [],
+    filter: 0,
+
+    user: {
+      name: 'Joe Roddy',
+      score: 69,
+    }
+
+
+
+
 
   };
 
@@ -47,9 +62,9 @@ export default class ProfileScreen extends React.Component {
     this.setState({ currentUser: respJson });
     this.apiCallFriends();
     this.apiCallUser();
-    this.apiCallFriends();
     this.apiCalluserchallanges();
     this.apiCallFriendRequest();
+    this.apiAllUsers();
   }
 
 
@@ -62,17 +77,28 @@ export default class ProfileScreen extends React.Component {
   async apiCallFriends() {
     const { page, seed } = this.state
 
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId+'/Friends')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + this.state.currentUser.userId + '/Friends')
 
     let respJson = await resp.json();
     this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
+    this.setState({ friendData: page === 1 ? respJson.userFriends : [...this.state.friendData, ...respJson.userFriends] })
+
+  }
+
+  async apiAllUsers() {
+    const { page, seed } = this.state
+
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/')
+
+    let respJson = await resp.json();
+    this.setState({ globalData: page === 1 ? respJson.users : [...this.state.globalData, ...respJson.users] })
 
   }
 
   async apiCalluserchallanges() {
     const { page, seed } = this.state
 
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId)
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + this.state.currentUser.userId)
 
     let respJson = await resp.json();
     // console.log(respJson)
@@ -87,13 +113,13 @@ export default class ProfileScreen extends React.Component {
   async apiCallUser() {
     const { page, seed } = this.state
 
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId)
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + this.state.currentUser.userId)
 
     let respJson = await resp.json();
     // console.log(respJson)
     this.setState({ data: page === 1 ? respJson : [...this.state.data, ...respJson] })
     this.setState({ userItems: page === 1 ? respJson.usersItems : [...this.state.userItems, ...respJson.usersItems] })
-   
+
     console.log(this.state.userItems.length)
 
   }
@@ -102,7 +128,7 @@ export default class ProfileScreen extends React.Component {
   async apiCallFriendRequest() {
     const { page, seed } = this.state
 
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId+'/FriendRequests')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + this.state.currentUser.userId + '/FriendRequests')
 
     let respJson = await resp.json();
     this.setState({ FriendRequest: page === 1 ? respJson.friends : [...this.state.FriendRequest, ...respJson.friends] })
@@ -197,18 +223,82 @@ export default class ProfileScreen extends React.Component {
     global.Myuser = false;
   };
 
- 
+  //////////////////////////////////////////////////////////////////////////////////
+  //proberen van leaderboard//////////////////////////////////////////////////////////////////
+  alert = (title, body) => {
+    Alert.alert(
+        title, body, [{ text: 'OK', onPress: () => { } },],
+        { cancelable: false }
+    )
+}
+
+sort = (data) => {
+
+  
+    const sorted = data && data.sort((item1, item2) => {
+        return item2.score - item1.score;
+    })
+    let userRank = sorted.findIndex((item) => {
+        return item.name === this.state.user.name;
+    })
+    this.setState({ userRank: ++userRank });
+    return sorted;
+}
+
+renderTop() {
+    return (
+        <View colors={[, '#1da2c6', '#1695b7']}
+            style={{ backgroundColor: '#119abf', padding: 15, paddingTop: 35, alignItems: 'center' }}>
+            <Text style={{ fontSize: 25, color: 'white', }}>Leaderboard</Text>
+            <View style={{
+                flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
+                marginBottom: 15, marginTop: 20
+            }}>
+                <Text style={{ color: 'white', fontSize: 25, flex: 1, textAlign: 'right', marginRight: 40 }}>
+                    {ordinal_suffix_of(this.state.userRank)}
+                </Text>
+                <Text style={{ color: 'white', fontSize: 25, flex: 1, marginLeft: 40 }}>
+                    {this.state.user.score}pts
+                </Text>
+            </View>
+            <ButtonGroup
+                onPress={(x) => { this.setState({ filter: x }) }}
+                selectedIndex={this.state.filter}
+                buttons={['Global', 'Friends']}
+                containerStyle={{ height: 30 }} />
+        </View>
+    )
+}
+
+
+
+
+
+
+
+
 
   render() {
+
+    const props = {
+      labelBy: 'name',
+      sortBy: 'score',
+      //TODO/:veranderen zodat we een lijst krijgen van alle friends van de user en alle users in het spel
+      data: this.state.filter > 0 ? this.state.friendData : this.state.globalData,
+      icon: 'iconUrl',
+      onRowPress: (item, index) => { this.alert(item.name + " clicked", item.score + " points, wow!") },
+      sort: this.sort
+  }
+
+
     const ItemList = ({ item }) => {
-      console.log(item.item.picture)
       return (
         <View style={styles.item}>
           <Image
             source={{ uri: item.item.picture }}
-            style={styles.imageitem} 
+            style={styles.imageitem}
             resizeMode="cover"
-           
+
           />
           <Text>{item.item.name}</Text>
         </View>
@@ -258,8 +348,8 @@ export default class ProfileScreen extends React.Component {
 
           <View style={{ alignSelf: "center" }}>
             <View>
-              {this.state.FriendRequest.length>0 && <TouchableOpacity onPress={() => this.gotoRequests()}><Image  style={styles.imagerequest} source={require('../Images/friendRequesticon.jpg')} /></TouchableOpacity>}
-             
+              {this.state.FriendRequest.length > 0 && <TouchableOpacity onPress={() => this.gotoRequests()}><Image style={styles.imagerequest} source={require('../Images/friendRequesticon.jpg')} /></TouchableOpacity>}
+
             </View>
             <View style={styles.profileImage}>
               <Image
@@ -302,52 +392,23 @@ export default class ProfileScreen extends React.Component {
 
 
           </View>
-         <Text>ITEMS:</Text>
+          <Text>ITEMS:</Text>
           <FlatList
-                  horizontal
-                  data={this.state.userItems}
-                  renderItem={({ item }) => <ItemList item={item} />}
-                  showsHorizontalScrollIndicator={false}
-                />
+            horizontal
+            data={this.state.userItems}
+            renderItem={({ item }) => <ItemList item={item} />}
+            showsHorizontalScrollIndicator={false}
+          />
           <View>
 
           </View>
-          <View style={styles.centerText}>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Top Friends</Text>
-          </View>
+          <View style={{ flex: 1, backgroundColor: 'white', }}>
+                {this.renderTop()}
+                <Leaderboard {...props} />
+            </View>
           <View style={{ flex: 1, padding: 24 }}>
             <FlatList
-              data={this.state.FriendsList}
-              FriendRequest={this.state.FriendRequest}
-              renderItem={
-                ({ item }) => {
-                  if (item.userId != this.state.currentUser.userId) {
-                    return (<View
-                      style={{
-                        flexDirection: 'row',
-                        padding: 16,
-                        alignItems: 'center',
-                        alignSelf: "center",
-                        fontWeight: "200",
-                      }}>
-                      <Text>{teller = teller + 1}. </Text>
-                      <Text
-                        category='s1'
-                        style={{
-                          color: '#000'
-                        }}>{`${item.name}`}
-                      </Text>
-                      <Text
-                        category='s1'
-                        style={{
-                          color: '#000'
-                        }}>{`       score: ${item.score}`}
-                      </Text>
-                    </View>)
-                  }
-
-                }}
-
+           
               keyExtractor={item => item.email}
               ItemSeparatorComponent={this.renderSeparator}
               ListFooterComponent={this.renderFooter}
@@ -364,11 +425,6 @@ export default class ProfileScreen extends React.Component {
             </TouchableOpacity>
           </View>
 
-          <StandardButton
-            buttonTitle="Hangman"
-            onPress={() => { this.goToHangman() }}
-          />
-
 
         </ScrollView>
       </SafeAreaView>
@@ -376,7 +432,20 @@ export default class ProfileScreen extends React.Component {
   }
 }
 
-
+const ordinal_suffix_of = (i) => {
+  var j = i % 10,
+      k = i % 100;
+  if (j == 1 && k != 11) {
+      return i + "st";
+  }
+  if (j == 2 && k != 12) {
+      return i + "nd";
+  }
+  if (j == 3 && k != 13) {
+      return i + "rd";
+  }
+  return i + "th";
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -393,20 +462,20 @@ const styles = StyleSheet.create({
     width: undefined,
 
   },
-  imageitem:{
+  imageitem: {
     flex: 1,
     height: 100,
     width: 100,
     borderWidth: 3,
     borderColor: "black",
     borderRadius: 15,
-    marginStart:10
+    marginStart: 10
   },
   imagerequest: {
     width: 60,
     height: 60,
     overflow: "hidden",
-    marginLeft:150
+    marginLeft: 150
   },
   titleBar: {
     flexDirection: "row",
