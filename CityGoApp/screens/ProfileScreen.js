@@ -34,14 +34,15 @@ export default class ProfileScreen extends React.Component {
     FriendsList: [],
     FriendRequest: [],
     userchallanges: [],
+    currentUser: null,
 
   };
 
 
-
-
-
-  componentDidMount() {
+  async getUserById(id) {
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
+    let respJson = await resp.json();
+    this.setState({ currentUser: respJson });
     this.apiCallFriends();
     this.apiCallUser();
     this.apiCallFriends();
@@ -49,11 +50,17 @@ export default class ProfileScreen extends React.Component {
     this.apiCallFriendRequest();
   }
 
+
+  componentDidMount() {
+    this.getUserById(global.uid);
+
+  }
+
   // nog een check doen voor als hij geen vrienden heeft
   async apiCallFriends() {
     const { page, seed } = this.state
 
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4/Friends')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId+'/Friends')
 
     let respJson = await resp.json();
     this.setState({ FriendsList: page === 1 ? respJson.userFriends : [...this.state.FriendsList, ...respJson.userFriends] })
@@ -63,7 +70,7 @@ export default class ProfileScreen extends React.Component {
   async apiCalluserchallanges() {
     const { page, seed } = this.state
 
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId)
 
     let respJson = await resp.json();
     // console.log(respJson)
@@ -78,7 +85,7 @@ export default class ProfileScreen extends React.Component {
   async apiCallUser() {
     const { page, seed } = this.state
 
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId)
 
     let respJson = await resp.json();
     // console.log(respJson)
@@ -90,7 +97,7 @@ export default class ProfileScreen extends React.Component {
   async apiCallFriendRequest() {
     const { page, seed } = this.state
 
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/4/FriendRequests')
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId+'/FriendRequests')
 
     let respJson = await resp.json();
     this.setState({ FriendRequest: page === 1 ? respJson.friends : [...this.state.FriendRequest, ...respJson.friends] })
@@ -306,7 +313,7 @@ export default class ProfileScreen extends React.Component {
               FriendRequest={this.state.FriendRequest}
               renderItem={
                 ({ item }) => {
-                  if (item.userId != 4) {
+                  if (item.userId != this.state.currentUser.userId) {
                     return (<View
                       style={{
                         flexDirection: 'row',

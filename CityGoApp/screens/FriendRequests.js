@@ -20,14 +20,27 @@ export default class FriendRequest extends React.Component {
     fullData: [],
     allUsers: [],
     uid: null,
+    currentUser: null,
+
   }
 
 
 
   componentDidMount() {
+
+    this.getUserById(global.uid);
+
+    //this.apiCallUser()
+  }
+
+
+  async getUserById(id) {
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
+    let respJson = await resp.json();
+    this.setState({ currentUser: respJson });
     this.makeRemoteRequest()
     this.getAllUsers()
-    //this.apiCallUser()
+
   }
 
   async apiCallUser() {
@@ -90,7 +103,7 @@ export default class FriendRequest extends React.Component {
 
   // versturen van een accepteren zal nu hardcoded zijn vanuit het standpunt van user1
 
-  acceptFriendRequest = (fid, uid = '4') => {
+  acceptFriendRequest = (fid, uid = this.state.currentUser.userId) => {
     
     const urlFriendRequest = 'https://citygo-ap.azurewebsites.net/Users/' + uid + '/FriendRequests/' + fid
     console.log(urlFriendRequest)
@@ -227,7 +240,7 @@ export default class FriendRequest extends React.Component {
           data={this.state.probeersel}
           renderItem={
             ({ item }) => {
-              if (item.friendId != 4) {
+              if (item.friendId != this.state.currentUser.userId) {
                 return (<View
                   style={{
                     flexDirection: 'row',

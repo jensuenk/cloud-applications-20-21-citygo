@@ -17,16 +17,26 @@ export default class AddFriends extends React.Component {
     seed: 1,
     error: null,
     query: '',
-    fullData: []
+    fullData: [],
+    currentUser: null,
+
   }
 
  
 
   componentDidMount() {
-    this.makeRemoteRequest()
+
+    this.getUserById(global.uid);
+
   }
 
- 
+  async getUserById(id) {
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
+    let respJson = await resp.json();
+    this.setState({ currentUser: respJson });
+    this.makeRemoteRequest()
+
+  }
 
 
   makeRemoteRequest = () => {
@@ -67,7 +77,7 @@ export default class AddFriends extends React.Component {
   
  // versturen van een verzoek zal nu hardcoded zijn vanuit het standpunt van user1
   
-  sendFriendRequest = (fid, uid = '4' ) => {
+  sendFriendRequest = (fid, uid = this.state.currentUser.userId) => {
     const urlFriendRequest = 'https://citygo-ap.azurewebsites.net/Users/'+uid+'/Friends/'+fid
     console.log(urlFriendRequest)
     const putMethod = {
@@ -191,7 +201,7 @@ render() {
         data={this.state.data}
         renderItem={ 
           ({ item }) =>  {
-            if(item.userId != 4){
+            if(item.userId != this.state.currentUser.userId){
               return(  <View
                 style={{
                   flexDirection: 'row',

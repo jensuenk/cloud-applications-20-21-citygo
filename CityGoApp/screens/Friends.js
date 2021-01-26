@@ -20,20 +20,30 @@ export default class Friends extends React.Component {
     fullData: [],
     allUsers: [],
     result: [],
-    probeersel:[]
+    probeersel:[],
+    currentUser: null,
+
   }
 
 
   componentDidMount() {
-    this.makeRemoteRequest()
-    this.getAllUsers()
+
+    this.getUserById(global.uid);
+
     
   }
+  async getUserById(id) {
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
+    let respJson = await resp.json();
+    this.setState({ currentUser: respJson });
+    this.makeRemoteRequest()
+    this.getAllUsers()
 
+  }
 
   makeRemoteRequest = () => {
     const { page, seed } = this.state
-    const url = 'https://citygo-ap.azurewebsites.net/Users/4/Friends'
+    const url = 'https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId+'/Friends'
     this.setState({ loading: true })
 
 
@@ -133,7 +143,7 @@ export default class Friends extends React.Component {
   }
 
 
-  deleteFriend = (fid, uid = '4') => {
+  deleteFriend = (fid, uid = this.state.currentUser.userId) => {
 
  
 
