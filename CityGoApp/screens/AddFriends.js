@@ -17,16 +17,26 @@ export default class AddFriends extends React.Component {
     seed: 1,
     error: null,
     query: '',
-    fullData: []
+    fullData: [],
+    currentUser: null,
+
   }
 
  
 
   componentDidMount() {
-    this.makeRemoteRequest()
+
+    this.getUserById(global.uid);
+
   }
 
- 
+  async getUserById(id) {
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
+    let respJson = await resp.json();
+    this.setState({ currentUser: respJson });
+    this.makeRemoteRequest()
+
+  }
 
 
   makeRemoteRequest = () => {
@@ -67,7 +77,7 @@ export default class AddFriends extends React.Component {
   
  // versturen van een verzoek zal nu hardcoded zijn vanuit het standpunt van user1
   
-  sendFriendRequest = (fid, uid = '4' ) => {
+  sendFriendRequest = (fid, uid = this.state.currentUser.userId) => {
     const urlFriendRequest = 'https://citygo-ap.azurewebsites.net/Users/'+uid+'/Friends/'+fid
     console.log(urlFriendRequest)
     const putMethod = {
@@ -86,6 +96,7 @@ export default class AddFriends extends React.Component {
 
 
 
+       /*
         //moet op beide plaatsen aangemaakt worden
        const urlFriendRequest2 = 'https://citygo-ap.azurewebsites.net/Users/'+fid+'/Friends/'+uid
        console.log(urlFriendRequest)
@@ -102,7 +113,7 @@ export default class AddFriends extends React.Component {
           .then(response => response.json())
           .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
           .catch(err => console.log(err)) // Do something with the error
-          
+          */
        
   }
  
@@ -190,7 +201,7 @@ render() {
         data={this.state.data}
         renderItem={ 
           ({ item }) =>  {
-            if(item.userId != 1){
+            if(item.userId != this.state.currentUser.userId){
               return(  <View
                 style={{
                   flexDirection: 'row',
@@ -198,7 +209,7 @@ render() {
                   alignItems: 'center'
                 }}>
                 <Image
-                  source={{ uri: 'https://i.ytimg.com/vi/LkHcB34a2yo/hqdefault.jpg' }}
+                  source={{ uri: item.picrtureURL }}
                   size='giant'
                   style={styles.profileImage}>
                 </Image>
