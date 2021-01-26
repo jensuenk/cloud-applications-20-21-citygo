@@ -32,7 +32,8 @@ export default class Map2 extends React.Component {
     {
       componentSelected: 'One',
       collectItem: null,
-      rewardChallenge: null
+      rewardChallenge: null,
+      sight: null
     }
   }
 
@@ -48,19 +49,23 @@ export default class Map2 extends React.Component {
     this.setState({ rewardChallenge: challenge });
   }
 
+  setSight = (sight) => {
+    this.setState({ sight: sight });
+  }
+
   renderComponent(component) {
     if (component == 'One') {
-      return <MapZelf changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
+      return <MapZelf changeComponent={this.changeComponent} setCollectItem={this.setCollectItem} setSight={this.setSight}/>
     } else if (component == 'vraag') {
-      return <QuestionScreen changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
+      return <QuestionScreen changeComponent={this.changeComponent} sight={this.state.sight} setRewardChallenge={this.setRewardChallenge}/>
     } else if (component == 'tictactoe') {
-      return <TicTacToe changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
+      return <TicTacToe changeComponent={this.changeComponent} sight={this.state.sight} setRewardChallenge={this.setRewardChallenge}/>
     } else if (component == 'memorygame') {
-      return <MemoryGame changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
+      return <MemoryGame changeComponent={this.changeComponent} sight={this.state.sight} setRewardChallenge={this.setRewardChallenge}/>
     } else if (component == 'catch') {
-      return <CatchItemScreen changeComponent={this.changeComponent} collectItem={this.state.collectItem}/>
-    } else if(component =='Hangman'){
-      return <Hangman changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
+      return <CatchItemScreen changeComponent={this.changeComponent} sight={this.state.sight} collectItem={this.state.collectItem}/>
+    } else if(component =='Hangman') {
+      return <Hangman changeComponent={this.changeComponent} sight={this.state.sight} setRewardChallenge={this.setRewardChallenge}/>
     } else if (component == 'reward') {
       return <RewardScreen changeComponent={this.changeComponent} rewardChallenge={this.state.rewardChallenge} setCollectItem={this.setCollectItem}/>
     }

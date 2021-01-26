@@ -15,7 +15,7 @@ export default class RewardScreen extends React.Component {
   async componentDidMount() {
     this.getUserById(global.uid);
     this.state.challenge = this.props.rewardChallenge;
-    
+    console.log(this.state.challenge)
   }
 
   async getUserById(id) {
@@ -80,7 +80,7 @@ export default class RewardScreen extends React.Component {
   }
 
   render() {
-    if (this.state.currentUser == null || this.state.challenge == null || this.state.item == null) {
+    if (this.state.currentUser == null || this.state.challenge == null) {
       return (
         <View style={styles.container}></View>
       )

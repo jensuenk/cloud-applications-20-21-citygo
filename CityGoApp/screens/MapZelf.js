@@ -38,6 +38,7 @@ export default class Mapke extends React.Component {
           {
             text: "Yes",
             onPress: () => (
+              this.props.setSight(sight),
               this.props.changeComponent(sight.challenges[0].task),
               this.sightAlertIsActive = false
             )

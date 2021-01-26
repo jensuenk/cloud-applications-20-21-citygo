@@ -1,178 +1,46 @@
 import React from 'react'
-import { View, Alert, Text, TextInput, StyleSheet,ToastAndroid } from 'react-native'
-import * as Permissions from 'expo-permissions';
-import * as Location from 'expo-location';
-import MapView, { PROVIDER_GOOGLE, Marker, Polyline, Polygon } from 'react-native-maps';
-import { mapStyle } from './mapStyle';
-import GeoFencing from 'react-native-geo-fencing';
+import { View, Text, TextInput, StyleSheet, ToastAndroid } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import MapZelf from './MapZelf'
-
-const latitudeDelta = 0.0100
-const longitudeDelta = 0.0080
-
 
 export default class QuestionScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      locatie: {
-        latitude: 0,
-        longitude: 0,
-        latitudeDelta,
-        longitudeDelta,
-      },
-      coordinaten: {
-        latitude: 0,
-        longitude: 0
-      },
-      sights: [],
-      huidigeSightNaam: "(Naam van plaats)",
-      huidigeSightId: 0,
-      vraag: "(Hier komt vraag van API)",
-      antwoord: "",
-      juistantwoord:"",
-      id:0,
-      currentUser: null,
+      sight: null,
+      challenge: null,
+      answer: ""
     }
-  }
-
-  async getUserById(id) {
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
-    let respJson = await resp.json();
-    this.setState({ currentUser: respJson });
   }
 
   async componentDidMount() {
-    this.getUserById(global.uid);
-    //console.disableYellowBox = false;
-    const test= await Permissions.askAsync(Permissions.LOCATION)
-      .then(permission => {
-        if (permission.status === 'granted') {
-          this.locationWatcher = Location.watchPositionAsync({
-            enableHighAccuracy: true,
-            timeInterval: 500,
-          }, (location) => {
-            this.setState({
-              locatie: {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta,
-                longitudeDelta,
-              },
-              coordinaten: {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-              }
-            })
-
-            for (let element of this.state.sights) {
-              if(this._isInPolygon(this.state.coordinaten,element.coordinates))
-              {
-                this.setState({ huidigeSightNaam: element.name })
-                this.setState({ huidigeSightId: element.sightId })
-              }
-
-
-
-            }
-
-            this.apiCallChallenge(this.state.huidigeSightId);
-
-
-          })
-        }
-      })
-
-    this.apiCallSights();
-
-
-
+    this.setState({ sight: this.props.sight });
+    this.setState({ challenge: this.props.sight.challenges[0] });
   }
 
-  _isInPolygon = (point, polygonArray) => {
-
-    let x = point.latitude
-    let y = point.longitude
-
-    let inside = false
-    for (let i = 0, j = polygonArray.length - 1; i < polygonArray.length; j = i++) {
-      let xLat = polygonArray[i].latitude
-      let yLat = polygonArray[i].longitude
-      let xLon = polygonArray[j].latitude
-      let yLon = polygonArray[j].longitude
-
-      let intersect = ((yLat > y) !== (yLon > y)) && (x < (xLon - xLat) * (y - yLat) / (yLon - yLat) + xLat)
-      if (intersect) inside = !inside
-    }
-    return inside
-  } 
-
-  async apiCallSights() {
-    let resp2 = await fetch('https://citygo-ap.azurewebsites.net/sights')
-    let respJson2 = await resp2.json();
-    this.setState({ sights: respJson2.sights })
-
-
-  }
-
-  async apiCallChallenge(id) { 
-    let url='https://citygo-ap.azurewebsites.net/sights/'+id+'/challenges';
-    let resp = await fetch(url)
-    let respJson = await resp.json();
-    this.setState({ vraag: respJson.challenges[0].task })
-    this.setState({ juistantwoord: respJson.challenges[0].answer })
-    this.setState({ id: respJson.challenges[0].challengeId })
-  }
-
-  confirm=()=>{
-    // feedback werkt enkel voor android via toast
-    if(this.state.antwoord==this.state.juistantwoord){
-
-      const putMethod = {
-        method: 'PUT', // Method itself
-        headers: {
-         'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
-        },
-        body: {}
-       }
-       
-       // make the HTTP put request using fetch api
-       // voorlopig hardcoded, kan wanneer login af is
-       var id=this.state.id
-       fetch("https://citygo-ap.azurewebsites.net/users/"+this.state.currentUser.userId+"/challenges/"+id, putMethod)
-       //console.log(this.state.currentUser.userId)
-       .then(response => response.json())
-       .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
-       .catch(err => console.log(err)) // Do something with the error
-
- 
-      this.props.changeComponent('One')
+  confirm = () => {
+    if (this.state.answer.toUpperCase() == this.state.challenge.answer.toUpperCase()) {
+      this.props.setRewardChallenge(this.state.challenge);
+      this.props.changeComponent('reward');
       ToastAndroid.show("Congratulations!", ToastAndroid.LONG);
     }
-    else{
+    else {
       ToastAndroid.show("Wrong answer!", ToastAndroid.LONG);
     }
-
   }
 
-  antwoordtekst=(tekst)=>{
-    this.setState({ antwoord: tekst })
-
+  onAnswer = (text) => {
+    this.setState({ answer: text })
   }
 
-
-  //Hier wordt de vraag weergegeven die opgehaald wordt uit de api
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>You are close to {this.state.huidigeSightNaam}.</Text>
-        <Text style={styles.question}>{this.state.vraag}</Text>
+        {this.state.sight != null && <Text style={styles.header}>You are close to {this.state.sight.name}.</Text>}
+        {this.state.sight != null && <Text style={styles.question}>{this.state.challenge.questionChallenge}</Text>}
         <TextInput
           style={styles.textinput}
           placeholder="Answer"
-          onChangeText={this.antwoordtekst}
-        //value={value}
+          onChangeText={this.onAnswer}
         />
         <TouchableOpacity style={styles.button1} onPress={this.confirm}>
           <Text style={styles.btntext}>Confirm</Text>
@@ -183,7 +51,7 @@ export default class QuestionScreen extends React.Component {
       </View>
     )
 
-  } 
+  }
 }
 
 const styles = StyleSheet.create({
@@ -236,4 +104,4 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold'
   }
-})
+});
