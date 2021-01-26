@@ -239,7 +239,7 @@ sort = (data) => {
         return item2.score - item1.score;
     })
     let userRank = sorted.findIndex((item) => {
-        return item.name === this.state.data.name;
+        return item.username === this.state.data.username;
     })
     this.setState({ userRank: ++userRank });
     return sorted;
