@@ -6,57 +6,23 @@ export default class InventoryScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      sights: [],
-      voltooideChallenges: [],
-      booleans: [],
-      voorlopigebool: false,
-      i: 0,
-      intOmTeChecken: 0,
-      currentUser: null,
+      allSights: [],
+      completedChallenges: []
     }
   }
 
-  async getUserById(id) {
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
-    let respJson = await resp.json();
-    this.setState({ currentUser: respJson });
-  }
-
-
-
   componentDidMount() {
-    this.getUserById(global.uid);
-    this.ivoorcheckboxes = 0
     this.apiCall();
     this.listUpdateTimer = setInterval(() => this.apiCall(), 10000);
   }
 
   async apiCall() {
-    let resp = await fetch('https://citygo-ap.azurewebsites.net/sights')
-    let respJson = await resp.json();
-    this.setState({ sights: respJson.sights })
-    let resp2 = await fetch('https://citygo-ap.azurewebsites.net/users/'+this.state.currentUser.userId)
-    let respJson2 = await resp2.json();
-    this.setState({ voltooideChallenges: respJson2.usersChallenges })
-
-    this.state.sights.forEach(sight => {
-      this.checkenVanSightChallenge(sight)
-      if (this.state.intOmTeChecken > 0) {
-        const lijst = this.state.booleans;
-        lijst.push(true);
-        this.setState({ booleans: lijst })
-      }
-      else {
-        const lijst = this.state.booleans;
-        lijst.push(false);
-        this.setState({ booleans: lijst })
-      }
-
-      this.setState({ intOmTeChecken: 0 });
-    });
-
-    //console.log(this.state.booleans) 
-
+    let sightsResp = await fetch('https://citygo-ap.azurewebsites.net/Sights')
+    let sightsRespJson = await sightsResp.json();
+    this.setState({ allSights: sightsRespJson.sights })
+    let userResp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + global.uid)
+    let userRespJson = await userResp.json();
+    this.setState({ completedChallenges: userRespJson.usersChallenges })
   }
 
   hasVisited(sight) {
