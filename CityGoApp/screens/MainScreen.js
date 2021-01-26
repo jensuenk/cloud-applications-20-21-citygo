@@ -10,6 +10,10 @@ import { NavigationContainer } from '@react-navigation/native';
 
 class MainScreen extends React.Component {
 
+
+    componentDidMount(){
+        console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+    }
     signOut = () => {
         Firebase.auth()
             .signOut()

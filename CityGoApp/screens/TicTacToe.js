@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Alert, Animated, Button, Dimensions, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { Alert, Animated, Button, Dimensions, StyleSheet, TouchableOpacity, View, Text, ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default class TicTacToe extends Component {
+export default class TicTacToe extends React.Component {
 
     constructor(props) {
         super(props);
@@ -93,7 +93,7 @@ export default class TicTacToe extends Component {
         return 0;
     };
 
-    onTilePress(row, col) {
+    async onTilePress(row, col) {
 
         let value = this.state.gameState[row][col];
         if (value !== 0) return;
@@ -109,11 +109,15 @@ export default class TicTacToe extends Component {
 
         let winner = this.getWinner();
         if (winner === 1) {
-            Alert.alert("Player 1 won!");
-            this.initializeGame();
+            //Alert.alert("Player 1 won!");
+            this.props.setRewardChallenge(this.state.challenge);
+              this.props.changeComponent('reward');
+              ToastAndroid.show("Congratulations!", ToastAndroid.LONG);
         } else if (winner === -1) {
-            Alert.alert("Player 2 won!");
-            this.initializeGame();
+           // Alert.alert("Player 2 won!");
+            this.props.setRewardChallenge(this.state.challenge);
+              this.props.changeComponent('reward');
+              ToastAndroid.show("Congratulations!", ToastAndroid.LONG);
         }
     }
 

@@ -97,6 +97,8 @@ class LoginScreen extends React.Component {
             if (errorCode === 'auth/invalid-email') {
                 console.log("Invalid email");
                 alert('Invalid email.');
+            } else{
+                alert("foutieve credentials.");
             }
         }
     }

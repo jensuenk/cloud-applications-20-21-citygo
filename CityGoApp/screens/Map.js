@@ -78,11 +78,11 @@ export default class Map2 extends React.Component {
         {this.renderComponent(this.state.componentSelected)}
       </View>
     );
-  }
-}
+  } 
+} 
 
 
-
-
+ 
+ 
 
 
