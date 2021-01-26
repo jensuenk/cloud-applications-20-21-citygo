@@ -29,6 +29,8 @@ export default class ProfilePicture extends React.Component {
   }
 
   componentDidMount() {
+    console.disableYellowBox = false;
+    this.getListRandM();
     this.getUserById(global.uid);
 
 

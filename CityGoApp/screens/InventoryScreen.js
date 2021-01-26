@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { LogBox } from 'react-native';
 import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 
@@ -12,6 +13,7 @@ export default class InventoryScreen extends React.Component {
   }
 
   componentDidMount() {
+    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
     this.apiCall();
     this.listUpdateTimer = setInterval(() => this.apiCall(), 10000);
   }

@@ -7,6 +7,7 @@ import { mapStyle } from './mapStyle';
 import GeoFencing from 'react-native-geo-fencing';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MapZelf from './MapZelf'
+import { YellowBox } from "react-native";
 
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
@@ -45,7 +46,7 @@ export default class QuestionScreen extends React.Component {
 
   async componentDidMount() {
     this.getUserById(global.uid);
-    //console.disableYellowBox = false;
+    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
     const test= await Permissions.askAsync(Permissions.LOCATION)
       .then(permission => {
         if (permission.status === 'granted') {

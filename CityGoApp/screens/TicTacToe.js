@@ -43,6 +43,7 @@ export default class TicTacToe extends Component {
     };
 
     componentDidMount() {
+        console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
         this.initializeGame();
     }
 
