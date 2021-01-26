@@ -76,12 +76,17 @@ class LoginScreen extends React.Component {
         console.log("userId: ", global.uid);
     }
 
+    //als de authenticatie successvol wordt gezien (door de functie via Firebase)
+    //dan zal de myuser true worden (variable voor de navigatie)
+    //dan zal er een call naar de API gedaan worden, om de UID te vinden, voor later gebruik
+    //dan zal er genavigeerd worden naar de navigatie van de app
     authSuccessfull = () => {
         global.Myuser = true;
         this.apiCallUserEmail(); //call users to find UID
         this.props.navigation.navigate("MainScreen");
     }
 
+    //niet successvol -> controle op de foutmelding die teruggegeven werd
     authNotSuccessfull = (val) => {
         errorCode = val.code;
         errorMessage = val.message;
