@@ -218,6 +218,9 @@ export default class Mapke extends React.Component {
     let notFoundItems = [];
     itemsRespJson.items.forEach(item => {
       let add = true;
+      if (item.location == null) {
+        add = false
+      }
       userItemsRespJson.usersItems.forEach(userItem => {
         if (item.itemId == userItem.item.itemId) {
           add = false;
