@@ -34,6 +34,8 @@ export default class FriendRequest extends React.Component {
   }
 
 
+
+
   async getUserById(id) {
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
     let respJson = await resp.json();
@@ -68,7 +70,7 @@ export default class FriendRequest extends React.Component {
   makeRemoteRequest = () => {
     const { page, seed } = this.state
     //const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
-    const url = 'https://citygo-ap.azurewebsites.net/Users/4/FriendRequests'
+    const url = 'https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId+'/FriendRequests'
     this.setState({ loading: true })
 
 
