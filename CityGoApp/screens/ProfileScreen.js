@@ -397,6 +397,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 100,
     width: 100,
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 15,
+    marginStart:10
   },
   imagerequest: {
     width: 60,
