@@ -35,6 +35,7 @@ export default class ProfileScreen extends React.Component {
     FriendRequest: [],
     userchallanges: [],
     currentUser: null,
+    
 
   };
 
@@ -267,7 +268,7 @@ export default class ProfileScreen extends React.Component {
               <Text style={[styles.text, styles.subText]}>score</Text>
             </View>
             <View style={styles.statsBox}>
-              <Text style={[styles.text, { fontSize: 22 }]}>666</Text>
+              <Text style={[styles.text, { fontSize: 22 }]}>{this.state.userchallanges.length}</Text>
               <Text style={[styles.text, styles.subText]}>challanges</Text>
             </View>
             <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
