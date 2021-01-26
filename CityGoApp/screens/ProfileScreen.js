@@ -280,6 +280,7 @@ renderTop() {
 
   render() {
 
+    
     const props = {
       labelBy: 'name',
       sortBy: 'score',
@@ -300,7 +301,6 @@ renderTop() {
             resizeMode="cover"
 
           />
-          <Text>{item.item.name}</Text>
         </View>
       );
     };
