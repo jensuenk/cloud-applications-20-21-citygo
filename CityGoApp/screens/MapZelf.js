@@ -215,7 +215,7 @@ export default class Mapke extends React.Component {
             enableHighAccuracy: true,
             timeInterval: 500,
           }, (location) => {
-            console.log(location.coords.latitude, location.coords.longitude)
+            //console.log(location.coords.latitude, location.coords.longitude)
             this.setState({
               locatie: {
                 latitude: location.coords.latitude,
@@ -230,7 +230,7 @@ export default class Mapke extends React.Component {
             })
 
             for (let element of this.state.sights) {
-
+              //console.log(element.coordinates+" "+this.state.coordinaten)
               if (this._isInPolygon(this.state.coordinaten, element.coordinates)) {
                 this.setState({ huidigeSightNaam: element.name })
                 this.setState({ huidigeSightId: element.sightId })

@@ -21,12 +21,20 @@ export default class InventoryScreen extends React.Component {
       voorlopigebool: false,
       i: 0,
       intOmTeChecken: 0,
+      currentUser: null,
     }
+  }
+
+  async getUserById(id) {
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
+    let respJson = await resp.json();
+    this.setState({ currentUser: respJson });
   }
 
 
 
   componentDidMount() {
+    this.getUserById(global.uid);
     this.ivoorcheckboxes = 0
     this.apiCall();
 
@@ -37,7 +45,7 @@ export default class InventoryScreen extends React.Component {
     let resp = await fetch('https://citygo-ap.azurewebsites.net/sights')
     let respJson = await resp.json();
     this.setState({ sights: respJson.sights })
-    let resp2 = await fetch('https://citygo-ap.azurewebsites.net/users/1')
+    let resp2 = await fetch('https://citygo-ap.azurewebsites.net/users/'+this.state.currentUser.userId)
     let respJson2 = await resp2.json();
     this.setState({ voltooideChallenges: respJson2.usersChallenges })
 

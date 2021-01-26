@@ -32,11 +32,19 @@ export default class QuestionScreen extends React.Component {
       vraag: "(Hier komt vraag van API)",
       antwoord: "",
       juistantwoord:"",
-      id:0
+      id:0,
+      currentUser: null,
     }
   }
 
+  async getUserById(id) {
+    let resp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + id);
+    let respJson = await resp.json();
+    this.setState({ currentUser: respJson });
+  }
+
   async componentDidMount() {
+    this.getUserById(global.uid);
     //console.disableYellowBox = false;
     const test= await Permissions.askAsync(Permissions.LOCATION)
       .then(permission => {
@@ -132,12 +140,13 @@ export default class QuestionScreen extends React.Component {
        // make the HTTP put request using fetch api
        // voorlopig hardcoded, kan wanneer login af is
        var id=this.state.id
-       fetch("https://citygo-ap.azurewebsites.net/users/1/challenges/"+id, putMethod)
+       fetch("https://citygo-ap.azurewebsites.net/users/"+this.state.currentUser.userId+"/challenges/"+id, putMethod)
+       //console.log(this.state.currentUser.userId)
        .then(response => response.json())
        .then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
        .catch(err => console.log(err)) // Do something with the error
 
-
+ 
       this.props.changeComponent('One')
       ToastAndroid.show("Congratulations!", ToastAndroid.LONG);
     }
