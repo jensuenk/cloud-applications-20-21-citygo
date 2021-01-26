@@ -30,14 +30,21 @@ namespace Application.Query.User
                 List<Domain.Friends> Friends = new List<Domain.Friends>();
                 foreach (var item in user.Friends)
                 {
-                    var friend = await _context.Users.Where(u => u.UserId == item.FriendId)
-                        .SingleAsync();
-                    if (item.AcceptedUser1 == true)
+                    try
                     {
-                        userFriends.Add(friend);
-                        Friends.Add(item);
+                        var friend = await _context.Users.Where(u => u.UserId == item.FriendId)
+                            .SingleAsync();
+                        if (item.AcceptedUser1 == true)
+                        {
+                            userFriends.Add(friend);
+                            Friends.Add(item);
+                        }
                     }
-
+                    catch (Exception)
+                    {
+                        
+                    }
+                   
                 }
                 UserVM vm = new UserVM()
                 {

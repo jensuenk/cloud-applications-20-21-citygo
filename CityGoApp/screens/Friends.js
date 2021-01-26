@@ -163,23 +163,6 @@ export default class Friends extends React.Component {
     });
 
 
-    /*
-    // verwijderen van de friend op de 2 plaatsen (zowel curr user als friend)    
-    const urlFriendDelete2 = 'https://citygo-ap.azurewebsites.net/Users/' + fid + '/Friends/' + uid
-
-
-    const deleteMethod2 = {
-      method: "delete",
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-
-    // make the HTTP Delete request using fetch api
-    fetch(urlFriendDelete2, deleteMethod2).then((response) => {
-      return response.json();
-    });
-    */
     //TODO: verbeteren?
     setTimeout(() => {  this.componentDidMount() }, 2000);
 
