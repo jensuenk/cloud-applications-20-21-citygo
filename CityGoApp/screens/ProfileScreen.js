@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 100,
     width: 100,
-    borderWidth: 1,
+    borderWidth: 3,
     borderColor: "black",
     borderRadius: 15,
     marginStart:10
