@@ -1,15 +1,6 @@
 import * as React from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  Image
-} from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
 import { CheckBox } from 'react-native-elements'
-import { TabRouter } from 'react-navigation';
-
-
 
 export default class InventoryScreen extends React.Component {
   constructor() {
@@ -37,10 +28,9 @@ export default class InventoryScreen extends React.Component {
     this.getUserById(global.uid);
     this.ivoorcheckboxes = 0
     this.apiCall();
-
+    this.listUpdateTimer = setInterval(() => this.apiCall(), 10000);
   }
 
-  //voorlopig enkel user 1 aangezien login nog niet helemaal werkt
   async apiCall() {
     let resp = await fetch('https://citygo-ap.azurewebsites.net/sights')
     let respJson = await resp.json();
@@ -69,46 +59,42 @@ export default class InventoryScreen extends React.Component {
 
   }
 
-  checkenVanSightChallenge(sight) {
-    this.state.voltooideChallenges.forEach(voltooidech => {
-
-      //console.log(voltooidech.challenge.challengeId)
-
-      if (sight.challenges[0].challengeId == voltooidech.challenge.challengeId) {
-
-        let i = this.state.intOmTeChecken;
-        i++;
-        this.setState({ intOmTeChecken: i })
-      }
-
+  hasVisited(sight) {
+    var returnValue = false;
+    sight.challenges.forEach(sightChallenges => {
+      this.state.completedChallenges.forEach(collectedChallenge => {
+        if (sightChallenges.challengeId == collectedChallenge.challenge.challengeId) {
+          returnValue = true;
+        }
+      });
     });
+    return returnValue;
   }
 
-  renderItem(item, index) {
+  renderItem(item) {
     return (
       <View style={styles.item}>
-        <Text style={styles.itemText}>  {item.name}</Text>
+        <Text style={styles.itemText}> {item.name}</Text>
+        <Text style={styles.itemDesc}> {item.info}</Text>
         <View style={styles.checkbox}>
         <CheckBox
           checkedIcon={<Image source={require('../assets/checked.png')} />}
           uncheckedIcon={<Image source={require('../assets/unchecked.png')} />}
-          checked={this.state.booleans[index]}
+          checked={this.hasVisited(item)}
         />
         </View>
       </View>
     )
   }
 
-
-  // er moet nog weergegeven of het voltooid is of niet met bv vinkje
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>COMPLETED SIGHTS</Text>
+        <Text style={styles.header}>Visited Sights</Text>
         <FlatList
           renderItem
-          data={this.state.sights}
-          renderItem={({ item, index }) => this.renderItem(item, index)}
+          data={this.state.allSights}
+          renderItem={({ item, index }) => this.renderItem(item)}
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
@@ -120,35 +106,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#36485f',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 50
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 60,
   },
   header: {
     fontSize: 35,
-    color: '#fff',
-    paddingBottom: 0,
+    fontWeight: 'bold',
     marginBottom: 20,
-    borderBottomWidth: 1,
-    borderColor: '#199187'
   },
   item: {
-    fontSize: 30,
-    borderColor: 'white',
-    borderWidth: 2,
-    color: 'white',
-    height:80
+    backgroundColor: '#ffffff',
+    fontSize: 20,
+    borderRadius: 10,
+    marginBottom: 10,
+    height: 100,
+    padding: 10,
+    paddingTop: 20
   },
   itemText: {
-    paddingTop:10,
-    fontSize: 35,
-    color: 'white',
-    width: "70%"
+    fontWeight: 'bold',
+    marginLeft: -5,
+    fontSize: 26,
+    width: "70%",
+  },
+  itemDesc: {
+    fontSize: 18,
+    width: "75%"
   },
   checkbox: {
     position: 'absolute',
     right: 0,
-    width: "30%",
+    marginTop: 10,
+    width: "25%",
   }
-})
+});
