@@ -209,7 +209,7 @@ render() {
                   alignItems: 'center'
                 }}>
                 <Image
-                  source={{ uri: 'https://i.ytimg.com/vi/LkHcB34a2yo/hqdefault.jpg' }}
+                  source={{ uri: item.picrtureURL }}
                   size='giant'
                   style={styles.profileImage}>
                 </Image>
