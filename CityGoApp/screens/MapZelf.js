@@ -14,47 +14,50 @@ import LoginScreen from './LoginScreen';
 const latitudeDelta = 0.0100
 const longitudeDelta = 0.0080
 
-var doorstuurgetal
-const USER_ID = 2;
-
-
 export default class Mapke extends React.Component {
 
-  AlertChallenge() {
-    if(this.state.soortchallenge=="vraag"){
-      doorstuurgetal="Two"
+  alertChallenge(sight) {
+    let alreadyCanceled = false;
+    this.state.sightDialogsCanceled.forEach(canceledSight => {
+      if (canceledSight.sightId == sight.sightId) {
+        alreadyCanceled = true;
+      }
+    });
+    if (!alreadyCanceled) {
+      Alert.alert(
+        "ALERT",
+        "You are nearby " + sight.name + ", do you want to do the challenge?",
+        [
+          {
+            text: "No",
+            onPress: () => (
+              this.state.sightDialogsCanceled.push(sight),
+              this.sightAlertIsActive = false
+            )
+          },
+          {
+            text: "Yes",
+            onPress: () => (
+              this.props.changeComponent(sight.challenges[0].task),
+              this.sightAlertIsActive = false
+            )
+          }
+        ],
+        { cancelable: false }
+      );
     }
-    else if(this.state.soortchallenge=="tictactoe"){
-      doorstuurgetal="Three"
+    else {
+      this.sightAlertIsActive = false;
     }
-    else if(this.state.soortchallenge=="memorygame"){
-      doorstuurgetal="Four"
-    }
-    else if(this.state.soortchallenge=="Hangman"){
-      doorstuurgetal="Hangman"
-    }
-    Alert.alert(
-      "ALERT",
-      "You are nearby " + this.state.huidigeSightNaam + ", do you want to do a challenge?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel"
-        },
-        // nu standaard naar 2 maar moet van api komen naar wat soort vraag het moet gaan
-        { text: "OK", onPress: () => (this.props.changeComponent(doorstuurgetal)) }
-      ],
-      { cancelable: false }
-    );
   }
 
-  AlertItem(item) {
+  alertItem(item) {
     let alreadyCanceled = false;
     this.state.itemDialogsCanceled.forEach(canceledItem => {
       if (canceledItem.itemId == item.itemId) {
         alreadyCanceled = true;
       }
-    })
+    });
     if (!alreadyCanceled) {
       Alert.alert(
         "Item Nearby",
@@ -64,148 +67,60 @@ export default class Mapke extends React.Component {
             text: "No",
             onPress: () => (
               this.state.itemDialogsCanceled.push(item),
-              this.alertIsActive = false
-            ) 
+              this.itemAlertIsActive = false
+            )
           },
-          { 
-            text: "Yes", 
+          {
+            text: "Yes",
             onPress: () => (
               this.props.setCollectItem(item),
               this.props.changeComponent('catch'),
-              this.alertIsActive = false) 
+              this.itemAlertIsActive = false
+            )
           }
         ],
         { cancelable: false }
       );
     }
-  }
-
-  
-
-  /*registerForPushNotifications = async () =>{
-    //Nagaan of de persmissions al toegekend waren
-    const {status} = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    let EindStatus = status;
-
-    //Als er nog geen permissie gegeven is voor notificaties -> user vragen voor permissions
-    if(status !== 'granted'){
-      const {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      EindStatus = status;
+    else {
+      this.itemAlertIsActive = false;
     }
-
-    //Als er geen permissie gegeven wordt => de user heeft geen permissie gegeven om notificaties te sturen, dus de functie moet stoppen
-    if(EindStatus !== 'granted'){
-      //functie stoppen => return
-      return;
-    }
-
-    //Om push notificaties te sturen => PUSH NOTIFICATION TOKEN nodig!
-    let token = await Notifications.getExpoPushTokenAsync();
-    console.log("Push token: ",token);
-
-    //De unieke token toevoegen aan de Firebase
-    let uid = Firebase.auth().currentUser.uid;
-    Firebase.database().ref("users").child(uid).update({
-      expoPushToken: token
-    });
   }
-  */
 
   constructor(props) {
     super(props);
     this.state = {
-      locatie: {
+      location: {
         latitude: 0,
         longitude: 0,
         latitudeDelta,
         longitudeDelta,
       },
-      coordinaten: {
+      coordinates: {
         latitude: 0,
         longitude: 0
       },
       sights: [],
-      huidigeSightNaam: "(Naam van plaats)",
-      markers: [{
-        title: "test",
+      huidigeSightNaam: "",
+      sightMarkers: [{
         coordinates: {
           latitude: 3.148561,
           longitude: 101.652778
         },
+        title: "",
+        sight: null
       }],
       userLocations: [],
       currentUser: null,
       notFoundItems: [],
+      notCompletedSights: [],
       itemDialogsCanceled: [],
-      soortchallenge:""
+      sightDialogsCanceled: [],
+      soortchallenge: ""
     }
     this.locationWatcher = null;
     this.spawnInterval = null;
   }
-
-  // Om middelpunt van polygon te krijgen
-  coordinate(sight) {
-    let x = sight.coordinates.map(c => c.latitude)
-    let y = sight.coordinates.map(c => c.longitude)
-
-    let minX = Math.min.apply(null, x)
-    let maxX = Math.max.apply(null, x)
-
-    let minY = Math.min.apply(null, y)
-    let maxY = Math.max.apply(null, y)
-
-    const _coordinates = this.state.markers
-    _coordinates.push({
-      coordinates: {
-        latitude: (minX + maxX) / 2,
-        longitude: (minY + maxY) / 2,
-      },
-      title: sight.name
-    })
-    this.setState({ markers: _coordinates })
-  }
-
-  ///Push Notifications in de call van 6/01/2021 gecanceld -> fout was totaal niet duidelijk en het was een nice to have
-  /*
-  //voor dat de render functie wordt uitgevoerd, gebeurd deze functie -> check of het een fysiek device is en of het OS android is
-  //als het fysiek is en draait android -> getnotificationasync aangeroepen
-  componentWillMount() {
-    if (Platform.OS === 'android' && !Constants.isDevice) {
-      this.setState({
-        errorMessage: 'You need to use a physical device to run with permissions.',
-      });
-    } else {
-      this._getNotificationsAsync();
-    }
-  }
-
-  _getNotificationsAsync = async () => {
-    //check of er in het verleden reeds permissie werd gegeven - checken voor bestaande permissions
-    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
-    }
-
-    //checken voor nieuwe permissies -> IF NOT: alert dat er geen permissie is gevgeven aan de notificaties + stop functie
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-
-    //voor de sessie een token aanmaken
-    const token = (await Notifications.getExpoPushTokenAsync()).data;;
-    console.log(token);
-
-    //instellingen van de notificatie zelf
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }*/
 
   componentDidMount() {
     Permissions.askAsync(Permissions.LOCATION)
@@ -215,35 +130,19 @@ export default class Mapke extends React.Component {
             enableHighAccuracy: true,
             timeInterval: 500,
           }, (location) => {
-            //console.log(location.coords.latitude, location.coords.longitude)
+            console.log(location.coords.latitude, location.coords.longitude)
             this.setState({
-              locatie: {
+              location: {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
                 latitudeDelta,
                 longitudeDelta,
               },
-              coordinaten: {
+              coordinates: {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
               }
             })
-
-            for (let element of this.state.sights) {
-              //console.log(element.coordinates+" "+this.state.coordinaten)
-              if (this._isInPolygon(this.state.coordinaten, element.coordinates)) {
-                this.setState({ huidigeSightNaam: element.name })
-                this.setState({ huidigeSightId: element.sightId })
-                this.setState({soortchallenge:element.challenges[0].questionChallenge})
-                this.AlertChallenge();
-              }
-
-            }
-
-            this.state.sights.forEach(sight => {
-              this.coordinate(sight)
-            });
-
           })
         }
       })
@@ -251,14 +150,16 @@ export default class Mapke extends React.Component {
 
     this.locationTimer = setInterval(() => this.getAllUsersLocations(), 10000)
     this.itemTimer = setInterval(() => this.getItems(), 10000);
+    this.sightTimer = setInterval(() => this.getSights(), 10000);
 
     this.setState({ itemDialogsCanceled: [] })
   }
-  
 
   componentWillUnmount() {
+    clearInterval(this.sightTimer);
     clearInterval(this.itemTimer);
     clearInterval(this.locationTimer);
+    // Set last location of player + set status to offline
     this.updatePositionAPI(false);
   }
 
@@ -267,25 +168,14 @@ export default class Mapke extends React.Component {
       enableHighAccuracy: true
     }, (location) => {
       this.setState({
-        locatie: {
+        location: {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
           latitudeDelta,
           longitudeDelta,
         }
       })
-    })
-    //console.log("Current Location: ", this.state.locatie.latitude, this.state.locatie.longitude)
-    this.state.notFoundItems.forEach(item => {
-      // Check if item is in a radius of +-10m
-      if (!(Math.abs(this.state.locatie.latitude - item.location.latitude) > 0.001 || Math.abs(this.state.locatie.longitude - item.location.longitude) > 0.001)) {
-        if (!this.alertIsActive) {
-          this.alertIsActive = true;
-          this.AlertItem(item);
-        }
-        return;
-      }
-    })
+    });
   }
 
   async getUserById(id) {
@@ -293,25 +183,20 @@ export default class Mapke extends React.Component {
     let respJson = await resp.json();
     this.setState({ currentUser: respJson })
 
-    this.apiCallSights();
     this.getAllUsersLocations();
     this.getItems();
-  }
-
-  async apiCallSights() {
-    let resp2 = await fetch('https://citygo-ap.azurewebsites.net/sights')
-    let respJson2 = await resp2.json();
-    this.setState({ sights: respJson2.sights })
+    this.getSights();
   }
 
   async getAllUsersLocations() {
+    this.updateLocation();
     let resp = await fetch('https://citygo-ap.azurewebsites.net/Users')
     let respJson = await resp.json();
 
     let userLocations = [];
     respJson.users.forEach(user => {
       if (user.userId != this.state.currentUser.userId && user.location != null && user.online) {
-        if (!(Math.abs(this.state.locatie.latitude - user.location.latitude) > 0.01 || Math.abs(this.state.locatie.longitude - user.location.longitude) > 0.01)) {
+        if (!(Math.abs(this.state.location.latitude - user.location.latitude) > 0.01 || Math.abs(this.state.location.longitude - user.location.longitude) > 0.01)) {
           userLocations.push(user);
         }
       }
@@ -339,8 +224,78 @@ export default class Mapke extends React.Component {
         notFoundItems.push(item);
       }
     })
-    this.setState({ notFoundItems: notFoundItems })
-    this.updateLocation();
+    this.setState({ notFoundItems: notFoundItems });
+    this.alertNearbyItems();
+  }
+
+  alertNearbyItems() {
+    this.state.notFoundItems.forEach(item => {
+      // Check if item is in a radius of +-10m
+      if (!(Math.abs(this.state.location.latitude - item.location.latitude) > 0.001 || Math.abs(this.state.location.longitude - item.location.longitude) > 0.001)) {
+        if (!this.itemAlertIsActive) {
+          this.itemAlertIsActive = true;
+          this.alertItem(item);
+        }
+      }
+    });
+  }
+
+  async getSights() {
+    let sightsResp = await fetch('https://citygo-ap.azurewebsites.net/Sights/');
+    let sightsRespJson = await sightsResp.json();
+
+    let notCompletedSights = [];
+    let userResp = await fetch('https://citygo-ap.azurewebsites.net/Users/' + global.uid);
+    let userRespJson = await userResp.json();
+    sightsRespJson.sights.forEach(sight => {
+      let add = true;
+      userRespJson.usersChallenges.forEach(collectedChallenge => {
+        if (sight.challenges[0] == null || sight.challenges[0].challengeId == collectedChallenge.challenge.challengeId) {
+          add = false;
+        }
+      });
+      if (add) {
+        notCompletedSights.push(sight);
+      }
+    });
+    this.setState({ notCompletedSights: notCompletedSights });
+
+    this.createSightsMarkers(sightsRespJson.sights);
+    this.alertNearbySights();
+  }
+
+  createSightsMarkers(sights) {
+    let markers = [];
+    sights.forEach(sight => {
+      // Get middle poit of polygon
+      let x = sight.coordinates.map(c => c.latitude)
+      let y = sight.coordinates.map(c => c.longitude)
+      let minX = Math.min.apply(null, x)
+      let maxX = Math.max.apply(null, x)
+      let minY = Math.min.apply(null, y)
+      let maxY = Math.max.apply(null, y)
+
+      markers.push({
+        coordinates: {
+          latitude: (minX + maxX) / 2,
+          longitude: (minY + maxY) / 2,
+        },
+        title: sight.name,
+        sight: sight
+      })
+    })
+    this.setState({ sightMarkers: markers })
+  }
+
+  alertNearbySights() {
+    this.state.notCompletedSights.forEach(sight => {
+      if (this.isInPolygon(this.state.coordinates, sight.coordinates)) {
+        if (!this.sightAlertIsActive) {
+          this.sightAlertIsActive = true;
+          this.alertChallenge(sight);
+        }
+      }
+    });
   }
 
   async updatePositionAPI(online) {
@@ -354,14 +309,14 @@ export default class Mapke extends React.Component {
     delete user.friends;
     delete user.userFriends;
     if (user.location == null) {
-        user.location = {
-          latitude: this.state.locatie.latitude,
-          longitude: this.state.locatie.longitude
-        }
+      user.location = {
+        latitude: this.state.location.latitude,
+        longitude: this.state.location.longitude
+      }
     }
     else {
-      user.location.latitude = this.state.locatie.latitude,
-      user.location.longitude = this.state.locatie.longitude
+      user.location.latitude = this.state.location.latitude,
+        user.location.longitude = this.state.location.longitude
     }
     const request = {
       method: 'PUT',
@@ -372,13 +327,11 @@ export default class Mapke extends React.Component {
       .then(function (response) {
         return response.json();
       })
-      .catch(function (error) {
-        //console.log("Update location error", error)
+      .catch(function () {
       })
   }
 
-  _isInPolygon = (point, polygonArray) => {
-
+  isInPolygon = (point, polygonArray) => {
     let x = point.latitude
     let y = point.longitude
 
@@ -392,7 +345,7 @@ export default class Mapke extends React.Component {
       let intersect = ((yLat > y) !== (yLon > y)) && (x < (xLon - xLat) * (y - yLat) / (yLon - yLat) + xLat)
       if (intersect) inside = !inside
     }
-    return inside
+    return inside;
   }
 
   render() {
@@ -400,7 +353,7 @@ export default class Mapke extends React.Component {
       <View style={{ flex: 1 }}>
 
         <MapView
-          region={this.state.locatie}
+          region={this.state.location}
           style={{ flex: 1 }}
           showsUserLocation
           scrollEnabled={false}
@@ -411,16 +364,19 @@ export default class Mapke extends React.Component {
           customMapStyle={mapStyle}
           showsPointsOfInterest={false}
         >
-          {this.state.markers.map((marker) => (
-            <MapView.Marker
-              title={marker.title}
-              coordinate={{
-                latitude: marker.coordinates.latitude,
-                longitude: marker.coordinates.longitude,
-              }}
-              onPress={() => this.AlertChallenge()}
-            />
-          )),
+          {
+            this.state.sightMarkers.map((sightMarker) => (
+              <MapView.Marker
+                title={sightMarker.title}
+                coordinate={{
+                  latitude: sightMarker.coordinates.latitude,
+                  longitude: sightMarker.coordinates.longitude,
+                }}
+                onPress={() => this.alertChallenge(sightMarker.sight)}
+              />
+            ))
+          }
+          {
             this.state.userLocations.map((user) => (
               <MapView.Marker
                 key={user.userId}
@@ -433,9 +389,10 @@ export default class Mapke extends React.Component {
                 image={require('../assets/user-icon.png')}
               />
             ))
-            // Uncomment to show all items on the map
+          }
+          {
+            // Uncomment to visualize items on the map
             /*
-            ,
             this.state.notFoundItems.map((item) => (
               <MapView.Marker
                 title={item.name}
@@ -447,8 +404,8 @@ export default class Mapke extends React.Component {
                 pinColor={'blue'}
               />
             ))
-              */
-              }
+            */
+          }
         </MapView>
       </View>
     );

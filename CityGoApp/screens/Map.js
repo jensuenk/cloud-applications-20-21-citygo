@@ -51,16 +51,16 @@ export default class Map2 extends React.Component {
   renderComponent(component) {
     if (component == 'One') {
       return <MapZelf changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
-    } else if (component == 'Two') {
-      return <QuestionScreen changeComponent={this.changeComponent} />
-    } else if (component == 'Three') {
-      return <TicTacToe changeComponent={this.changeComponent} />
-    } else if (component == 'Four') {
-      return <MemoryGame changeComponent={this.changeComponent} />
+    } else if (component == 'vraag') {
+      return <QuestionScreen changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
+    } else if (component == 'tictactoe') {
+      return <TicTacToe changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
+    } else if (component == 'memorygame') {
+      return <MemoryGame changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
     } else if (component == 'catch') {
       return <CatchItemScreen changeComponent={this.changeComponent} collectItem={this.state.collectItem}/>
-    } else if(component=='Hangman'){
-      return <Hangman changeComponent={this.changeComponent} />
+    } else if(component =='Hangman'){
+      return <Hangman changeComponent={this.changeComponent} setCollectItem={this.setCollectItem}/>
     } else if (component == 'reward') {
       return <RewardScreen changeComponent={this.changeComponent} rewardChallenge={this.state.rewardChallenge} setCollectItem={this.setCollectItem}/>
     }
