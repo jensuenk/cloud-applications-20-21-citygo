@@ -293,7 +293,9 @@ renderTop() {
 
 
     const ItemList = ({ item }) => {
+     
       return (
+        
         <View style={styles.item}>
           <Image
             source={{ uri: item.item.picture }}
@@ -313,18 +315,6 @@ renderTop() {
     let balls = this.state.data.balls
     let score = this.state.data.score
     let picurl = this.state.data.picrtureURL
-    // let numbofchallanges = this.state.userchallanges.length
-    let teller = 0
-    /*
-     
-        let amountRequest =
-        
-        let noRequest = <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{this.state.FriendRequest.length}</Text>
-          <Text style={[styles.text, styles.subText]}>Friend Request</Text>
-        </View>;
-        */
-
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
     } else if (this.state.location) {
@@ -345,11 +335,9 @@ renderTop() {
               <Ionicons name="md-log-out" size={24} color="#52575D"></Ionicons>
             </TouchableOpacity>
           </View>
-
           <View style={{ alignSelf: "center" }}>
             <View>
               {this.state.FriendRequest.length > 0 && <TouchableOpacity onPress={() => this.gotoRequests()}><Image style={styles.imagerequest} source={require('../Images/friendRequesticon.jpg')} /></TouchableOpacity>}
-
             </View>
             <View style={styles.profileImage}>
               <Image
@@ -392,7 +380,7 @@ renderTop() {
 
 
           </View>
-          <Text>ITEMS:</Text>
+          <Text style={styles.itemtext} >ITEMS:</Text>
           <FlatList
             horizontal
             data={this.state.userItems}
@@ -496,6 +484,12 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 100,
     overflow: "hidden"
+  },
+  itemtext:{
+    color:'black',
+    fontSize:20,
+    marginLeft:10,
+    marginTop:10
   },
   dm: {
     backgroundColor: "#41444B",

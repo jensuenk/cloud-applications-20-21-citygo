@@ -70,7 +70,7 @@ export default class FriendRequest extends React.Component {
   makeRemoteRequest = () => {
     const { page, seed } = this.state
     //const url = 'https://randomuser.me/api/?seed=${seed}&results=100'
-    const url = 'https://citygo-ap.azurewebsites.net/Users/'+this.state.currentUser.userId+'/FriendRequests'
+    const url = 'https://citygo-ap.azurewebsites.net/Users/' + this.state.currentUser.userId + '/FriendRequests'
     this.setState({ loading: true })
 
 
@@ -106,7 +106,7 @@ export default class FriendRequest extends React.Component {
   // versturen van een accepteren zal nu hardcoded zijn vanuit het standpunt van user1
 
   acceptFriendRequest = (fid, uid = this.state.currentUser.userId) => {
-    
+
     const urlFriendRequest = 'https://citygo-ap.azurewebsites.net/Users/' + uid + '/FriendRequests/' + fid
     console.log(urlFriendRequest)
     const putMethod = {
@@ -247,7 +247,8 @@ export default class FriendRequest extends React.Component {
                   style={{
                     flexDirection: 'row',
                     padding: 16,
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
                   }}>
                   <Image
                     source={{ uri: item.picrtureURL }}
@@ -258,14 +259,15 @@ export default class FriendRequest extends React.Component {
                   <Text
                     category='s1'
                     style={{
-                      color: '#000'
+                      color: '#000',
+                      width:100,
                     }}>{`${item.name}`}
                   </Text>
                   <TouchableOpacity onPress={() => this.acceptFriendRequest(item.userId)}>
                     <View style={styles.button}>
                       <Text style={styles.buttonText} >
                         Accept
-                                </Text>
+                         </Text>
                     </View>
                   </TouchableOpacity>
                 </View>)
@@ -306,7 +308,8 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: 50,
-    marginRight: 30,
+    position:'absolute',
+    left:0,
     height: 50,
     borderRadius: 100,
     overflow: "hidden"
