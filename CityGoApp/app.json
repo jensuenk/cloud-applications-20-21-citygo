@@ -22,9 +22,13 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "android":{
-      "permissions":["ACCESS_COARSE_LOCATION","ACCESS_FINE_LOCATION"],
-      "useNextNotificationsApi": true
+    "android": {
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "useNextNotificationsApi": true,
+      "package": "com.citygo"
     }
   }
 }

@@ -4,7 +4,10 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+  batch: true
+  branches:
+    include:
+    - master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -19,6 +22,7 @@ steps:
     cd CityGoApp
     npm install -g expo-cli
     npm install
-    expo start
+    expo login -u jens.uenk@icloud.com -p byvnos-wypre4-dyGton --non-interactive
+    expo build:android --non-interactive
 
   displayName: 'npm install and build'
