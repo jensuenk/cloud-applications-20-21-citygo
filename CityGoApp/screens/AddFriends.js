@@ -206,20 +206,25 @@ render() {
                 style={{
                   flexDirection: 'row',
                   padding: 16,
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                
                 }}>
                 <Image
                   source={{ uri: item.picrtureURL }}
                   size='giant'
                   style={styles.profileImage}>
                 </Image>
-    
                 <Text
                   category='s1'
                   style={{
-                    color: '#000'
+                    color: '#000',
+                    width:100,
+                    
+                    
                   }}>{`${item.name}`} 
                 </Text>
+                <View></View>
                 <TouchableOpacity onPress={() => this.sendFriendRequest(item.userId)}>
                   <View style={styles.button}>
                     <Text style={styles.buttonText} >
@@ -265,7 +270,8 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: 50,
-    marginRight: 30,
+    position:'absolute',
+    left:0,
     height: 50,
     borderRadius: 100,
     overflow: "hidden"
